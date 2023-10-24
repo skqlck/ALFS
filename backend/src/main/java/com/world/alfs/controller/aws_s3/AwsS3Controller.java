@@ -1,6 +1,6 @@
 package com.world.alfs.controller.aws_s3;
 
-import com.world.alfs.AwsS3.AwsS3Service;
+import com.world.alfs.service.aws_s3.AwsS3Service;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpStatus;
