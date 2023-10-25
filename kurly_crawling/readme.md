@@ -6,8 +6,43 @@
     ![](./product_img_erd.PNG)
 * JSON으로 정리한다면,
 ```javascript
+
+    // Item_IDs.json
     [
         {
+            id : String,
+            name : String,
+            images : {
+                main_img : String
+            }
+        },
+        {
+            ...
+        },
+        ...
+    ]
+
+    // Item_List.json
+    [
+        {
+            id : String,
+            name : String,
+            image : String, // images/main_img
+            title : String,
+            price : int,
+            sale : int,
+            delivery : Stirng, // 배송 정보에서 안내사항은 제외
+        },
+        {
+            ...
+        },
+        ...
+    ]
+    
+    // Item_Details.json
+    [
+        {
+            id : String,
             name : String,
             title : String,
             price : int,

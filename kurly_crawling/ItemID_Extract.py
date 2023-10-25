@@ -42,6 +42,6 @@ for page in range(1,pages+1):
 
         item_infos.append(item)
 
-with open('item_ids_1.json','w',encoding='utf-8') as f:
+with open('Item_IDs.json','w',encoding='utf-8') as f:
     json.dump(item_infos, f, indent=4, ensure_ascii=False)
 f.close()

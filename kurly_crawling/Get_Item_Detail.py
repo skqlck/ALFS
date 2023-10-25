@@ -96,7 +96,7 @@ for item_info in item_infos:
 
     detail_infos.append(item_info)
 
-with open('item_infos.json','w',encoding='utf-8') as f:
+with open('Item_Details.json','w',encoding='utf-8') as f:
     json.dump(detail_infos, f, indent=4, ensure_ascii=False)
 f.close()
 
