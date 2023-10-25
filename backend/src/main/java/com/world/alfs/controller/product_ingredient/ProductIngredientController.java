@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/product_ingredient")
 @Slf4j
 public class ProductIngredientController {
+    //ㄴ어나ㅓ아너안
 
     private final ProductIngredientService productIngredientService;
 
