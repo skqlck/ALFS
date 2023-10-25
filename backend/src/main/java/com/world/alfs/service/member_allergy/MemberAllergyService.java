@@ -1,5 +1,6 @@
 package com.world.alfs.service.member_allergy;
 
+import com.world.alfs.domain.member_allergy.repository.MemberAllergyRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,6 +10,6 @@ import org.springframework.transaction.annotation.Transactional;
 @Transactional
 public class MemberAllergyService {
 
-    private final MemberAllergyService memberAllergyService;
+    private final MemberAllergyRepository memberAllergyRepository;
 
 }

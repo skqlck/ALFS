@@ -1,7 +1,6 @@
-package com.world.alfs.service.board;
+package com.world.alfs.service.basket;
 
-
-import com.world.alfs.domain.board.repository.BoardRepository;
+import com.world.alfs.domain.basket.repository.BasketRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -9,9 +8,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class BoardService {
-
-    private final BoardRepository boardRepository;
-
+public class BasketService {
+    private final BasketRepository basketRepository;
 
 }
