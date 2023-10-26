@@ -23,7 +23,7 @@ function DaumPost(props: any) {
 
   return (
     <>
-      <Button onClick={onOpen} type="button" colorScheme="whatsapp" variant="outline">
+      <Button onClick={onOpen} type="button" colorScheme="whatsapp" variant="outline" width={100}>
         주소검색
       </Button>
       <Modal isOpen={isOpen} onClose={onClose}>
