@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 @NoArgsConstructor
 public class AddProductRequest {
 
+    private Long id;
+
     private String name;
 
     private String title;
@@ -42,7 +44,8 @@ public class AddProductRequest {
     private String content;
 
     @Builder
-    public AddProductRequest(String name, String title, int price, int sale, String img, String delivery, String seller, String pack, int count, int weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public AddProductRequest(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, int count, int weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+        this.id = id;
         this.name = name;
         this.title = title;
         this.price = price;
@@ -63,6 +66,7 @@ public class AddProductRequest {
 
     public AddProductDto toDto() {
         return AddProductDto.builder()
+                .id(this.id)
                 .name(this.name)
                 .title(this.title)
                 .price(this.price)
