@@ -18,7 +18,9 @@ type CardProps = {
 };
 
 export default function Card({ name, image, id, title, price, sale, delivery }: CardProps) {
+  const formattedSale = new Intl.NumberFormat().format(sale);
   const formattedPrice = new Intl.NumberFormat().format(price);
+  const discount = Math.round(((price - sale) / price) * 100);
   const router = useRouter();
   const moveDetail = (id: number) => {
     router.push(`/detail/${id}`);
@@ -42,10 +44,18 @@ export default function Card({ name, image, id, title, price, sale, delivery }: 
       <div className="CardFooter w-[178px] h-[80px] mt-[4px]">
         <div className="CardTitle w-[full] text-[13px]">{name}</div>
         <div className="CardSubtitle w-[full] opacity-[0.3] mt-[7px] text-[10px]">{title}</div>
-        <div className="CardPrice w-[full] text-[14px] font-bold mt-[9px]">{formattedPrice}원</div>
-        <div className="CardComment w-[full] text-[6px] mt-[7px] opacity-0.3 flex items-center">
-          <BsChatLeftDots className="mr-0.5" />
-          9,999+
+        {price !== sale && (
+          <div className="Cost w-[full] h-[14px] mt-[7px] text-[13px] opacity-[0.3] line-through">
+            {formattedPrice}원
+          </div>
+        )}
+        <div className="CardPrice w-[full] text-[14px] font-bold mt-[9px]">
+          {discount !== 0 && (
+            <span className="Discount mr-[5px]" style={{ color: "red" }}>
+              {discount}%
+            </span>
+          )}
+          {formattedSale}원
         </div>
       </div>
     </div>
