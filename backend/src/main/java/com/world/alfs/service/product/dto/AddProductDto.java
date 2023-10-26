@@ -1,10 +1,14 @@
 package com.world.alfs.service.product.dto;
 
+import com.world.alfs.domain.product.Product;
 import lombok.Builder;
 import lombok.Data;
+import lombok.RequiredArgsConstructor;
 
 @Data
+@RequiredArgsConstructor
 public class AddProductDto {
+    private Long id;
 
     private String name;
 
@@ -39,7 +43,8 @@ public class AddProductDto {
     private String content;
 
     @Builder
-    public AddProductDto(String name, String title, int price, int sale, String img, String delivery, String seller, String pack, int count, int weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public AddProductDto(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, int count, int weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+        this.id = id;
         this.name = name;
         this.title = title;
         this.price = price;
@@ -56,5 +61,28 @@ public class AddProductDto {
         this.buyType = buyType;
         this.stock = stock;
         this.content = content;
+    }
+
+    public Product toEntity() {
+        return Product.builder()
+                .id(this.id)
+                .name(this.name)
+                .title(this.title)
+                .price(this.price)
+                .sale(this.sale)
+                .img(this.img)
+                .delivery(this.delivery)
+                .seller(this.seller)
+                .pack(this.pack)
+                .count(this.count)
+                .weight(this.weight)
+                .allergy(this.allergy)
+                .expireDate(this.expireDate)
+                .information(this.information)
+                .buyType(this.buyType)
+                .stock(this.stock)
+                .content(this.content)
+                .build();
+
     }
 }

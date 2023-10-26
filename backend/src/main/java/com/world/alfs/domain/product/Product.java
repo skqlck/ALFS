@@ -2,6 +2,7 @@ package com.world.alfs.domain.product;
 
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -65,6 +66,24 @@ public class Product {
     private String content;
 
 
-
-
+    @Builder
+    public Product(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, int count, int weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+        this.id = id;
+        this.name = name;
+        this.title = title;
+        this.price = price;
+        this.sale = sale;
+        this.img = img;
+        this.delivery = delivery;
+        this.seller = seller;
+        this.pack = pack;
+        this.count = count;
+        this.weight = weight;
+        this.allergy = allergy;
+        this.expireDate = expireDate;
+        this.information = information;
+        this.buyType = buyType;
+        this.stock = stock;
+        this.content = content;
+    }
 }
