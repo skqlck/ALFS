@@ -30,9 +30,6 @@ public class Product {
     private int sale;
 
     @Column()
-    private String img;
-
-    @Column()
     private String delivery;
 
     @Column()
@@ -67,13 +64,12 @@ public class Product {
 
 
     @Builder
-    public Product(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public Product(Long id, String name, String title, int price, int sale, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
         this.id = id;
         this.name = name;
         this.title = title;
         this.price = price;
         this.sale = sale;
-        this.img = img;
         this.delivery = delivery;
         this.seller = seller;
         this.pack = pack;
@@ -94,7 +90,6 @@ public class Product {
                 .title(title)
                 .price(price)
                 .sale(sale)
-                .img(img)
                 .delivery(delivery)
                 .seller(seller)
                 .pack(pack)

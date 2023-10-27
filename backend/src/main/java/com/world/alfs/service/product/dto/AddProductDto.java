@@ -1,6 +1,7 @@
 package com.world.alfs.service.product.dto;
 
 import com.world.alfs.domain.product.Product;
+import com.world.alfs.domain.product_img.ProductImg;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
@@ -18,7 +19,11 @@ public class AddProductDto {
 
     private int sale;
 
-    private String img;
+    private String img_1;
+
+    private String img_2;
+
+    private String img_3;
 
     private String delivery;
 
@@ -43,13 +48,15 @@ public class AddProductDto {
     private String content;
 
     @Builder
-    public AddProductDto(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public AddProductDto(Long id, String name, String title, int price, int sale, String img_1, String img_2, String img_3, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
         this.id = id;
         this.name = name;
         this.title = title;
         this.price = price;
         this.sale = sale;
-        this.img = img;
+        this.img_1 = img_1;
+        this.img_2 = img_2;
+        this.img_3= img_3;
         this.delivery = delivery;
         this.seller = seller;
         this.pack = pack;
@@ -70,7 +77,6 @@ public class AddProductDto {
                 .title(this.title)
                 .price(this.price)
                 .sale(this.sale)
-                .img(this.img)
                 .delivery(this.delivery)
                 .seller(this.seller)
                 .pack(this.pack)
@@ -85,4 +91,14 @@ public class AddProductDto {
                 .build();
 
     }
+
+    public ProductImg toImgEntity() {
+        return ProductImg.builder()
+                .product_id(id)
+                .img_1(img_1)
+                .img_2(img_2)
+                .img_3(img_3)
+                .build();
+    }
+
 }

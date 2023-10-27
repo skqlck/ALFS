@@ -10,6 +10,7 @@ import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
 import java.util.Optional;
 
 @RestController
@@ -31,6 +32,13 @@ public class ProductController {
         Optional<Product> savedProduct = productService.getProduct(id);
         ProductResponse productResponse = savedProduct.get().toResponse();
         return ApiResponse.ok(productResponse);
+    }
+
+
+    @GetMapping("/all")
+    public ApiResponse<List<ProductResponse>>getAllProduct(){
+        List<ProductResponse> product_list = productService.getAllProduct();
+        return ApiResponse.ok(product_list);
     }
 
     @PatchMapping("{id}/{price}/{sale}")
