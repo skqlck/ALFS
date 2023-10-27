@@ -26,4 +26,10 @@ public class ProductService {
     public Optional<Product> getProduct(Long id) {
         return productRepository.findById(id);
     }
+
+    public Long setProduct(Long id, int price, int sale) {
+        Optional<Product> product = productRepository.findById(id);
+        product.get().setProduct(price,sale);
+        return product.get().getId();
+    }
 }

@@ -108,4 +108,11 @@ public class Product {
                 .content(content)
                 .build();
     }
+
+//    - - - - - - - - - 비즈니스 로직 - - - - - - - - - - - - -
+    public void setProduct(int price, int sale){
+        this.price=price;
+        this.sale=sale;
+    }
+
 }

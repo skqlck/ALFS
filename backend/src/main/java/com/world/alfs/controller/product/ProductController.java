@@ -28,11 +28,20 @@ public class ProductController {
 
     @GetMapping("/{id}")
     public ApiResponse<ProductResponse>getProduct(@PathVariable Long id){
-        System.out.print("id는"+id);
         Optional<Product> savedProduct = productService.getProduct(id);
         ProductResponse productResponse = savedProduct.get().toResponse();
         return ApiResponse.ok(productResponse);
     }
+
+    @PatchMapping("{id}/{price}/{sale}")
+    public ApiResponse<Long>setProduct(@PathVariable Long id,@PathVariable int price, @PathVariable int sale){
+        Long savedId = productService.setProduct(id,price,sale);
+        return ApiResponse.ok(1L);
+
+    }
+
+
+
 
 
 }
