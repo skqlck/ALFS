@@ -26,9 +26,9 @@ public class AddProductDto {
 
     private String pack;
 
-    private int count;
+    private String count;
 
-    private int weight;
+    private String weight;
 
     private String allergy;
 
@@ -43,7 +43,7 @@ public class AddProductDto {
     private String content;
 
     @Builder
-    public AddProductDto(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, int count, int weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public AddProductDto(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
         this.id = id;
         this.name = name;
         this.title = title;

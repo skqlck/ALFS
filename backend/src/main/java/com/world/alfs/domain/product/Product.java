@@ -1,6 +1,7 @@
 package com.world.alfs.domain.product;
 
 
+import com.world.alfs.controller.product.response.ProductResponse;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -14,7 +15,6 @@ import javax.persistence.*;
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
     @Id
-//    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @Column()
@@ -42,10 +42,10 @@ public class Product {
     private String pack;
 
     @Column()
-    private int count;
+    private String count;
 
     @Column()
-    private int weight;
+    private String weight;
 
     @Column()
     private String allergy;
@@ -67,7 +67,7 @@ public class Product {
 
 
     @Builder
-    public Product(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, int count, int weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public Product(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -85,5 +85,27 @@ public class Product {
         this.buyType = buyType;
         this.stock = stock;
         this.content = content;
+    }
+
+    public ProductResponse toResponse() {
+        return ProductResponse.builder()
+                .id(id)
+                .name(name)
+                .title(title)
+                .price(price)
+                .sale(sale)
+                .img(img)
+                .delivery(delivery)
+                .seller(seller)
+                .pack(pack)
+                .count(count)
+                .weight(weight)
+                .allergy(allergy)
+                .expireDate(expireDate)
+                .information(information)
+                .buyType(buyType)
+                .stock(stock)
+                .content(content)
+                .build();
     }
 }
