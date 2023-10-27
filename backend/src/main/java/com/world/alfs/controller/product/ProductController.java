@@ -44,8 +44,14 @@ public class ProductController {
     @PatchMapping("{id}/{price}/{sale}")
     public ApiResponse<Long>setProduct(@PathVariable Long id,@PathVariable int price, @PathVariable int sale){
         Long savedId = productService.setProduct(id,price,sale);
-        return ApiResponse.ok(1L);
+        return ApiResponse.ok(savedId);
 
+    }
+
+    @DeleteMapping("/{id}")
+    public ApiResponse<Long>deleteProduct(@PathVariable Long id){
+        Long savedId = productService.deleteProduct(id);
+        return ApiResponse.ok(savedId);
     }
 
 
