@@ -30,10 +30,7 @@ public class AllergyService {
         AllergyResponse allergyResponse = null;
 
         for(Allergy a : allergyList.get()) {
-            allergyResponse = AllergyResponse.builder()
-                    .id(a.getId())
-                    .allergyName(a.getAllergyName())
-                    .build();
+            allergyResponse = a.toResponse();
             allergyResponseList.add(allergyResponse);
         }
 
