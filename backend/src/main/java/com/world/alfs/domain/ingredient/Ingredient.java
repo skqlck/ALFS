@@ -1,6 +1,7 @@
 package com.world.alfs.domain.ingredient;
 
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
@@ -12,10 +13,11 @@ import javax.persistence.Id;
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Ingredient {
+
     @Id
     private Long id;
 
+    @Column
     private String name;
-
 
 }
