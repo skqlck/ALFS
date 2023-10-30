@@ -25,7 +25,7 @@ export default function Page({}: Props) {
   const formattedPrice = new Intl.NumberFormat().format(data.sale * count);
   return (
     <>
-      <div className="DetailBox whitespace-pre-line w-[1130px] h-[full] mt-[109px] ml-[149px] flex">
+      <div className="DetailBox whitespace-pre-line w-[1130px] h-[full] mt-[109px] mx-auto flex">
         <div className="ImgBox w-[414px] h-[612px]">
           <Image src={data.images.main_img} width={414} height={622} className="DetailImg" alt="detail Img" />
         </div>
