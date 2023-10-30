@@ -14,7 +14,7 @@ export default function Page({}: Props) {
   }, []);
   return (
     <div className="min-w-[1000px] flex justify-center">
-      <div className="w-[1000px] flex">
+      <div className="w-[1000px] flex flex-col">
         <div data-aos="fade-up" className=" w-[500px] h-[300px] border-[1px] flex justify-center items-center">
           <p className="text-[30px]">
             새로운 기능!
@@ -28,31 +28,6 @@ export default function Page({}: Props) {
           {/* <Image src={Alps} alt="asdf"></Image> */}
         </div>
       </div>
-
-      {/* <div data-aos="fade-up" className="h-[300px]">
-          asdfad
-        </div>
-        <div data-aos="fade-up" className="h-[300px]">
-          asdfad
-        </div>
-        <div data-aos="fade-up" className="h-[300px]">
-          asdfad
-        </div>
-        <div data-aos="fade-up" className="h-[300px]">
-          asdfad
-        </div>
-        <div data-aos="fade-up" className="h-[300px]">
-          asdfad
-        </div>
-        <div data-aos="fade-up" className="h-[300px]">
-          asdfad
-        </div>
-        <div data-aos="fade-up" className="h-[300px]">
-          asdfad
-        </div>
-        <div data-aos="fade-up" className="h-[300px]">
-          asdfad
-        </div> */}
     </div>
   );
 }

@@ -10,7 +10,7 @@ type Inputs = {
   password: string;
 };
 
-export default function Page({}: Inputs) {
+export default function Page() {
   const { register, handleSubmit } = useForm<Inputs>();
 
   const handleLogin = () => {};
