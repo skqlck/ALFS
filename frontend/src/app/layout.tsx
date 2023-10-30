@@ -4,6 +4,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import Nav from "./_components/header/Nav";
 import { Providers } from "./providers";
+import Footer from "./_components/footer/Footer";
 
 // Font files can be colocated inside of `app`
 const myFont = localFont({
@@ -25,6 +26,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <Providers>
           <Nav></Nav>
           {children}
+          <Footer />
         </Providers>
       </body>
     </html>
