@@ -24,6 +24,9 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
+    @Value("${upload.directory}")
+    private String filePath;
+
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws Exception {
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
                     .orElseThrow(() -> new Exception("error: MultipartFile -> File convert fail"));
@@ -59,7 +62,7 @@ public class AwsS3Service {
     // 로컬에 파일 업로드 하기
     public Optional<File> convert(MultipartFile file) throws  IOException {
         log.debug("convert 시작");
-        File convertFile = new File(file.getOriginalFilename());
+        File convertFile = new File(filePath, file.getOriginalFilename());
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
