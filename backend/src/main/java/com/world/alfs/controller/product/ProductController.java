@@ -2,6 +2,7 @@ package com.world.alfs.controller.product;
 
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.product.request.AddProductRequest;
+import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.service.product.ProductService;
@@ -36,8 +37,8 @@ public class ProductController {
 
 
     @GetMapping("/all")
-    public ApiResponse<List<ProductResponse>>getAllProduct(){
-        List<ProductResponse> product_list = productService.getAllProduct();
+    public ApiResponse<List<GetProductListResponse>>getAllProduct(){
+        List<GetProductListResponse> product_list = productService.getAllProduct();
         return ApiResponse.ok(product_list);
     }
 

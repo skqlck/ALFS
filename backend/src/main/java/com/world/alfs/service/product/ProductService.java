@@ -1,6 +1,7 @@
 package com.world.alfs.service.product;
 
 
+import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
@@ -41,11 +42,13 @@ public class ProductService {
         return product.get().getId();
     }
 
-    public List<ProductResponse> getAllProduct() {
+    public List<GetProductListResponse> getAllProduct() {
         List<Product> productList = productRepository.findAll();
-        List<ProductResponse> productResponseList = new ArrayList<>();
+        List<GetProductListResponse> productResponseList = new ArrayList<>();
+        GetProductListResponse response = null;
         for(int i=0; i<productList.size(); i++){
-            ProductResponse response = productList.get(i).toResponse();
+            ProductImg img = productImgRepository.findProductImgById(productList.get(i).getId());
+            response.toGetProductListResponse(productList.get(i),img);
             productResponseList.add(response);
         }
         return productResponseList;

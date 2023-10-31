@@ -6,6 +6,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface ProductImgRepository extends JpaRepository<ProductImg, Long> {
+    ProductImg findProductImgById(Long id);
 
 //    @Query("DELETE FROM ProductImg p WHERE p.product_id=:id")
 //    void deleteProductImgByProductId(@Param("id") Long id);
