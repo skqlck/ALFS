@@ -14,7 +14,7 @@ public class AddMemberAllergyRequest {
     public AddMemberAllergyDto toDto() {
         return AddMemberAllergyDto.builder()
                 .member_id(this.memberId)
-                .allergy_id(memberId)
+                .allergy_id(this.memberId)
                 .build();
     }
 }

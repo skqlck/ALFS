@@ -27,9 +27,15 @@ public class AllergyController {
     }
 
 
-    @GetMapping()
-    public ApiResponse<Boolean> searchAllergyName(@PathVariable Long member_id,@PathVariable List<String> allergyNameList){
-        Boolean flag = allergyService.searchAllergyName(member_id, allergyNameList);
+    @GetMapping("/allergy")
+    public ApiResponse<Boolean> checkAllergyName(@PathVariable Long member_id,@PathVariable List<String> allergyNameList){
+        Boolean flag = allergyService.checkAllergyName(member_id, allergyNameList,1);
+        return ApiResponse.ok(true);
+    }
+
+    @GetMapping("/hate")
+    public ApiResponse<Boolean> checkHateName(@PathVariable Long member_id,@PathVariable List<String> hateNameList){
+        Boolean flag = allergyService.checkAllergyName(member_id, hateNameList,0);
         return ApiResponse.ok(true);
     }
 

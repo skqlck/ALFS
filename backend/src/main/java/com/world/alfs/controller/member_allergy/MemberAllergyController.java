@@ -1,5 +1,6 @@
 package com.world.alfs.controller.member_allergy;
 
+import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.member_allergy.request.AddMemberAllergyRequest;
 import com.world.alfs.service.member_allergy.MemberAllergyService;
 import com.world.alfs.service.member_allergy.dto.AddMemberAllergyDto;
@@ -19,9 +20,9 @@ public class MemberAllergyController {
     private final MemberAllergyService memberAllergyService;
 
     @PostMapping()
-    public Long addMemberAllergy(@RequestBody AddMemberAllergyRequest request){
+    public ApiResponse<Long> addMemberAllergy(@RequestBody AddMemberAllergyRequest request){
         AddMemberAllergyDto dto = request.toDto();
-        return memberAllergyService.addMemberAllergy(dto);
+        return ApiResponse.ok(memberAllergyService.addMemberAllergy(dto));
     }
 
 
