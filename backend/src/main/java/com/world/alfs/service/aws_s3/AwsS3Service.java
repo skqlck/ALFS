@@ -63,7 +63,7 @@ public class AwsS3Service {
         log.debug("deleteNewFile 끝");
     }
 
-    // 로컬에 파일 업로드 하기
+    // 파일 업로드 하기
     public Optional<File> convert(MultipartFile file) throws  IOException {
         log.debug("convert 시작");
         File convertFile = new File(uploadFilePath, "img/" +file.getOriginalFilename());
@@ -74,11 +74,15 @@ public class AwsS3Service {
             } else {
                 log.debug("상위 디렉토리 생성 실패");
             }
+        }else{
+            log.debug("uploadFilePath "+uploadFilePath);
+            log.debug("convert 폴더 이미 존재함");
         }
 
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
+                log.debug("fos에 write");
             }catch (Exception e){
                 log.debug(e.getMessage());
                 e.printStackTrace();
