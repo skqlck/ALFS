@@ -40,6 +40,7 @@ public class AwsS3Service {
         String fileName = filePath + "/" + UUID.randomUUID() + uploadFile.getName();   // S3에 저장된 파일 이름
         String uploadImageUrl = putS3(uploadFile, fileName); // s3로 업로드
         deleteNewFile(uploadFile);
+        log.debug("upload 끝");
         return uploadImageUrl;
     }
 
@@ -47,16 +48,19 @@ public class AwsS3Service {
     private String putS3(File uploadFile, String fileName) {
         log.debug("putS3 시작");
         amazonS3Client.putObject(new PutObjectRequest(bucket, fileName, uploadFile).withCannedAcl(CannedAccessControlList.PublicRead));
+        log.debug("putS3 끝");
         return amazonS3Client.getUrl(bucket, fileName).toString();
     }
 
     // 로컬에 저장된 이미지 지우기
     private void deleteNewFile(File targetFile) {
+        log.debug("deleteNewFile 시작");
         if (targetFile.delete()) {
             log.info("File delete success");
             return;
         }
         log.info("File delete fail");
+        log.debug("deleteNewFile 끝");
     }
 
     // 로컬에 파일 업로드 하기
@@ -69,9 +73,11 @@ public class AwsS3Service {
             }catch (Exception e){
                 log.debug(e.getMessage());
                 e.printStackTrace();
+                log.debug("convert 에러 catch");
             }
             return Optional.of(convertFile);
         }
+        log.debug("convert 끝");
         return Optional.empty();
     }
 }
