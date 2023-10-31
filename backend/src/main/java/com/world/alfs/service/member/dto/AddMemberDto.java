@@ -9,42 +9,42 @@ import lombok.RequiredArgsConstructor;
 @Data
 @RequiredArgsConstructor
 public class AddMemberDto {
-    private Long id;
-
-    private String name;
 
     private String identifier;
 
     private String password;
 
-    private int birth;
+    private String passwordCheck;
 
-    private int point;
+    private String name;
 
     private String email;
 
-    private int phoneNumber;
+    private String phoneNumber;
+
+    private String birth;
+
+    private int point;
 
     @Builder
-    public AddMemberDto(Long id, String name, String identifier, String password, int birth, int point, String email, int phoneNumber) {
-        this.id = id;
-        this.name = name;
+    public AddMemberDto(String identifier, String password, String passwordCheck, String name, String email, String phoneNumber, String birth, int point) {
         this.identifier = identifier;
         this.password = password;
-        this.birth = birth;
-        this.point = point;
+        this.passwordCheck = passwordCheck;
+        this.name = name;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.birth = birth;
+        this.point = point;
     }
 
     public Member toEntity() {
         return Member.builder()
-                .id(id)
                 .name(name)
                 .identifier(identifier)
                 .password(password)
                 .birth(birth)
-                .point(point)
+                .point(0)
                 .email(email)
                 .phoneNumber(phoneNumber)
                 .build();

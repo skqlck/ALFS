@@ -22,7 +22,7 @@ public class Member {
     private String password;
 
     @Column(nullable = false)
-    private int birth;
+    private String birth;
 
     @Column(nullable = false)
     private int point;
@@ -31,10 +31,10 @@ public class Member {
     private String email;
 
     @Column(name = "phone_number",nullable = false)
-    private int phoneNumber;
+    private String phoneNumber;
 
     @Builder
-    public Member(Long id, String name, String identifier, String password, int birth, int point, String email, int phoneNumber) {
+    public Member(Long id, String name, String identifier, String password, String birth, int point, String email, String phoneNumber) {
         this.id = id;
         this.name = name;
         this.identifier = identifier;

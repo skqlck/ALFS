@@ -33,4 +33,7 @@ public class ApiResponse<T> {
         return of(BAD_REQUEST, message, null);
     }
 
+    public static <T> ApiResponse<T> created(String message, T data){
+        return of(HttpStatus.CREATED, message, data);
+    }
 }
