@@ -25,7 +25,7 @@ public class AwsS3Service {
     private String bucket;
 
     @Value("${upload.directory}")
-    private String filePath;
+    private String uploadFilePath;
 
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws Exception {
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
@@ -66,7 +66,16 @@ public class AwsS3Service {
     // 로컬에 파일 업로드 하기
     public Optional<File> convert(MultipartFile file) throws  IOException {
         log.debug("convert 시작");
-        File convertFile = new File(filePath, file.getOriginalFilename());
+        File convertFile = new File(uploadFilePath, "img/" +file.getOriginalFilename());
+
+        if (!convertFile.getParentFile().exists()) {
+            if (convertFile.getParentFile().mkdirs()) {
+                log.debug("상위 디렉토리 생성 완료");
+            } else {
+                log.debug("상위 디렉토리 생성 실패");
+            }
+        }
+
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
                 fos.write(file.getBytes());
