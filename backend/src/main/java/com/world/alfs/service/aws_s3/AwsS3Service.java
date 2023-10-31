@@ -63,7 +63,7 @@ public class AwsS3Service {
     // 파일 업로드 하기
     public Optional<File> convert(MultipartFile file) throws IOException {
         log.debug("convert 시작");
-        File convertFile = new File(System.getProperty("user.dir"), "img/" +file.getOriginalFilename());
+        File convertFile = new File(System.getProperty("user.dir") + "/img/" +file.getOriginalFilename());
 
         if (!convertFile.getParentFile().exists()) {
             if (convertFile.getParentFile().mkdirs()) {
