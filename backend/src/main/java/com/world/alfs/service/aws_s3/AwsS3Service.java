@@ -24,9 +24,6 @@ public class AwsS3Service {
     @Value("${cloud.aws.s3.bucket}")
     private String bucket;
 
-    @Value("${upload.directory}")
-    private String uploadFilePath;
-
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
                     .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
@@ -64,29 +61,29 @@ public class AwsS3Service {
     }
 
     // 파일 업로드 하기
-    public Optional<File> convert(MultipartFile file) throws  IOException {
+    public Optional<File> convert(MultipartFile file) throws IOException {
         log.debug("convert 시작");
         File convertFile = new File(System.getProperty("user.dir"), "img/" +file.getOriginalFilename());
 
-//        if (!convertFile.getParentFile().exists()) {
-//            if (convertFile.getParentFile().mkdirs()) {
-//                log.debug("상위 디렉토리 생성 완료");
-//            } else {
-//                log.debug("상위 디렉토리 생성 실패");
-//            }
-//        }else{
-//            log.debug("uploadFilePath "+uploadFilePath);
-//            log.debug("convert 폴더 이미 존재함");
-//        }
+        if (!convertFile.getParentFile().exists()) {
+            if (convertFile.getParentFile().mkdirs()) {
+                log.debug("상위 디렉토리 생성 완료");
+            } else {
+                log.debug("상위 디렉토리 생성 실패");
+            }
+        }else{
+            log.debug("현재 경로: " + System.getProperty("user.dir"));
+            log.debug("convert 폴더 이미 존재함");
+        }
 
         if(convertFile.createNewFile()) {
             try (FileOutputStream fos = new FileOutputStream(convertFile)) {
-                fos.write(file.getBytes());
                 log.debug("fos에 write");
+                fos.write(file.getBytes());
             }catch (Exception e){
+                log.debug("convert 에러 catch");
                 log.debug(e.getMessage());
                 e.printStackTrace();
-                log.debug("convert 에러 catch");
             }
             return Optional.of(convertFile);
         }
