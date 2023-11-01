@@ -1,6 +1,6 @@
 package com.world.alfs.controller.member.request;
 
-import com.world.alfs.service.Address.dto.AddressDto;
+import com.world.alfs.service.address.dto.AddressDto;
 import com.world.alfs.service.member.dto.AddMemberDto;
 import lombok.Builder;
 import lombok.Data;

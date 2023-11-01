@@ -1,10 +1,9 @@
 package com.world.alfs.controller.member;
 
 import com.world.alfs.controller.ApiResponse;
-import com.world.alfs.controller.member.request.LoginRequest;
-import com.world.alfs.controller.member.request.LogoutRequest;
-import com.world.alfs.controller.member.request.SignUpRequest;
-import com.world.alfs.service.Address.dto.AddressDto;
+import com.world.alfs.controller.member.request.*;
+import com.world.alfs.service.address.AddressService;
+import com.world.alfs.service.address.dto.AddressDto;
 import com.world.alfs.service.member.MemberService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -20,6 +19,7 @@ import java.util.Optional;
 @RequestMapping("/member")
 public class MemberController {
     private final MemberService memberService;
+    private final AddressService addressService;
 
     @PostMapping()
     public ApiResponse<Long> addMember(@RequestBody SignUpRequest signUpRequest){
@@ -31,6 +31,12 @@ public class MemberController {
 
         if (ret > 0) {
             message = "회원가입에 성공했습니다.";
+            if (addressService.addAddress(addressDto, ret, true).isPresent()){
+                message = message + " 주소지 설정이 완료되었습니다.";
+            }
+            else {
+                message = message + " 주소지가 설정되지 않았습니다.";
+            }
             return ApiResponse.created(message, ret);
         }
 
@@ -61,24 +67,33 @@ public class MemberController {
         return ApiResponse.ok(member_id.get());
     }
 
-    @DeleteMapping()
+    @PutMapping()
     public ApiResponse<Long> logout(@RequestBody LogoutRequest logoutRequest){
         Long id = logoutRequest.toDto().getId();
         return ApiResponse.ok(null);
     }
 
+    @DeleteMapping()
+    public ApiResponse deleteMember(@RequestBody LogoutRequest logoutRequest){
+        Long id = logoutRequest.toDto().getId();
+        if (memberService.deleteMember(id)){
+            return ApiResponse.ok(id);
+        }
+        return ApiResponse.badRequest("회원탈퇴 할 수 없습니다.");
+    }
+
     @GetMapping("/check/identifier")
-    public ApiResponse<Boolean> checkIdentifier(@RequestBody String identifier){
-        return ApiResponse.ok(memberService.checkIdentifier(identifier));
+    public ApiResponse<Boolean> checkIdentifier(@RequestBody CheckIdentifierRequest checkIdentifierRequest){
+        return ApiResponse.ok(memberService.checkIdentifier(checkIdentifierRequest.getIdentifier()));
     }
 
     @GetMapping("/check/email")
-    public ApiResponse<Boolean> checkEmail(@RequestBody String email){
-        return ApiResponse.ok(memberService.checkEmail(email));
+    public ApiResponse<Boolean> checkEmail(@RequestBody CheckEmailRequest checkEmailRequest){
+        return ApiResponse.ok(memberService.checkEmail(checkEmailRequest.getEmail()));
     }
 
-    @GetMapping("/check/PhoneNumber")
-    public ApiResponse<Boolean> checkPhoneNumber(@RequestBody String phoneNumber){
-        return ApiResponse.ok(memberService.checkPhoneNumber(phoneNumber));
+    @GetMapping("/check/phoneNumber")
+    public ApiResponse<Boolean> checkPhoneNumber(@RequestBody CheckPhoneNumberRequest checkPhoneNumberRequest){
+        return ApiResponse.ok(memberService.checkPhoneNumber(checkPhoneNumberRequest.getPhoneNumber()));
     }
 }
