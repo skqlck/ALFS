@@ -1,3 +1,16 @@
+**`[커밋 컨벤션입니다.]`**
+
+- **✨feat: 새로운 기능을 추가할 경우**
+- **🌈style: 기능에 영향을 주지 않는 commit, 코드 순서, CSS등의 포맷에 관한 commit**
+- **🚨fix: 버그 수정**
+- **📌refactor: 코드 refactoring**
+- **⚡patch: 요청 사항 반영, 기능 개선**
+- **✏test: 테스트 코드 작성**
+- 🔍 **merge**: **develop 머지 충돌시 수정후 커밋**
+- **📝docs: main 문서를 수정한 경우, 파일 삭제, 파일 명 수정 등**
+- **🏗️build: Build 수정**
+- **💿backup: 백업**
+
 ## Kurly 정보 싹다 털기
 * Kurly는 동적 페이지라서, BeautifulSoup이 아닌 Selenium으로 해야합니다.
 * WebDriver 라는 것이 필요한데, 크롬 대신에 안쓰는 Edge로 했습니다.
@@ -6,22 +19,6 @@
     ![](./product_img_erd.PNG)
 * JSON으로 정리한다면,
 ```javascript
-
-    // Item_IDs.json
-    [
-        {
-            id : String,
-            name : String,
-            images : {
-                main_img : String
-            }
-        },
-        {
-            ...
-        },
-        ...
-    ]
-
     // Item_List.json
     [
         {
@@ -55,8 +52,8 @@
             delivery : String,
             seller : String,
             package : String,
-            count : int,
-            weight : int,
+            count : Sting,
+            weight : String,
             allergy : String,
             expiry_date : String,
             information : String,

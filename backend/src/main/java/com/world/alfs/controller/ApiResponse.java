@@ -1,4 +1,4 @@
-package com.dream.backend.controller;
+package com.world.alfs.controller;
 
 import lombok.Getter;
 import org.springframework.http.HttpStatus;
