@@ -18,7 +18,7 @@ public class GetProductListResponse {
 
     private int price;
 
-    private int sale;
+//    private int sale;
 
     private ProductImg img;
 
@@ -28,18 +28,18 @@ public class GetProductListResponse {
         this.name = name;
         this.title = title;
         this.price = price;
-        this.sale = sale;
+//        this.sale = sale;
         this.img = img;
     }
 
-    public GetProductListResponse toGetProductListResponse(Product product, ProductImg productImg){
+    public GetProductListResponse toGetProductListResponse(Product product){
         return GetProductListResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .title(product.getTitle())
                 .price(product.getPrice())
                 .sale(product.getSale())
-                .img(productImg)
+//                .img(productImg)
                 .build();
     }
 }

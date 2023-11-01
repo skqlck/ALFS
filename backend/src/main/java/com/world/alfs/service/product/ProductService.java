@@ -47,9 +47,17 @@ public class ProductService {
         List<GetProductListResponse> productResponseList = new ArrayList<>();
         GetProductListResponse response = null;
         for(int i=0; i<productList.size(); i++){
-            ProductImg img = productImgRepository.findProductImgById(productList.get(i).getId());
-            response.toGetProductListResponse(productList.get(i),img);
-            productResponseList.add(response);
+//            ProductImg img = productImgRepository.findProductImgById(productList.get(i).getId());
+            System.out.println(productList.get(i).getId());
+            GetProductListResponse getProductListResponse = GetProductListResponse.builder()
+                    .id(productList.get(i).getId())
+                    .title(productList.get(i).getTitle())
+                    .name(productList.get(i).getName())
+                    .price(productList.get(i).getPrice())
+                    .sale(productList.get(i).getSale())
+                    .build();
+//            response.toGetProductListResponse(productList.get(i));
+            productResponseList.add(getProductListResponse);
         }
         return productResponseList;
     }
