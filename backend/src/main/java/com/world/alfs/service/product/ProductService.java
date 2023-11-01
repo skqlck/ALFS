@@ -54,7 +54,7 @@ public class ProductService {
                     .name(productList.get(i).getName())
                     .price(productList.get(i).getPrice())
                     .sale(productList.get(i).getSale())
-                    .img(img)
+                    .img(img.getImg_1())
                     .build();
 //            response.toGetProductListResponse(productList.get(i));
             productResponseList.add(getProductListResponse);

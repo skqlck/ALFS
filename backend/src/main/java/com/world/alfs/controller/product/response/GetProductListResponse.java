@@ -20,10 +20,10 @@ public class GetProductListResponse {
 
     private int sale;
 
-    private ProductImg img;
+    private String img;
 
     @Builder
-    public GetProductListResponse(Long id, String name, String title, int price, int sale, ProductImg img) {
+    public GetProductListResponse(Long id, String name, String title, int price, int sale, String img) {
         this.id = id;
         this.name = name;
         this.title = title;
