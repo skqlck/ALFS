@@ -4,7 +4,6 @@ import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.product.request.AddProductRequest;
 import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
-import com.world.alfs.domain.product.Product;
 import com.world.alfs.service.product.ProductService;
 import com.world.alfs.service.product.dto.AddProductDto;
 import lombok.RequiredArgsConstructor;
@@ -29,10 +28,9 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ProductResponse>getProduct(@PathVariable Long id){
-        Optional<Product> savedProduct = productService.getProduct(id);
-        ProductResponse productResponse = savedProduct.get().toResponse();
-        return ApiResponse.ok(productResponse);
+    public ApiResponse<Optional<ProductResponse>> getProduct(@PathVariable Long id){
+        Optional<ProductResponse> savedProduct = productService.getProduct(id);
+        return ApiResponse.ok(savedProduct);
     }
 
 
