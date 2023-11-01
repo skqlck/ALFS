@@ -73,15 +73,6 @@ public class MemberController {
         return ApiResponse.ok(null);
     }
 
-    @DeleteMapping()
-    public ApiResponse deleteMember(@RequestBody LogoutRequest logoutRequest){
-        Long id = logoutRequest.toDto().getId();
-        if (memberService.deleteMember(id)){
-            return ApiResponse.ok(id);
-        }
-        return ApiResponse.badRequest("회원탈퇴 할 수 없습니다.");
-    }
-
     @GetMapping("/check/identifier")
     public ApiResponse<Boolean> checkIdentifier(@RequestBody CheckIdentifierRequest checkIdentifierRequest){
         return ApiResponse.ok(memberService.checkIdentifier(checkIdentifierRequest.getIdentifier()));
