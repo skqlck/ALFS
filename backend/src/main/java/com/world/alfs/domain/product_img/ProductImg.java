@@ -15,8 +15,7 @@ public class ProductImg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    @Column
-    private Long product_id;
+    private Long productId;
 
     @Column()
     private String img_1;
@@ -30,7 +29,7 @@ public class ProductImg {
     @Builder
     public ProductImg(Long id, Long product_id, String img_1, String img_2, String img_3) {
         this.id = id;
-        this.product_id = product_id;
+        this.productId = product_id;
         this.img_1 = img_1;
         this.img_2 = img_2;
         this.img_3 = img_3;
