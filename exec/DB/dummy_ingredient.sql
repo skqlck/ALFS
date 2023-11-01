@@ -56,14 +56,42 @@ insert into ingredient(name) values ('L-글루탐산나트륨');
 insert into ingredient(name) values ('인삼');
 insert into ingredient(name) values ('소탕갈비찜');
 insert into ingredient(name) values ('소갈비');
-
 insert into ingredient(name) values ('진간장');
 insert into ingredient(name) values ('갈색설탕');
 insert into ingredient(name) values ('미향');
 insert into ingredient(name) values ('생강');
 insert into ingredient(name) values ('흑후추가루');
 insert into ingredient(name) values ('탈지대두');
+insert into ingredient(name) values ('양배추');
+insert into ingredient(name) values ('고구마');
+insert into ingredient(name) values ('간장');
+insert into ingredient(name) values ('설탕');
+insert into ingredient(name) values ('카레');
+insert into ingredient(name) values ('후춧가루');
+insert into ingredient(name) values ('천일염');
+insert into ingredient(name) values ('밀가루');
+insert into ingredient(name) values ('기타식용유지가공품');
+insert into ingredient(name) values ('면류첨가알칼리제');
+insert into ingredient(name) values ('당류가공품');
+insert into ingredient(name) values ('기타과당');
+insert into ingredient(name) values ('포도당');
+insert into ingredient(name) values ('고추장');
+insert into ingredient(name) values ('소맥분');
+insert into ingredient(name) values ('물엿');
+insert into ingredient(name) values ('혼합양념');
+insert into ingredient(name) values ('알파소맥분');
+insert into ingredient(name) values ('원당');
+insert into ingredient(name) values ('흑당');
+insert into ingredient(name) values ('혼합간장');
+insert into ingredient(name) values ('변성전분');
+insert into ingredient(name) values ('향미유');
+insert into ingredient(name) values ('발효식초');
+insert into ingredient(name) values ('기타가공품');
+insert into ingredient(name) values ('파프리카추출색소');
+insert into ingredient(name) values ('소치마살');
 
 # 재료 개수
 select count(*) from ingredient;
 # select count(distinct(name)) from ingredient;
+
+select * from ingredient order by id desc;
