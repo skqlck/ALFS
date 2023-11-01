@@ -42,13 +42,15 @@ public class ProductResponse {
 
     private String content;
 
+    private String main_img;
+
     private String detail_img;
 
     private String ingre_img;
 
     @Builder
     public ProductResponse(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate,
-                           String information, String buyType, int stock, String content, String detail_img, String ingre_img) {
+                           String information, String buyType, int stock, String content, String main_img, String detail_img, String ingre_img) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -66,6 +68,7 @@ public class ProductResponse {
         this.buyType = buyType;
         this.stock = stock;
         this.content = content;
+        this.main_img = main_img;
         this.detail_img=detail_img;
         this.ingre_img=ingre_img;
     }

@@ -103,6 +103,7 @@ public class Product {
                 .buyType(buyType)
                 .stock(stock)
                 .content(content)
+                .main_img(img.getImg_1())
                 .detail_img(img.getImg_2())
                 .ingre_img(img.getImg_3())
                 .build();
