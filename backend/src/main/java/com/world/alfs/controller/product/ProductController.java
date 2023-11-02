@@ -40,9 +40,10 @@ public class ProductController {
         return ApiResponse.ok(product_list);
     }
 
-    @PatchMapping("{id}/{price}/{sale}")
-    public ApiResponse<Long>setProduct(@PathVariable Long id,@PathVariable int price, @PathVariable int sale){
-        Long savedId = productService.setProduct(id,price,sale);
+    @PatchMapping()
+    public ApiResponse<Long>setProduct(@RequestBody AddProductRequest request){
+        AddProductDto dto = request.toDto();
+        Long savedId = productService.setProduct(dto);
         return ApiResponse.ok(savedId);
 
     }

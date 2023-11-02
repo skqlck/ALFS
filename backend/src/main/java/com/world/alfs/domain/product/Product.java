@@ -4,6 +4,7 @@ package com.world.alfs.domain.product;
 import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.product_img.ProductImg;
+import com.world.alfs.service.product.dto.AddProductDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -121,9 +122,22 @@ public class Product {
     }
 
 //    - - - - - - - - - 비즈니스 로직 - - - - - - - - - - - - -
-    public void setProduct(int price, int sale){
-        this.price=price;
-        this.sale=sale;
+    public void setProduct(AddProductDto dto){
+        name = dto.getName();
+        title = dto.getTitle();
+        price = dto.getPrice();
+        sale = dto.getSale();
+        delivery = dto.getDelivery();
+        seller = dto.getSeller();
+        pack = dto.getPack();
+        count = dto.getCount();
+        weight = dto.getWeight();
+        allergy = dto.getAllergy();
+        expireDate = dto.getExpireDate();
+        information = dto.getInformation();
+        buyType = dto.getBuyType();
+        stock = dto.getStock();
+        content = dto.getContent();
     }
 
 }
