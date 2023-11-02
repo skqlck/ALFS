@@ -12,15 +12,11 @@ import java.util.List;
 @NoArgsConstructor
 public class SignUpRequest {
     private AddMemberDto member;
-    private List<String> allergy;
-    private List<String> hate;
     private AddressDto address;
 
     @Builder
-    public SignUpRequest(AddMemberDto member, List<String> allergy, List<String> hate, AddressDto address) {
+    public SignUpRequest(AddMemberDto member, AddressDto address) {
         this.member = member;
-        this.allergy = allergy;
-        this.hate = hate;
         this.address = address;
     }
 }

@@ -2,7 +2,6 @@ package com.world.alfs.controller.address;
 
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.address.request.AddAddressRequest;
-import com.world.alfs.controller.address.request.GetAddressRequest;
 import com.world.alfs.controller.address.request.SetDefaultRequest;
 import com.world.alfs.controller.address.response.GetAddressResponse;
 import com.world.alfs.service.address.AddressService;

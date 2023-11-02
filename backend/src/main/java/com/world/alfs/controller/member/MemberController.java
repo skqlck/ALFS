@@ -23,8 +23,6 @@ public class MemberController {
 
     @PostMapping("/signup")
     public ApiResponse<Long> addMember(@RequestBody SignUpRequest signUpRequest){
-        List<String> allergy = signUpRequest.getAllergy();
-        List<String> hate = signUpRequest.getHate();
         AddressDto addressDto = signUpRequest.getAddress();
         Long ret = memberService.addMember(signUpRequest.getMember());
         String message;
