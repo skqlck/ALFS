@@ -5,19 +5,20 @@ import { FaRegHeart } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import Link from "next/link";
 
 export default function MiddleNav() {
   return (
     <div className="min-w-[1000px] h-[100px] justify-center flex ">
       <div className="min-w-[1000px] flex items-center justify-between">
-        <a href="/main">
+        <Link href="/main">
           <div className="flex justify-center items-center">
             <Image src={Logo} width={50} height={50} alt="" priority />
             <p className="text-[30px] ml-[10px]">
               <b>ALFS</b>
             </p>
           </div>
-        </a>
+        </Link>
 
         <div>
           <InputGroup size="lg" width={400}>

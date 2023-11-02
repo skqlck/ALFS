@@ -6,14 +6,20 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 
 export default function TopNav() {
-  const [id, setId] = useState(sessionStorage?.getItem("id"));
+  const [id, setId] = useState(false);
   const router = useRouter();
 
   const handleLogout = () => {
     sessionStorage.clear();
-    setId("");
+    setId(false);
     router.push("/");
   };
+
+  useEffect(() => {
+    if (sessionStorage.getItem("id")) {
+      setId(true);
+    }
+  }, [typeof window !== "undefined" && sessionStorage.getItem("id")]);
 
   return (
     <div className="min-w-[1000px] h-[30px] mt-[10px] flex justify-center">

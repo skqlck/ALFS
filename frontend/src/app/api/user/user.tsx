@@ -52,3 +52,13 @@ export async function UserLogout(props: any) {
     console.error(e);
   }
 }
+
+export async function AddressAll(props: any) {
+  console.log(props);
+  try {
+    const res = await baseAxios.get(`api/address/${props}`);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
