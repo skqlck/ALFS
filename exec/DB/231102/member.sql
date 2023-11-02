@@ -1,0 +1,15 @@
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (1, '19980118', 'mko56@naver.com', 'mko5645', '신대혁', 'ssafy1234!', '01040925645', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (2, '19970309', 'skqlck-@naver.com', 'jongsang', '안종상', 'ssafy1234!', '01081215767', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (3, '19980118', 'mko561@naver.com', 'mko56451', '신대혁', 'ssafy1234!', '01040925644', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (4, '19981218', 'mko562@naver.com', 'mko562', '신대혁', 'ssafy1234!', '01040925641', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (5, '19981218', 'mko5634@naver.com', 'mko563', '신대혁', 'ssafy1234!', '01040925640', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (6, '19970309', 'skqlck@gmail.com', 'skqlck', '안종상', 'ssafy1234!', '01081215768', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (7, '19981218', 'mko5612@naver.com', 'mko5645123', '신대혁', 'ssafy1234!', '01040393834', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (8, '19981218', 'mko100@naver.com', 'mko100', '신대혁', 'ssafy1234!', '01000000001', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (9, '19981218', 'mko101@naver.com', 'mko101', '신대혁', 'ssafy1234!', '01000000002', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (10, '19981218', 'mko103@naver.com', 'mko103', '신대혁', 'ssafy1234!', '01000000003', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (11, '19970309', 'jong@ssafy.com', 'anjongsang', '안종상', 'ssafy1234!', '01011554864', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (12, '19981218', 'mko561123@naver.com', 'mko56451234', '신대혁', 'ssafy1234!', '01040925649', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (13, '19700101', 'kang@ssafy.com', 'noallergy', '강호동', 'ssafy1234!', '01018655451', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (14, '19981218', 'mko200@naver.com', 'mko200', '신대혁', 'ssafy1234!', '01000000200', 0);
+INSERT INTO alfs.member (id, birth, email, identifier, name, password, phone_number, point) VALUES (15, '19981218', 'mko201@naver.com', 'mko201', '신대혁', 'ssafy1234!', '01000000201', 0);
