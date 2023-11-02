@@ -5,6 +5,7 @@ import { GetList } from "../../api/list/ListPage";
 
 async function GetListData() {
   const response: any = await GetList();
+  console.log(response);
 
   return (
     <>
