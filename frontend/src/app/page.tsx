@@ -53,7 +53,7 @@ export default function Page() {
   return (
     <>
       <div>
-        <div className="flex justify-center bg-gray-100">
+        <div className="min-w-[1000px] flex justify-center bg-gray-100">
           <div className="w-[1000px] flex  ">
             <div data-aos="fade-up" className=" w-[500px] h-[300px]  flex justify-center items-center">
               <p className="text-[30px]">
@@ -68,13 +68,13 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="flex justify-center bg-gray-100">
+        <div className="min-w-[1000px] flex justify-center bg-gray-100">
           <div className="w-[1000px] flex justify-center bg-gray-100 ">
             <DownArrow />
           </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="min-w-[1000px] flex justify-center">
           <div className="w-[1000px] flex my-[50px]">
             <div className="w-[600px] ">
               <div className="our_solution_category" data-aos="zoom-in">
@@ -106,7 +106,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="flex justify-center bg-green-50">
+        <div className="min-w-[1000px] flex justify-center bg-green-50">
           <div className="w-[1000px] flex justify-center my-[100px]" data-aos="fade-down">
             <p className="text-[30px]">
               <b>ALFS</b> 이용 방법
@@ -114,7 +114,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="flex justify-center bg-green-50">
+        <div className="min-w-[1000px] flex justify-center bg-green-50">
           <div className="w-[1000px] flex mb-[100px]" data-aos="fade-down">
             <div className="w-[400px] whitespace-pre-line">
               <Stepper size="lg" index={activeStep} orientation="vertical" width="200px" height="500px" gap="0">
@@ -155,7 +155,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="min-w-[1000px] flex justify-center">
           <div className="w-[1000px] flex justify-center mt-[50px]" data-aos="fade-down">
             <p className="text-[30px]">
               <b>ALFS</b>
@@ -163,7 +163,7 @@ export default function Page() {
           </div>
         </div>
 
-        <div className="flex justify-center">
+        <div className="min-w-[1000px] flex justify-center">
           <div className="w-[500px] flex justify-evenly my-[50px]" data-aos="fade-down">
             <a href="/main">
               <Button variant="outline" colorScheme="whatsapp" width={200}>

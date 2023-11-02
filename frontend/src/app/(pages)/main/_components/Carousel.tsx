@@ -5,7 +5,6 @@ import Slider from "react-slick";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
 import Image from "next/image";
-import Alps from "../../../_asset/img/알프스.jpg";
 import Banner from "../_components/WEB BANNER 1.png";
 import { BsFillArrowRightCircleFill, BsFillArrowLeftCircleFill } from "react-icons/bs";
 
@@ -21,7 +20,7 @@ function SampleNextArrow(props: any) {
         cursor: "pointer",
       }}
     >
-      <BsFillArrowRightCircleFill color="darkgray" className="w-[50px] h-[50px]" onClick={onClick} />
+      <BsFillArrowRightCircleFill color="lightgray" className="w-[50px] h-[50px]" onClick={onClick} />
     </div>
   );
 }
@@ -38,7 +37,11 @@ function SamplePrevArrow(props: any) {
         cursor: "pointer",
       }}
     >
-      <BsFillArrowLeftCircleFill color="darkgray" className="w-[50px] h-[50px] decoration-gray-400" onClick={onClick} />
+      <BsFillArrowLeftCircleFill
+        color="lightgray"
+        className="w-[50px] h-[50px] decoration-gray-400"
+        onClick={onClick}
+      />
     </div>
   );
 }
@@ -55,26 +58,14 @@ export default function Carousel() {
     prevArrow: <SamplePrevArrow />,
   };
   return (
-    <div className="min-w-[1440px] flex justify-center">
+    <div className="flex justify-center">
       <div className="w-[1440px]">
-        <Slider {...settings}>
+        <Slider {...settings} className="bg-black">
           <div className="">
             <Image src={Banner} alt="asdf"></Image>
           </div>
           <div>
             <h3>2</h3>
-          </div>
-          <div>
-            <h3>3</h3>
-          </div>
-          <div>
-            <h3>4</h3>
-          </div>
-          <div>
-            <h3>5</h3>
-          </div>
-          <div>
-            <h3>6</h3>
           </div>
         </Slider>
       </div>

@@ -3,15 +3,12 @@
 import React, { useEffect, useState } from "react";
 import { Button, FormControl, FormHelperText, Input } from "@chakra-ui/react";
 import { useForm, SubmitHandler } from "react-hook-form";
-import { useToast } from "@chakra-ui/react";
 
 import Link from "next/link";
 import DaumPost from "@/app/_components/location/Daumpost";
 import ChoiceAllergy from "@/app/_components/choiceAllergy/ChoiceAllergy";
 
-import { Tag, TagLabel, TagCloseButton } from "@chakra-ui/react";
-import { baseAxios } from "@/app/api/Api";
-import { CheckEmail, CheckId, CheckPhone } from "@/app/api/user/user";
+import { Tag, TagLabel, TagLeftIcon, TagRightIcon, TagCloseButton } from "@chakra-ui/react";
 
 type Inputs = {
   name: string;
@@ -21,7 +18,6 @@ type Inputs = {
   birth: number;
   address_1: string;
   address_2: string;
-  alias: string;
   email: string;
   phone_number: string;
   allergy_1: string[];
@@ -36,9 +32,8 @@ export default function Page() {
   const nameRex = /^[가-힣]{2,6}$/;
   const emailRex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const phoneRex = /^010\d{3,4}\d{4}$/;
-  const toast = useToast();
 
-  const [year, setYear] = useState<number>(1900);
+  const [year, setYear] = useState<number>(2023);
   const [month, setMonth] = useState<number>(1);
   const [day, setDay] = useState<number>(1);
   const [allergy2, setAllergy2] = useState("");
@@ -83,96 +78,31 @@ export default function Page() {
     month: false,
     day: false,
     address_1: false,
+    address_2: false,
     email: false,
     phone_number: false,
     isSignup: false,
   });
 
   //회원가입버튼
-  const handleSignup = async (e: any) => {
+  const handleSignup = (e: Inputs) => {
     console.log(e);
-    try {
-      const res = await baseAxios.post("/api/member/signup", {
-        member: {
-          identifier: e.id,
-          password: e.password,
-          passwordCheck: e.passwordCheck,
-          name: e.name,
-          email: e.email,
-          phoneNumber: e.phone_number,
-          birth: e.birth,
-        },
-        address: {
-          address_1: e.address_1,
-          address_2: e.address_2,
-          alias: e.alias,
-        },
-        allergy: e.allergy_1,
-        hate: e.hate,
-      });
-      toast({
-        title: "회원가입에 성공했습니다.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      setTimeout(() => {
-        window.location.replace("/login");
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-    }
   };
 
   //중복검사버튼
-  const handleValidate = async (id: string) => {
-    if (id === "id" && idRex.test(watch("id"))) {
-      const res = await CheckId(watch("id"));
-      if (res === false) {
-        setValidate((prev) => ({
-          ...prev,
-          [id]: true,
-        }));
-      } else {
-        toast({
-          title: "중복된 아이디입니다.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    } else if (id === "email" && emailRex.test(watch("email"))) {
+  const handleValidate = (id: string) => {
+    if (id === "id") {
       //api호출
-      const res = await CheckEmail(watch("email"));
-      if (res === false) {
-        setValidate((prev) => ({
-          ...prev,
-          [id]: true,
-        }));
-      } else {
-        toast({
-          title: "중복된 이메일입니다.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
-    } else if (id === "phone_number" && phoneRex.test(watch("phone_number"))) {
+      setValidate((prev) => ({
+        ...prev,
+        [id]: true,
+      }));
+    } else if (id === "email") {
       //api호출
-      const res = await CheckPhone(watch("phone_number"));
-      if (res === false) {
-        setValidate((prev) => ({
-          ...prev,
-          [id]: true,
-        }));
-      } else {
-        toast({
-          title: "중복된 번호입니다.",
-          status: "error",
-          duration: 3000,
-          isClosable: true,
-        });
-      }
+      setValidate((prev) => ({
+        ...prev,
+        [id]: true,
+      }));
     }
   };
 
@@ -192,6 +122,7 @@ export default function Page() {
       (id === "password" && pwRex.test(watch("password"))) ||
       (id === "passwordCheck" && watch("passwordCheck") == watch("password")) ||
       (id === "name" && nameRex.test(watch("name"))) ||
+      (id === "phone_number" && phoneRex.test(watch("phone_number"))) ||
       (id === "address_2" && watch("address_2"))
     ) {
       setValidate((prev) => ({
@@ -322,23 +253,20 @@ export default function Page() {
     setValue("birth", year + month + day);
   }, [year, month, day, setValue]);
   return (
-    <div className="min-w-[650px] flex justify-center">
-      <form onSubmit={handleSubmit(handleSignup)}>
+    <div>
+      <div className=" border-black border-b-[4px]">
+        <p className="text-[30px] mb-[26px]">개인정보 수정</p>
+      </div>
+      <form onSubmit={handleSubmit(handleSignup)} className="justify-center flex">
         <FormControl width={650}>
           <div>
-            <div className="text-center text-[30px] mt-[50px] mb-[26px]">회원가입</div>
-            <div className="flex justify-end">
-              <p className="text-red-500">*</p>는 필수사항입니다.
-            </div>
-          </div>
-
-          <div className="border-y-2 border-gray-300">
             <div className="flex justify-evenly my-[20px]">
               <div className="w-[100px] h-[40px]  flex items-center">
                 아이디<p className="text-red-500">*</p>
               </div>
               <div className="w-[300px]">
                 <Input
+                  readOnly
                   focusBorderColor="green.500"
                   borderColor="gray.300"
                   placeholder="아이디를 입력해주세요"
@@ -348,31 +276,8 @@ export default function Page() {
                     },
                   })}
                 />
-                {showtext.id &&
-                  (validate.id ? null : (
-                    <FormHelperText className="text-red-500 text-xs">
-                      {watch("id")
-                        ? idRex.test(watch("id"))
-                          ? "*중복확인을 완료해주세요."
-                          : "*6자이상 16자 이하의 영문 혹은 영문과 숫자를 조합"
-                        : "*아이디를 입력해주세요."}
-                    </FormHelperText>
-                  ))}
               </div>
-
-              <div className="flex justify-evenly">
-                <Button
-                  isDisabled={validate.id}
-                  colorScheme="whatsapp"
-                  width={100}
-                  variant="outline"
-                  onClick={() => {
-                    handleValidate("id");
-                  }}
-                >
-                  중복확인
-                </Button>
-              </div>
+              <div className="w-[100px] flex justify-evenly"></div>
             </div>
 
             <div className=" flex justify-evenly mb-[20px]">
@@ -439,6 +344,7 @@ export default function Page() {
               </div>
               <div className="w-[300px]">
                 <Input
+                  readOnly
                   focusBorderColor="green.500"
                   borderColor="gray.300"
                   placeholder="이름을 입력해주세요"
@@ -448,12 +354,6 @@ export default function Page() {
                     },
                   })}
                 />
-                {showtext.name &&
-                  (validate.name ? null : (
-                    <FormHelperText className="text-red-500 text-xs">
-                      {watch("name") ? "*한글로 2~6글자" : "*이름을 입력해주세요."}
-                    </FormHelperText>
-                  ))}
               </div>
               <div className="w-[100px]"></div>
             </div>
@@ -518,79 +418,9 @@ export default function Page() {
                 {showtext.phone_number &&
                   (validate.phone_number ? null : (
                     <FormHelperText className="text-red-500 text-xs">
-                      {watch("phone_number")
-                        ? phoneRex.test(watch("phone_number"))
-                          ? "*중복확인을 완료해주세요."
-                          : "*전화번호 형식이 아닙니다."
-                        : "*전화번호를 입력해주세요."}
+                      {watch("phone_number") ? "*전화번호 형식이 아닙니다." : "*전화번호를 입력해주세요."}
                     </FormHelperText>
                   ))}
-              </div>
-              <div className="w-[100px]">
-                <Button
-                  isDisabled={validate.phone_number}
-                  colorScheme="whatsapp"
-                  width={100}
-                  variant="outline"
-                  onClick={() => {
-                    handleValidate("phone_number");
-                  }}
-                >
-                  중복확인
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex justify-evenly mb-[20px]">
-              <div className="w-[100px] h-[40px]  flex items-center">
-                주소<p className="text-red-500">*</p>
-              </div>
-              <div className="w-[300px]">
-                <Input
-                  borderColor="gray.300"
-                  disabled
-                  {...register("address_1", {
-                    onChange() {
-                      handleChange("address_1");
-                    },
-                  })}
-                />
-              </div>
-              <div className="w-[100px]">
-                <DaumPost data={setAddress} />
-              </div>
-            </div>
-
-            <div className="flex justify-evenly mb-[20px]">
-              <div className="w-[100px] h-[40px]  flex items-center">상세주소</div>
-              <div className="w-[300px]">
-                <Input
-                  borderColor="gray.300"
-                  focusBorderColor="green.500"
-                  placeholder="상세주소를 입력해주세요"
-                  {...register("address_2", {
-                    onChange() {
-                      handleChange("address_2");
-                    },
-                  })}
-                ></Input>
-              </div>
-              <div className="w-[100px]"></div>
-            </div>
-
-            <div className="flex justify-evenly mb-[20px]">
-              <div className="w-[100px] h-[40px]  flex items-center">주소명칭</div>
-              <div className="w-[300px]">
-                <Input
-                  borderColor="gray.300"
-                  focusBorderColor="green.500"
-                  placeholder="주소명칭을 입력해주세요"
-                  {...register("alias", {
-                    onChange() {
-                      handleChange("alias");
-                    },
-                  })}
-                ></Input>
               </div>
               <div className="w-[100px]"></div>
             </div>
@@ -645,116 +475,34 @@ export default function Page() {
               <div className="w-[100px]"></div>
             </div>
 
-            <div className="flex justify-evenly mb-[20px]">
-              <div className="w-[100px] h-[40px]  flex items-center">알러지</div>
-              <div className="w-[300px]">
-                <ChoiceAllergy data={setAllergy} />
-              </div>
-              <div className="w-[100px]"></div>
+            <div className="flex justify-evenly my-[50px]">
+              <Button width={200} variant="outline" colorScheme="whatsapp" type="button">
+                탈퇴하기
+              </Button>
+              <Button
+                width={200}
+                isDisabled={
+                  !(
+                    validate.id &&
+                    validate.password &&
+                    validate.passwordCheck &&
+                    validate.name &&
+                    validate.email &&
+                    validate.phone_number &&
+                    validate.address_1 &&
+                    validate.address_2 &&
+                    validate.year &&
+                    validate.month &&
+                    validate.day
+                  )
+                }
+                variant="outline"
+                colorScheme="whatsapp"
+                type="submit"
+              >
+                정보 수정하기
+              </Button>
             </div>
-
-            <div className="flex justify-evenly mb-[20px]">
-              <div className="w-[100px] h-[40px]  flex items-center">추가입력</div>
-              <div className="w-[300px]">
-                <Input
-                  borderColor="gray.300"
-                  focusBorderColor="green.500"
-                  placeholder="원재료만 입력해주세요"
-                  value={allergy2}
-                  onChange={(e: any) => {
-                    setAllergy2(e.target.value);
-                  }}
-                />
-                <div className="mt-[10px]">
-                  {selectedAllergy2.map((data, idx) => (
-                    <Tag
-                      key={idx}
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="whatsapp"
-                      marginRight={2}
-                      marginBottom={2}
-                    >
-                      <TagLabel>{data}</TagLabel>
-                      <TagCloseButton
-                        onClick={() => {
-                          removeAllergy2(data);
-                        }}
-                      />
-                    </Tag>
-                  ))}
-                </div>
-              </div>
-              <div className="w-[100px] flex justify-evenly">
-                <Button colorScheme="whatsapp" variant="outline" width={100} onClick={handleAllergy2}>
-                  추가하기
-                </Button>
-              </div>
-            </div>
-
-            <div className="flex justify-evenly mb-[20px]">
-              <div className="w-[100px] h-[40px]  flex items-center">기피식품</div>
-              <div className="w-[300px]">
-                <Input
-                  borderColor="gray.300"
-                  focusBorderColor="green.500"
-                  placeholder="원재료만 입력해주세요"
-                  value={hate}
-                  onChange={(e: any) => {
-                    setHate(e.target.value);
-                  }}
-                />
-                <div className="mt-[10px]">
-                  {selectedHate.map((data, idx) => (
-                    <Tag
-                      key={idx}
-                      borderRadius="full"
-                      variant="solid"
-                      colorScheme="whatsapp"
-                      marginRight={2}
-                      marginBottom={2}
-                    >
-                      <TagLabel>{data}</TagLabel>
-                      <TagCloseButton
-                        onClick={() => {
-                          removeHate(data);
-                        }}
-                      />
-                    </Tag>
-                  ))}
-                </div>
-              </div>
-              <div className="w-[100px] flex justify-evenly">
-                <Button colorScheme="whatsapp" variant="outline" width={100} onClick={handleHate}>
-                  추가하기
-                </Button>
-              </div>
-            </div>
-          </div>
-
-          <div className="flex justify-evenly my-[50px]">
-            <Button
-              width={200}
-              isDisabled={
-                !(
-                  validate.id &&
-                  validate.password &&
-                  validate.passwordCheck &&
-                  validate.name &&
-                  validate.email &&
-                  validate.phone_number &&
-                  validate.address_1 &&
-                  validate.year &&
-                  validate.month &&
-                  validate.day
-                )
-              }
-              variant="outline"
-              colorScheme="whatsapp"
-              type="submit"
-            >
-              가입하기
-            </Button>
           </div>
         </FormControl>
       </form>

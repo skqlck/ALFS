@@ -13,56 +13,58 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     <div className="flex justify-center mt-[50px]">
       <div className="w-[1000px] flex">
         <div className="w-[200px] mr-[50px]">
-          <p className="text-[30px] mb-[50px]">MY</p>
+          <p className="text-[30px] mb-[50px]">관리자</p>
           <div className="w-full border-[1px] border-gray-300">
-            <Link href="/mypage/order">
+            <a href="/supervisor/register">
               <Button
                 width={200}
                 height={50}
                 variant="ghost"
-                color={pathname === "/mypage/order" ? "green.500" : "your-default-color"}
+                color={pathname === "/supervisor/register" ? "green.500" : "your-default-color"}
               >
                 <p className="w-full flex text-[20px] justify-between">
-                  주문내역 <AiOutlineRight />
+                  상품등록 <AiOutlineRight />
                 </p>
               </Button>
-            </Link>
-            <Link href="/mypage/home">
+            </a>
+            <a href="/supervisor/product">
               <Button
                 width={200}
                 height={50}
                 variant="ghost"
-                color={pathname === "/mypage/home" ? "green.500" : "your-default-color"}
+                color={pathname === "/supervisor/product" ? "green.500" : "your-default-color"}
               >
                 <p className="w-full flex text-[20px] justify-between">
-                  배송지 관리 <AiOutlineRight />
+                  상품관리 <AiOutlineRight />
                 </p>
               </Button>
-            </Link>
-            <Link href="/mypage/allergy">
+            </a>
+            <a href="/supervisor/allergy">
               <Button
                 width={200}
                 height={50}
                 variant="ghost"
-                color={pathname === "/mypage/allergy" ? "green.500" : "your-default-color"}
+                color={pathname === "/supervisor/allergy" ? "green.500" : "your-default-color"}
               >
                 <p className="w-full flex text-[20px] justify-between">
                   알러지 관리 <AiOutlineRight />
                 </p>
               </Button>
-            </Link>
-            <Link href="/mypage/info">
+            </a>
+            <a href="/supervisor/info">
               <Button
                 width={200}
                 height={50}
                 variant="ghost"
-                color={pathname === ("/mypage/info" || "/mypage/info/modify") ? "green.500" : "your-default-color"}
+                color={
+                  pathname === ("/supervisor/info" || "/supervisor/info/modify") ? "green.500" : "your-default-color"
+                }
               >
                 <p className="w-full flex text-[20px] justify-between">
                   개인정보수정 <AiOutlineRight />
                 </p>
               </Button>
-            </Link>
+            </a>
           </div>
         </div>
 

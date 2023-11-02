@@ -3,9 +3,7 @@ import TopNav from "./TopNav";
 import MiddleNav from "./MiddleNav";
 import BottomNav from "./BottomNav";
 
-type Props = {};
-
-export default function Nav({}: Props) {
+export default function Nav() {
   return (
     <>
       <TopNav />
