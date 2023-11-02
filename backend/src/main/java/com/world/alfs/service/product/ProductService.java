@@ -48,7 +48,6 @@ public class ProductService {
     public List<GetProductListResponse> getAllProduct() {
         List<Product> productList = productRepository.findAll();
         List<GetProductListResponse> productResponseList = new ArrayList<>();
-        GetProductListResponse response = null;
         for(int i=0; i<productList.size(); i++){
             ProductImg img = productImgRepository.findByProductId(productList.get(i).getId());
             GetProductListResponse getProductListResponse = GetProductListResponse.builder()
@@ -59,7 +58,6 @@ public class ProductService {
                     .sale(productList.get(i).getSale())
                     .img(img.getImg_1())
                     .build();
-//            response.toGetProductListResponse(productList.get(i));
             productResponseList.add(getProductListResponse);
         }
         return productResponseList;

@@ -11,11 +11,10 @@ import lombok.RequiredArgsConstructor;
 @RequiredArgsConstructor
 public class AddMemberAllergyDto {
     private Long member_id;
-
     private Long allergy_id;
 
     @Builder
-    public AddMemberAllergyDto(Long id, Long member_id, Long allergy_id) {
+    public AddMemberAllergyDto(Long member_id, Long allergy_id) {
         this.member_id = member_id;
         this.allergy_id = allergy_id;
     }
@@ -25,6 +24,5 @@ public class AddMemberAllergyDto {
                 .member(member)
                 .allergy(allergy)
                 .build();
-
     }
 }

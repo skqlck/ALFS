@@ -11,6 +11,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
+
 
 @Slf4j
 @RestController
@@ -18,11 +20,15 @@ import org.springframework.web.bind.annotation.RestController;
 @RequestMapping("/member_allergy")
 public class MemberAllergyController {
     private final MemberAllergyService memberAllergyService;
-
     @PostMapping()
-    public ApiResponse<Long> addMemberAllergy(@RequestBody AddMemberAllergyRequest request){
-        AddMemberAllergyDto dto = request.toDto();
-        return ApiResponse.ok(memberAllergyService.addMemberAllergy(dto));
+    public void addMemberAllergy(@RequestBody List<AddMemberAllergyDto> request){
+        System.out.println("redirect 성공하셨습니다: member_allergy");
+        for(AddMemberAllergyDto dto : request){
+            System.out.print(dto.getAllergy_id());
+            memberAllergyService.addMemberAllergy(dto);
+        }
+        System.out.println("끝");
+//        return ApiResponse.ok(1L);
     }
 
 

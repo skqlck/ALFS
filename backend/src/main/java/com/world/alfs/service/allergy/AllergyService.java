@@ -38,7 +38,8 @@ public class AllergyService {
         return allergyResponseList;
     }
 
-    public Boolean checkAllergyName(Long member_id, List<String> NameList, int isAllergy) {
+    public List<AddMemberAllergyDto> checkAllergyName(Long memberId, List<String> NameList, int isAllergy) {
+        List<AddMemberAllergyDto>list = new ArrayList<>();
         for(int i=0; i<NameList.size(); i++){
             Allergy allergy = allergyRepository.findByAllergyNameAndAllergyType(NameList.get(i),isAllergy);
             if(allergy ==null){
@@ -52,17 +53,16 @@ public class AllergyService {
             Allergy savedAllergy = allergyRepository.findByAllergyName(NameList.get(i));
             Long allergyId = savedAllergy.getId();
 
-//            id, member_id, allergyId를  AddMemberAllergyRequest 에 담아서
             AddMemberAllergyDto dto = AddMemberAllergyDto.builder()
                     .allergy_id(allergyId)
-                    .member_id(member_id)
+                    .member_id(memberId)
                     .build();
-//            addMemberAllergy -> Redirect
-
+            System.out.println("여기는 AllergyService  (member_id,allergy_id) "+dto.getMember_id() +" "+dto.getAllergy_id());
+            list.add(dto);
 
         }
 
-        return true;
+        return list;
     }
 
 }
