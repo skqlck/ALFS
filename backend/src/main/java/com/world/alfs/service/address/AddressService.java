@@ -46,20 +46,19 @@ public class AddressService {
         return addressResponseList;
     }
 
-    // 기본 주소지 설정
+    // 기본 주소지로 설정
     public Optional<GetAddressResponse> setAsDefaultAddress(Long member_id, Long address_id){
-        Optional<Address> address = addressRepository.findById(address_id);
-        if (!address.isPresent()){
-            return Optional.empty();
-        }
-        List<Address> defaultAddress = addressRepository.findByMemberAndStatus(memberRepository.findById(member_id).get(), true);
-        if (defaultAddress.size() > 0){
-            for (Address address1 : defaultAddress){
-                address1.setStatus();
+        List<Address> defaultAddress = addressRepository.findByMember(memberRepository.findById(member_id).get());
+        Optional<Address> target = defaultAddress.stream().filter(address -> address.getId() == address_id).findAny();
+        if (target.isEmpty()) return Optional.empty();
+        for (Address address1 : defaultAddress){
+            if (address1.getStatus()){
+                address1.setStatus(false);
+                addressRepository.save(address1);
             }
         }
-        address.get().setStatus();
-        return Optional.of(address.get().toGetAddressResponse());
+        target.get().setStatus(true);
+        return Optional.of(addressRepository.save(target.get()).toGetAddressResponse());
     }
 
 }

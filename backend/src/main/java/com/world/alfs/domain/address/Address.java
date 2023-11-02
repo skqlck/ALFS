@@ -56,7 +56,7 @@ public class Address {
         this.member = member;
     }
 
-    public void setStatus() {
-        this.status = !this.status;
+    public void setStatus(Boolean status) {
+        this.status = status;
     }
 }
