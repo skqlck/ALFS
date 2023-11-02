@@ -2,12 +2,18 @@
 
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
-import { useRouter, usePathname } from "next/navigation";
-import React, { useEffect, useState } from "react";
+import { usePathname } from "next/navigation";
+import React from "react";
 import { AiOutlineRight } from "react-icons/ai";
+import { useSession } from "next-auth/react";
+import LoginModal from "@/app/_components/needLogin/LoginModal";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const { data: session } = useSession();
+  if (!session) {
+    return <LoginModal></LoginModal>;
+  }
 
   return (
     <div className="flex justify-center mt-[50px]">

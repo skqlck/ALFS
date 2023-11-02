@@ -20,6 +20,7 @@ export default function Page() {
 
   const handleLogin = async (e: any) => {
     const res = await UserLogin(e);
+
     if (res === null) {
       toast({
         title: "잘못된 아이디 혹은 비밀번호 입니다.",
@@ -28,8 +29,13 @@ export default function Page() {
         isClosable: true,
       });
     } else {
-      sessionStorage.setItem("id", res);
-      window.location.replace("/main");
+      await signIn("credentials", {
+        identifier: e.id,
+        password: e.password,
+        redirect: false,
+      });
+      localStorage.setItem("id", res);
+      router.push("/main");
     }
   };
   return (

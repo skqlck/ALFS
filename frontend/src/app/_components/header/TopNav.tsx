@@ -1,30 +1,25 @@
 "use client";
 
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { useSession, signOut } from "next-auth/react";
 
 export default function TopNav() {
-  const [id, setId] = useState(false);
   const router = useRouter();
+  const { data: session } = useSession();
 
   const handleLogout = () => {
-    sessionStorage.clear();
-    setId(false);
+    signOut({ redirect: false });
+    localStorage.setItem("id", "null");
     router.push("/");
   };
-
-  useEffect(() => {
-    if (sessionStorage.getItem("id")) {
-      setId(true);
-    }
-  }, [typeof window !== "undefined" && sessionStorage.getItem("id")]);
 
   return (
     <div className="min-w-[1000px] h-[30px] mt-[10px] flex justify-center">
       <div className="min-w-[1000px] flex items-center justify-end">
-        {id ? (
+        {session ? (
           <>
             <Button variant="unstyled" marginRight="10px" onClick={handleLogout}>
               로그아웃
@@ -49,8 +44,6 @@ export default function TopNav() {
             </Link>
           </>
         )}
-
-        {/* <Button variant="unstyled">신대혁님</Button> */}
 
         <Menu>
           <MenuButton>고객센터</MenuButton>
