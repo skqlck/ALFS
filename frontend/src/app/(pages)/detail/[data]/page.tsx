@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { GetProductDetail } from "@/app/api/detail/DetailPage";
+import AllergyNotice from "@/app/_components/modal/AllergyNotice";
 
 type ProductData = {
   id: number;
@@ -23,30 +24,57 @@ type ProductData = {
   stock: number;
   title: string;
   weight: string;
+  detail_img: string;
+  ingre_img: string;
+  main_img: string;
 };
 
-type GetDetailProps = {
-  productData: ProductData;
-};
+export default function Page() {
+  const numId = Number(useParams().data);
+  const [productData, setProductData] = useState<any>(null);
+  useEffect(() => {
+    // 페이지가 로드될 때마다 스크롤을 맨 위로 이동시킴
+    window.scrollTo(0, 0);
+  }, [productData]);
+  useEffect(() => {
+    const fetchProductData = async () => {
+      try {
+        const response: ProductData = await GetProductDetail(numId);
+        console.log("리스폰스", response);
+        setProductData(response);
+      } catch (error) {
+        console.log(error);
+      }
+    };
 
-async function GetDetail({ productData }: GetDetailProps) {
+    fetchProductData();
+  }, [numId]);
   const [cnt, setCnt] = useState<number>(1);
-  const discount = Math.round(((productData.price - productData.sale) / productData.price) * 100);
-  const sale = new Intl.NumberFormat().format(productData.sale);
-  const fetchedprice = new Intl.NumberFormat().format(productData.price);
-  const formattedPrice = new Intl.NumberFormat().format(productData.sale * cnt);
+  if (!productData) {
+    return <div>Loading...</div>;
+  }
+  const discount = Math.round(((productData?.price - productData?.sale) / productData.price) * 100);
+  const sale = new Intl.NumberFormat().format(productData?.sale | 0);
+  const fetchedprice = new Intl.NumberFormat().format(productData?.price);
+  const formattedPrice = new Intl.NumberFormat().format(productData?.sale * cnt);
   const changeCount = (operator: string) => {
-    if (operator === "+") {
-      setCnt(cnt + 1);
-    } else if (operator === "-" && cnt > 1) {
-      setCnt(cnt - 1);
+    if (productData && productData?.stock) {
+      setCnt((prevCnt) => {
+        if (operator === "+" && prevCnt < productData.stock) {
+          return prevCnt + 1;
+        } else if (operator === "-" && prevCnt > 1) {
+          return prevCnt - 1;
+        } else {
+          return prevCnt;
+        }
+      });
     }
   };
   return (
     <>
       <div className="DetailBox whitespace-pre-line w-[1130px] h-[full] mt-[109px] mx-auto flex">
         <div className="ImgBox w-[414px] h-[612px]">
-          {/* <Image src={productData.images.main_img} width={414} height={622} className="DetailImg" alt="detail Img" /> */}
+          <Image src={productData.main_img} width={414} height={622} className="DetailImg" alt="detail Img" />
         </div>
         <div className="DetailDescriptionBox w-[633px] ml-[83px]">
           <div className="Title w-[633px] h-[26px] text-[24px]">{productData.name}</div>
@@ -86,7 +114,7 @@ async function GetDetail({ productData }: GetDetailProps) {
             <div className="DeliveryContents w-[503px] h-[full]">{productData.weight}</div>
           </div>
           <div className="Delivery w-[full] min-h-[67px] border-t border-opacity-10 flex items-center text-[15px]">
-            <div className="DeliveryTitle w-[130px] h-[full]">알레르기정보</div>
+            <div className="DeliveryTitle w-[130px] h-[full] ">알레르기정보</div>
             <div className="DeliveryContents w-[503px] h-[full]">{productData.allergy}</div>
           </div>
           <div className="Delivery w-[full] min-h-[67px] border-t border-opacity-10 flex items-center text-[15px]">
@@ -120,7 +148,7 @@ async function GetDetail({ productData }: GetDetailProps) {
                 </div>
                 <div className="flex ">
                   {productData.price !== productData.sale && (
-                    <span className="line-through opacity-[0.5] mr-[10px]">8,900</span>
+                    <span className="line-through opacity-[0.5] mr-[10px]">{fetchedprice}원</span>
                   )}
                   <span className="mr-[45px]">{sale}원</span>
                 </div>
@@ -133,21 +161,21 @@ async function GetDetail({ productData }: GetDetailProps) {
           </div>
           <div className="Submit w-[633px] min-h-[62px] flex justify-end">
             <button className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white">
-              장바구니 담기
+              <AllergyNotice />
             </button>
           </div>
         </div>
       </div>
       <div className="Information w-[1145px] h-[full] mx-auto mt-[30px]">
         <hr />
-        {/* <Image
-          src={productData.images.description_img}
+        <Image
+          src={productData.detail_img}
           layout="responsive"
           width={1}
           height={1}
           className="DescriptionImg mt-[10px]"
           alt="description Img"
-        /> */}
+        />
         <div className="nameBox flex flex-col items-center mt-[30px] mb-[30px]">
           <span className="InfoTitle text-[36px] opacity-80">{productData.title}</span>
           <span className="InfoName text-[24px]">{productData.name}</span>
@@ -156,41 +184,16 @@ async function GetDetail({ productData }: GetDetailProps) {
         <div className="InfoContent flex flex-col items-center p-[20px] mt-[30px] mb-[30px]">{productData.content}</div>
         <hr />
         <div>
-          {/* <Image
-            src={productData.images.ingredient_img}
+          <Image
+            src={productData.ingre_img}
             layout="responsive"
             width={1}
             height={1}
             className="IngredientImg mt-[10px]"
             alt="Ingredient Img"
-          /> */}
+          />
         </div>
       </div>
-    </>
-  );
-}
-
-export default function Page() {
-  const numId = Number(useParams().data);
-  const [productData, setProductData] = useState<any>(null);
-  useEffect(() => {
-    const fetchProductData = async () => {
-      try {
-        const response: ProductData = await GetProductDetail(numId);
-        console.log("리스폰스", response);
-        setProductData(response);
-      } catch (error) {
-        console.log(error);
-      }
-    };
-
-    fetchProductData();
-  }, []);
-  return (
-    <>
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <GetDetail productData={productData} />
-      </React.Suspense>
     </>
   );
 }

@@ -1,25 +1,28 @@
 package com.world.alfs.controller.product;
 
 import com.world.alfs.ControllerTestSupport;
-import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.service.product.ProductService;
 import com.world.alfs.service.product.dto.AddProductDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
-import org.mockito.BDDMockito;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest;
 import org.springframework.boot.test.mock.mockito.MockBean;
+import org.springframework.transaction.annotation.Transactional;
 
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.BDDMockito.given;
 
 @WebMvcTest(controllers = {ProductController.class})
+@Transactional
 class ProductControllerTest extends ControllerTestSupport {
     final String URI = "/product";
     @MockBean
+    @Autowired
     private ProductService productService;
     @MockBean
+    @Autowired
     private ProductRepository productRepository;
 
     @DisplayName("관리자는 상품을 등록할 수 있다.")

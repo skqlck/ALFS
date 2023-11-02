@@ -1,7 +1,10 @@
 package com.world.alfs.domain.product;
 
 
+import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
+import com.world.alfs.domain.product_img.ProductImg;
+import com.world.alfs.service.product.dto.AddProductDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -44,7 +47,7 @@ public class Product {
     @Column()
     private String weight;
 
-    @Column()
+    @Column(columnDefinition = "TEXT")
     private String allergy;
 
     @Column()
@@ -59,7 +62,7 @@ public class Product {
     @Column()
     private int stock;
 
-    @Column()
+    @Column(columnDefinition = "TEXT")
     private String content;
 
 
@@ -83,7 +86,7 @@ public class Product {
         this.content = content;
     }
 
-    public ProductResponse toResponse() {
+    public ProductResponse toResponse(ProductImg img) {
         return ProductResponse.builder()
                 .id(id)
                 .name(name)
@@ -101,13 +104,40 @@ public class Product {
                 .buyType(buyType)
                 .stock(stock)
                 .content(content)
+                .main_img(img.getImg_1())
+                .detail_img(img.getImg_2())
+                .ingre_img(img.getImg_3())
+                .build();
+    }
+
+    public GetProductListResponse toListResponse(ProductImg img) {
+        return GetProductListResponse.builder()
+                .id(id)
+                .title(title)
+                .name(name)
+                .price(price)
+                .sale(sale)
+                .img(img.getImg_1())
                 .build();
     }
 
 //    - - - - - - - - - 비즈니스 로직 - - - - - - - - - - - - -
-    public void setProduct(int price, int sale){
-        this.price=price;
-        this.sale=sale;
+    public void setProduct(AddProductDto dto){
+        name = dto.getName();
+        title = dto.getTitle();
+        price = dto.getPrice();
+        sale = dto.getSale();
+        delivery = dto.getDelivery();
+        seller = dto.getSeller();
+        pack = dto.getPack();
+        count = dto.getCount();
+        weight = dto.getWeight();
+        allergy = dto.getAllergy();
+        expireDate = dto.getExpireDate();
+        information = dto.getInformation();
+        buyType = dto.getBuyType();
+        stock = dto.getStock();
+        content = dto.getContent();
     }
 
 }

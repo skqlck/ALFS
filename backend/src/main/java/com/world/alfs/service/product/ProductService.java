@@ -1,6 +1,7 @@
 package com.world.alfs.service.product;
 
 
+import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
@@ -31,29 +32,38 @@ public class ProductService {
         return savedProduct.getId();
     }
 
-    public Optional<Product> getProduct(Long id) {
-        return productRepository.findById(id);
+    public Optional<ProductResponse> getProduct(Long id) {
+        Optional<Product> product = productRepository.findById(id);
+        ProductImg img = productImgRepository.findByProductId(product.get().getId());
+        ProductResponse response = product.get().toResponse(img);
+        return Optional.ofNullable(response);
     }
 
-    public Long setProduct(Long id, int price, int sale) {
-        Optional<Product> product = productRepository.findById(id);
-        product.get().setProduct(price,sale);
+    public Long setProduct(AddProductDto dto) {
+        Optional<Product> product = productRepository.findById(dto.getId());
+        product.get().setProduct(dto);
         return product.get().getId();
     }
 
-    public List<ProductResponse> getAllProduct() {
+    public List<GetProductListResponse> getAllProduct() {
         List<Product> productList = productRepository.findAll();
-        List<ProductResponse> productResponseList = new ArrayList<>();
+        List<GetProductListResponse> productResponseList = new ArrayList<>();
         for(int i=0; i<productList.size(); i++){
-            ProductResponse response = productList.get(i).toResponse();
-            productResponseList.add(response);
+            ProductImg img = productImgRepository.findByProductId(productList.get(i).getId());
+            GetProductListResponse getProductListResponse = GetProductListResponse.builder()
+                    .id(productList.get(i).getId())
+                    .title(productList.get(i).getTitle())
+                    .name(productList.get(i).getName())
+                    .price(productList.get(i).getPrice())
+                    .sale(productList.get(i).getSale())
+                    .img(img.getImg_1())
+                    .build();
+            productResponseList.add(getProductListResponse);
         }
         return productResponseList;
     }
 
     public Long deleteProduct(Long id) {
-        productRepository.deleteById(id);
-//        productImgRepository.deleteProductImgByProductId(id);
         productImgRepository.deleteById(id);
         return id;
 

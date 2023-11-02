@@ -2,8 +2,8 @@ package com.world.alfs.controller.product;
 
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.product.request.AddProductRequest;
+import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
-import com.world.alfs.domain.product.Product;
 import com.world.alfs.service.product.ProductService;
 import com.world.alfs.service.product.dto.AddProductDto;
 import lombok.RequiredArgsConstructor;
@@ -28,22 +28,22 @@ public class ProductController {
     }
 
     @GetMapping("/{id}")
-    public ApiResponse<ProductResponse>getProduct(@PathVariable Long id){
-        Optional<Product> savedProduct = productService.getProduct(id);
-        ProductResponse productResponse = savedProduct.get().toResponse();
-        return ApiResponse.ok(productResponse);
+    public ApiResponse<Optional<ProductResponse>> getProduct(@PathVariable Long id){
+        Optional<ProductResponse> savedProduct = productService.getProduct(id);
+        return ApiResponse.ok(savedProduct);
     }
 
 
     @GetMapping("/all")
-    public ApiResponse<List<ProductResponse>>getAllProduct(){
-        List<ProductResponse> product_list = productService.getAllProduct();
+    public ApiResponse<List<GetProductListResponse>>getAllProduct(){
+        List<GetProductListResponse> product_list = productService.getAllProduct();
         return ApiResponse.ok(product_list);
     }
 
-    @PatchMapping("{id}/{price}/{sale}")
-    public ApiResponse<Long>setProduct(@PathVariable Long id,@PathVariable int price, @PathVariable int sale){
-        Long savedId = productService.setProduct(id,price,sale);
+    @PatchMapping()
+    public ApiResponse<Long>setProduct(@RequestBody AddProductRequest request){
+        AddProductDto dto = request.toDto();
+        Long savedId = productService.setProduct(dto);
         return ApiResponse.ok(savedId);
 
     }

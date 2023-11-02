@@ -50,7 +50,7 @@ insert into alternative(alternative_name, parent_id) values ('참외', 6);
 insert into alternative(alternative_name, parent_id) values ('소금', 7);
 
 # 돼지고기
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 8);
+insert into alternative(alternative_name, parent_id) values ('소고기', 8);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 8);
 insert into alternative(alternative_name, parent_id) values ('생선', 8);
 insert into alternative(alternative_name, parent_id) values ('두부', 8);
@@ -58,7 +58,7 @@ insert into alternative(alternative_name, parent_id) values ('계란', 8);
 
 # 난류
 insert into alternative(alternative_name, parent_id) values ('생선', 9);
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 9);
+insert into alternative(alternative_name, parent_id) values ('소고기', 9);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 9);
 insert into alternative(alternative_name, parent_id) values ('두부', 9);
 
@@ -75,7 +75,7 @@ insert into alternative(alternative_name, parent_id) values ('오징어', 11);
 insert into alternative(alternative_name, parent_id) values ('땅콩', 11);
 insert into alternative(alternative_name, parent_id) values ('두부', 11);
 
-# 쇠고기
+# 소고기
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 12);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 12);
 insert into alternative(alternative_name, parent_id) values ('생선', 12);
@@ -83,21 +83,21 @@ insert into alternative(alternative_name, parent_id) values ('두부', 12);
 insert into alternative(alternative_name, parent_id) values ('계란', 12);
 
 # 새우
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 13);
+insert into alternative(alternative_name, parent_id) values ('소고기', 13);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 13);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 13);
 insert into alternative(alternative_name, parent_id) values ('두부', 13);
 insert into alternative(alternative_name, parent_id) values ('계란', 13);
 
 # 생선(고등어)
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 14);
+insert into alternative(alternative_name, parent_id) values ('소고기', 14);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 14);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 14);
 insert into alternative(alternative_name, parent_id) values ('두부', 14);
 insert into alternative(alternative_name, parent_id) values ('계란', 14);
 
 # 홍합
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 15);
+insert into alternative(alternative_name, parent_id) values ('소고기', 15);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 15);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 15);
 insert into alternative(alternative_name, parent_id) values ('생선', 15);
@@ -106,7 +106,7 @@ insert into alternative(alternative_name, parent_id) values ('두부', 15);
 insert into alternative(alternative_name, parent_id) values ('계란', 15);
 
 # 전복
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 16);
+insert into alternative(alternative_name, parent_id) values ('소고기', 16);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 16);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 16);
 insert into alternative(alternative_name, parent_id) values ('생선', 16);
@@ -115,7 +115,7 @@ insert into alternative(alternative_name, parent_id) values ('두부', 16);
 insert into alternative(alternative_name, parent_id) values ('계란', 16);
 
 # 전복
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 17);
+insert into alternative(alternative_name, parent_id) values ('소고기', 17);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 17);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 17);
 insert into alternative(alternative_name, parent_id) values ('생선', 17);
@@ -124,7 +124,7 @@ insert into alternative(alternative_name, parent_id) values ('두부', 17);
 insert into alternative(alternative_name, parent_id) values ('계란', 17);
 
 # 조개류
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 18);
+insert into alternative(alternative_name, parent_id) values ('소고기', 18);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 18);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 18);
 insert into alternative(alternative_name, parent_id) values ('생선', 18);
@@ -133,14 +133,14 @@ insert into alternative(alternative_name, parent_id) values ('두부', 18);
 insert into alternative(alternative_name, parent_id) values ('계란', 18);
 
 # 게
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 19);
+insert into alternative(alternative_name, parent_id) values ('소고기', 19);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 19);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 19);
 insert into alternative(alternative_name, parent_id) values ('두부', 19);
 insert into alternative(alternative_name, parent_id) values ('계란', 19);
 
 # 오징어
-insert into alternative(alternative_name, parent_id) values ('쇠고기', 20);
+insert into alternative(alternative_name, parent_id) values ('소고기', 20);
 insert into alternative(alternative_name, parent_id) values ('닭고기', 20);
 insert into alternative(alternative_name, parent_id) values ('돼지고기', 20);
 insert into alternative(alternative_name, parent_id) values ('두부', 20);

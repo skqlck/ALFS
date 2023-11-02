@@ -11,7 +11,7 @@ async function GetListData() {
       <div className="Container w-[800px] h-auto mt-[124px] ml-[418px]">
         총 {response.length}건
         <>
-          <span className="flex justify-end">가격높은순{response.data}</span>
+          <span className="flex justify-end">가격높은순</span>
         </>
         <hr />
         <div className="grid grid-cols-3 mx-auto mt-[10px]">

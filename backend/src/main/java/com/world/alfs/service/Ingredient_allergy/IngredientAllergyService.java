@@ -8,6 +8,6 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 @Service
 @Transactional
-public class IngredientAllergytService {
+public class IngredientAllergyService {
     private final IngredientRepository ingredientRepository;
 }
