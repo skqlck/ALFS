@@ -21,7 +21,7 @@ public class MemberController {
     private final MemberService memberService;
     private final AddressService addressService;
 
-    @PostMapping()
+    @PostMapping("/signup")
     public ApiResponse<Long> addMember(@RequestBody SignUpRequest signUpRequest){
         List<String> allergy = signUpRequest.getAllergy();
         List<String> hate = signUpRequest.getHate();
@@ -58,7 +58,7 @@ public class MemberController {
         return ApiResponse.badRequest(message);
     }
 
-    @GetMapping()
+    @PostMapping("/login")
     public ApiResponse<Long> login(@RequestBody LoginRequest loginRequest){
         Optional<Long> member_id = memberService.login(loginRequest.toDto());
         if (member_id.get() == 0){
@@ -67,24 +67,24 @@ public class MemberController {
         return ApiResponse.ok(member_id.get());
     }
 
-    @PutMapping()
+    @PostMapping("/logout")
     public ApiResponse<Long> logout(@RequestBody LogoutRequest logoutRequest){
         Long id = logoutRequest.toDto().getId();
         return ApiResponse.ok(null);
     }
 
-    @GetMapping("/check/identifier")
-    public ApiResponse<Boolean> checkIdentifier(@RequestBody CheckIdentifierRequest checkIdentifierRequest){
-        return ApiResponse.ok(memberService.checkIdentifier(checkIdentifierRequest.getIdentifier()));
+    @GetMapping("/check/identifier/{identifier}")
+    public ApiResponse<Boolean> checkIdentifier(@PathVariable("identifier") String identifier){
+        return ApiResponse.ok(memberService.checkIdentifier(identifier));
     }
 
-    @GetMapping("/check/email")
-    public ApiResponse<Boolean> checkEmail(@RequestBody CheckEmailRequest checkEmailRequest){
-        return ApiResponse.ok(memberService.checkEmail(checkEmailRequest.getEmail()));
+    @GetMapping("/check/email/{email}")
+    public ApiResponse<Boolean> checkEmail(@PathVariable("email") String email){
+        return ApiResponse.ok(memberService.checkEmail(email));
     }
 
-    @GetMapping("/check/phoneNumber")
-    public ApiResponse<Boolean> checkPhoneNumber(@RequestBody CheckPhoneNumberRequest checkPhoneNumberRequest){
-        return ApiResponse.ok(memberService.checkPhoneNumber(checkPhoneNumberRequest.getPhoneNumber()));
+    @GetMapping("/check/phoneNumber/{phoneNumber}")
+    public ApiResponse<Boolean> checkPhoneNumber(@PathVariable("phoneNumber") String phoneNumber){
+        return ApiResponse.ok(memberService.checkPhoneNumber(phoneNumber));
     }
 }

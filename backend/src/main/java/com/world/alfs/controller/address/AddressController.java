@@ -21,9 +21,9 @@ import java.util.Optional;
 public class AddressController {
     private final AddressService addressService;
 
-    @GetMapping()
-    public ApiResponse<List<GetAddressResponse>> getAddress(@RequestBody GetAddressRequest getAddressRequest){
-        List<GetAddressResponse> address_list = addressService.getAddress(getAddressRequest.getId());
+    @GetMapping("/{id}")
+    public ApiResponse<List<GetAddressResponse>> getAddress(@PathVariable Long id){
+        List<GetAddressResponse> address_list = addressService.getAddress(id);
         return ApiResponse.ok(address_list);
     }
 
