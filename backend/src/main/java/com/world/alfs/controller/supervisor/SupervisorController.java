@@ -4,6 +4,7 @@ import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.supervisor.request.OcrFileRequest;
 import com.world.alfs.controller.supervisor.request.OcrUrlRequest;
 import com.world.alfs.controller.supervisor.request.SupervisorLoginRequest;
+import com.world.alfs.controller.supervisor.request.SupervisorLogoutRequest;
 import com.world.alfs.controller.supervisor.response.FileIngredientResponse;
 import com.world.alfs.controller.supervisor.response.SupervisorLoginResponse;
 import com.world.alfs.service.aws_s3.AwsS3Service;
@@ -34,6 +35,12 @@ public class SupervisorController {
 
         SupervisorLoginResponse response = supervisorService.loginSupervisor(supervisorIdentifier, supervisorPassword);
         return ApiResponse.ok(response);
+    }
+
+    @PutMapping("/logout")
+    public ApiResponse<Long> logout(@RequestBody SupervisorLogoutRequest request){
+        Long id = request.toDto().getId();
+        return ApiResponse.ok(null);
     }
 
     @PostMapping("/ocr/url")
