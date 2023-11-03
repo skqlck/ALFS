@@ -1,4 +1,4 @@
-package com.world.alfs.service.Ingredient_allergy;
+package com.world.alfs.service.ingredient_allergy;
 
 import com.world.alfs.domain.ingredient.repository.IngredientRepository;
 import lombok.RequiredArgsConstructor;
