@@ -15,6 +15,7 @@ const handler = NextAuth({
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
         });
+        console.log(res);
         const user = await res.json();
 
         // If no error and we have user data, return it
