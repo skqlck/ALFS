@@ -10,10 +10,10 @@ import LoginModal from "@/app/_components/needLogin/LoginModal";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  // const { data: session } = useSession();
-  // if (!session) {
-  //   return <LoginModal></LoginModal>;
-  // }
+  const { data: session } = useSession();
+  if (!session) {
+    return <LoginModal></LoginModal>;
+  }
 
   return (
     <div className="flex justify-center mt-[50px]">
