@@ -6,6 +6,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
@@ -14,17 +15,18 @@ import java.util.Optional;
 @Transactional
 public class IngredientService {
     private final IngredientRepository ingredientRepository;
-
-    public void checkIngredient(Long productId, List<String> productList) {
+    public List<Long> checkIngredient(List<String> productList) {
+        List<Long>list = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
-            if (ingredientRepository.findByName(productList.get(i)) == null) {
+            if (ingredientRepository.findByName(productList.get(i)).isEmpty()) {
                 Ingredient ingredient = Ingredient.builder()
                         .name(productList.get(i))
                         .build();
                 ingredientRepository.save(ingredient);
             }
-            Optional<Ingredient> savedId = ingredientRepository.findByName(productList.get(i));
-            //redirect 로 product_id랑 savedId를 통해서 product_ingredient 상품원재료명 등록
+            Optional<Ingredient> savedIngredient = ingredientRepository.findByName(productList.get(i));
+            System.out.println(savedIngredient.get());
         }
+        return list;
     }
 }

@@ -20,12 +20,10 @@ public class IngredientController {
     private final IngredientService ingredientService;
 
     @GetMapping
-    public ApiResponse<Long> checkIngredient(@PathVariable Long productId,
-                                             @PathVariable List<String>productList) {
-        ingredientService.checkIngredient(productId, productList);
+    public ApiResponse<Long> checkIngredient(@PathVariable Long productId, @PathVariable List<String> productList) {
+        List<Long> list = ingredientService.checkIngredient(productList);
+        //redirect 로 이동시켜준다. list 를 전달한다.
+
         return ApiResponse.ok(1L);
-
-
     }
-
 }

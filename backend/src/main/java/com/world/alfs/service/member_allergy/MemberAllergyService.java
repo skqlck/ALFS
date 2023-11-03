@@ -26,7 +26,6 @@ public class MemberAllergyService {
         Optional<Member> member = memberRepository.findById(dto.getMember_id());
         Optional<Allergy> allergy = allergyRepository.findById(dto.getAllergy_id());
         MemberAllergy memberAllergy = dto.toEntity(member.get(),allergy.get());
-        System.out.println("여기는 MemberAllergyService "+memberAllergy.getId()+" "+memberAllergy.getMember().getId()+" "+memberAllergy.getAllergy().getId());
         MemberAllergy savedMemberAllergy = memberAllergyRepository.save(memberAllergy);
         return savedMemberAllergy.getId();
     }
