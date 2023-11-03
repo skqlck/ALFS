@@ -8,10 +8,10 @@ import { useSession, signOut } from "next-auth/react";
 
 export default function TopNav() {
   const router = useRouter();
-  const { data: session } = useSession();
+  // const { data: session } = useSession();
 
   const handleLogout = () => {
-    signOut({ redirect: false });
+    // signOut({ redirect: false });
     localStorage.setItem("id", "null");
     router.push("/");
   };
@@ -19,7 +19,7 @@ export default function TopNav() {
   return (
     <div className="min-w-[1000px] h-[30px] mt-[10px] flex justify-center">
       <div className="min-w-[1000px] flex items-center justify-end">
-        {session ? (
+        {localStorage.getItem("id") !== "null" ? (
           <>
             <Button variant="unstyled" marginRight="10px" onClick={handleLogout}>
               로그아웃
