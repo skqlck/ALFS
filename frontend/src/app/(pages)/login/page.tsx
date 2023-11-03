@@ -32,8 +32,8 @@ export default function Page() {
       await signIn("credentials", {
         identifier: e.id,
         password: e.password,
-        redirect: true,
-        callbackUrl: "/",
+        redirect: false,
+        // callbackUrl: "/main",
       });
       localStorage.setItem("id", res);
       router.push("/main");

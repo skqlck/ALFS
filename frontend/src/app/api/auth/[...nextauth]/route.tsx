@@ -10,7 +10,7 @@ const handler = NextAuth({
         password: { label: "Password", type: "password" },
       },
       async authorize(credentials) {
-        const res = await fetch("https://k9c204.p.ssafy.io/api/member/login", {
+        const res = await fetch("api/member/login", {
           method: "POST",
           body: JSON.stringify(credentials),
           headers: { "Content-Type": "application/json" },
@@ -18,9 +18,10 @@ const handler = NextAuth({
         const user = await res.json();
         // If no error and we have user data, return it
         if (res.ok && user) {
+          console.log(1234);
           return user;
         }
-        // Return null if user data could not be retrieved
+
         return null;
       },
     }),
