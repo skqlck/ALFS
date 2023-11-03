@@ -8,6 +8,7 @@ import { AiOutlineClose } from "react-icons/ai";
 import SnowImage from "../../_asset/img/SnowImage.svg";
 import Image from "next/image";
 import TestDetail from "../../_asset/img/TestDetail.png";
+import Link from "next/link";
 type Props = {};
 
 export default function Page({}: Props) {
@@ -88,9 +89,12 @@ export default function Page({}: Props) {
                 광주 광산구 하남산단 <br />
                 6번로 107
               </div>
-              <button className="SubmitBtn w-[225px] h-[42px] mt-[11px] mb-[11px] flex items-center justify-center text-[#33C130] text-[12px] border border-[#33C130]">
+              <Link
+                href={{ pathname: `/mypage/home` }}
+                className="SubmitBtn w-[225px] h-[42px] mt-[11px] mb-[11px] flex items-center justify-center text-[#33C130] text-[12px] border border-[#33C130]"
+              >
                 배송지 변경
-              </button>
+              </Link>
             </div>
             <hr />
             <div className="OrderBottom w-[272px] p-[20px] text-[16px]">
@@ -118,7 +122,7 @@ export default function Page({}: Props) {
             </div>
           </div>
           <button className="Submit w-[272px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white">
-            장바구니 담기
+            결제하기
           </button>
         </div>
       </div>

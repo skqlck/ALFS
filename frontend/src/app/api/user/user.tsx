@@ -54,9 +54,37 @@ export async function UserLogout(props: any) {
 }
 
 export async function AddressAll(props: any) {
-  console.log(props);
   try {
     const res = await baseAxios.get(`api/address/${props}`);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function ChangeStatus(props: any) {
+  try {
+    const res = await baseAxios.put(`api/address/`, {
+      member_id: props[0],
+      address_id: props[1],
+    });
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function PlusAddress(props: any) {
+  console.log(props);
+  try {
+    const res = await baseAxios.post(`api/address/`, {
+      member_id: localStorage.getItem("id"),
+      address: {
+        address_1: props.address_1,
+        address_2: props.address_2,
+        alias: props.alias,
+      },
+    });
     return res;
   } catch (e) {
     console.error(e);
