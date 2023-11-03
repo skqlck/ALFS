@@ -32,7 +32,7 @@ public class AddressController {
         if (response.isPresent()){
             return ApiResponse.ok(response.get());
         }
-        return ApiResponse.badRequest("주소가 잘못되었습니다.");
+        return ApiResponse.badRequest("회원 혹은 주소가 잘못되었습니다.");
     }
 
     @PostMapping()
