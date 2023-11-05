@@ -45,6 +45,7 @@ public class BasketService {
                     .basket_id(basket.getId())
                     .count(basket.getCount())
                     .getProductListResponse(product.get().toListResponse(img))
+                    .pack(product.get().getPack())
                     .build();
             responseList.add(response);
         }
@@ -79,6 +80,7 @@ public class BasketService {
                     .basket_id(existedBasket.get().getId())
                     .count(existedBasket.get().getCount())
                     .getProductListResponse(product.get().toListResponse(img))
+                    .pack(product.get().getPack())
                     .build();
     }
 

@@ -13,11 +13,13 @@ public class GetBasketResponse {
     private Long basket_id;
     private int count;
     private GetProductListResponse product;
+    private String pack;
 
     @Builder
-    public GetBasketResponse(Long basket_id, int count, GetProductListResponse getProductListResponse) {
+    public GetBasketResponse(Long basket_id, int count, GetProductListResponse getProductListResponse, String pack) {
         this.basket_id = basket_id;
         this.count = count;
         this.product = getProductListResponse;
+        this.pack = pack;
     }
 }
