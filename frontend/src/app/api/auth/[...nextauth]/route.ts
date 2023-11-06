@@ -1,7 +1,9 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
+import { baseAxios } from "../../Api";
 
 const handler = NextAuth({
+  secret: process.env.NEXTAUTH_SECRET,
   providers: [
     CredentialsProvider({
       name: "Credentials",
@@ -29,10 +31,9 @@ const handler = NextAuth({
     }),
   ],
   pages: {
-    // error: "/main",
-    // signIn: "/login",
+    error: "/main",
+    signIn: "/login",
   },
-  secret: process.env.NEXTAUTH_SECRET,
 });
 
 export { handler as GET, handler as POST };
