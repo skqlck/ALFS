@@ -45,20 +45,21 @@ public class ProductService {
         return product.get().getId();
     }
 
+    public List<Long> getAllProductId() {
+        List<Product> productList = productRepository.findAll();
+        List<Long> productResponseList = new ArrayList<>();
+        for(int i=0; i<productList.size(); i++){
+            productResponseList.add(productList.get(i).getId());
+        }
+        return productResponseList;
+    }
+
     public List<GetProductListResponse> getAllProduct() {
         List<Product> productList = productRepository.findAll();
         List<GetProductListResponse> productResponseList = new ArrayList<>();
         for(int i=0; i<productList.size(); i++){
             ProductImg img = productImgRepository.findByProductId(productList.get(i).getId());
-            GetProductListResponse getProductListResponse = GetProductListResponse.builder()
-                    .id(productList.get(i).getId())
-                    .title(productList.get(i).getTitle())
-                    .name(productList.get(i).getName())
-                    .price(productList.get(i).getPrice())
-                    .sale(productList.get(i).getSale())
-                    .img(img.getImg_1())
-                    .build();
-            productResponseList.add(getProductListResponse);
+            productResponseList.add(productList.get(i).toListResponse(img));
         }
         return productResponseList;
     }
@@ -68,4 +69,5 @@ public class ProductService {
         return id;
 
     }
+
 }

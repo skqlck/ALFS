@@ -12,4 +12,5 @@ public interface MemberAllergyRepository extends JpaRepository<MemberAllergy, Lo
 
     List<MemberAllergy> findByMemberId(Long memberId);
 
+    Long findAllergyIdByMemberIdAndAllergyId(Long memberId, Long allergyId);
 }

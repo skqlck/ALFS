@@ -20,7 +20,6 @@ public class ProductIngredientController {
 
     @PostMapping("/{productId}")
     public ApiResponse<Long> addProductIngredient(@PathVariable Long productId, @RequestBody List<String> list) {
-
         List<Long> ingredientList = ingredientService.checkIngredient(list);
         for (Long id : ingredientList) {
             productIngredientService.addProductIngredient(productId, id);

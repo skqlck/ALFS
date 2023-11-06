@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -28,6 +30,14 @@ public class MemberAllergyService {
         MemberAllergy memberAllergy = dto.toEntity(member.get(),allergy.get());
         MemberAllergy savedMemberAllergy = memberAllergyRepository.save(memberAllergy);
         return savedMemberAllergy.getId();
+    }
+
+    public List<Long> getFilteredAllergyId(Long memberId, List<Long> allergyList) {
+        List<Long> list = new ArrayList<>();
+        for (Long allergyId : allergyList) {
+            list.add(memberAllergyRepository.findAllergyIdByMemberIdAndAllergyId(memberId, allergyId));
+        }
+        return list;
     }
 
 }
