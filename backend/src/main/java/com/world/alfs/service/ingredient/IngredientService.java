@@ -25,7 +25,7 @@ public class IngredientService {
                 ingredientRepository.save(ingredient);
             }
             Optional<Ingredient> savedIngredient = ingredientRepository.findByName(productList.get(i));
-            System.out.println(savedIngredient.get());
+            list.add(savedIngredient.get().getId());
         }
         return list;
     }

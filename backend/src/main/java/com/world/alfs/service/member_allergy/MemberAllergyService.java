@@ -34,8 +34,10 @@ public class MemberAllergyService {
 
     public List<Long> getFilteredAllergyId(Long memberId, List<Long> allergyList) {
         List<Long> list = new ArrayList<>();
-        for (Long allergyId : allergyList) {
-            list.add(memberAllergyRepository.findAllergyIdByMemberIdAndAllergyId(memberId, allergyId));
+        for (Long allergyId : allergyList) { //7 3 1 10
+            MemberAllergy memberAllergy = memberAllergyRepository.findByMemberIdAndAllergyId(memberId,allergyId);
+//            list.add(memberAllergyRepository.findAllergyIdByMemberIdAndAllergyId(memberId, allergyId));
+            list.add(memberAllergy.getAllergy().getId());
         }
         return list;
     }
