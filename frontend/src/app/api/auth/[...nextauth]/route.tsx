@@ -18,6 +18,7 @@ const handler = NextAuth({
         });
         const user = await res.json();
         console.log(user);
+        console.log(process.env.NEXTAUTH_URL);
         user.name = credentials.userId;
         // If no error and we have user data, return it
         if (res.ok && user) {
