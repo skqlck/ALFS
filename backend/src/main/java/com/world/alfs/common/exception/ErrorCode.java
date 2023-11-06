@@ -10,6 +10,7 @@ public enum ErrorCode {
 
     /* 400 BAD_REQUEST */
     ACCESS_TOKEN_INVALID(HttpStatus.BAD_REQUEST, "Access Token 유효하지 않은 토큰입니다."),
+    FILE_CONVERT_FAIL(HttpStatus.BAD_REQUEST, "error: MultipartFile -> File convert fail"),
 
     /* 401 UNAUTHORIZED */
 
@@ -17,7 +18,8 @@ public enum ErrorCode {
     /* 403 FORBIDDEN : 페이지 접근 거부 */
 
     /* 404 NOT_FOUND : Resource 를 찾을 수 없음 */
-    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없습니다.");
+    PRODUCT_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 상품을 찾을 수 없습니다."),
+    SUPERVISOR_NOT_FOUND(HttpStatus.NOT_FOUND, "해당 관리자를 찾을 수 없습니다.");
 
     /* 409 CONFLICT : Resource 의 현재 상태와 충돌. 보통 중복된 데이터 존재 */
 

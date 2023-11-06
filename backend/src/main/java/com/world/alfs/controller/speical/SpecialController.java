@@ -33,12 +33,12 @@ public class SpecialController {
     }
 
 
-//    @GetMapping("/{id}")
-//    public ApiResponse<SpecialResponse> getProduct(@PathVariable Long id){
-//        Optional<SpecialResponse> saveSpecial =  specialService.getProduct(id);
-//        return ApiResponse.ok(saveSpecial);
-//    }
-//
+    @GetMapping("/{id}")
+    public ApiResponse<GetSpecialResponse> getSpecial(@PathVariable Long id){
+        GetSpecialResponse saveSpecial =  specialService.getSpecial(id);
+        return ApiResponse.ok(saveSpecial);
+    }
+
 //    @PatchMapping("/{id}")
 //    public ApiResponse<Long> setProduct(@PathVariable Long id, @RequestBody AddSpecialReqeust request){
 //        AddSpecialDto dto = request.toDto();

@@ -1,5 +1,7 @@
 package com.world.alfs.service.speical;
 
+import com.world.alfs.common.exception.CustomException;
+import com.world.alfs.common.exception.ErrorCode;
 import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
@@ -24,11 +26,11 @@ public class SpecialService {
     private final ProductRepository productRepository;
     private final SupervisorRepository supervisorRepository;
 
-    public Long addSpecial(AddSpecialDto dto) throws Exception {
+    public Long addSpecial(AddSpecialDto dto) {
         Product product = productRepository.findById(dto.getProductId())
-                .orElseThrow(()->new Exception("이벤트 상품을 등록할 상품이 없습니다."));
+                .orElseThrow(()->new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
         Supervisor supervisor = supervisorRepository.findById(dto.getSupervisorId())
-                .orElseThrow(()->new Exception("이벤트 상품을 등록할 관리자가 없습니다."));
+                .orElseThrow(()->new CustomException(ErrorCode.SUPERVISOR_NOT_FOUND));
 
         Special special = dto.toEntity(product, supervisor);
         specialRepository.save(special);
@@ -49,10 +51,11 @@ public class SpecialService {
         return specialResponseList;
     }
 
-//    public Long getProduct(Long id){
-//
-//    }
-//
+    public GetSpecialResponse getSpecial(Long id){
+        Special special = specialRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+        return GetSpecialResponse.toGetSpecialListResponse(special);
+    }
+
 //    public Long setProduct(Long id, AddSpecialDto dto){
 //
 //    }
