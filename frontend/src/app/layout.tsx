@@ -5,7 +5,7 @@ import localFont from "next/font/local";
 import Nav from "./_components/header/Nav";
 import Footer from "./_components/footer/Footer";
 import { getServerSession } from "next-auth";
-import { SessionProviders } from "./SessionProvider";
+import SessionProviders from "./_components/SessionProvider";
 import { Providers } from "./providers";
 
 // Font files can be colocated inside of `app`
@@ -26,7 +26,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   return (
     <html lang="en">
       <body className={myFont.className}>
-        <SessionProviders>
+        <SessionProviders session={session}>
           <Providers>
             <Nav></Nav>
             {children}

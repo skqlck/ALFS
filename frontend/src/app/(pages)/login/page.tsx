@@ -29,12 +29,12 @@ export default function Page() {
         isClosable: true,
       });
     } else {
-      // await signIn("credentials", {
-      //   identifier: e.id,
-      //   password: e.password,
-      //   userId: res,
-      //   redirect: false,
-      // });
+      await signIn("credentials", {
+        identifier: e.id,
+        password: e.password,
+        userId: res,
+        redirect: false,
+      });
 
       router.push("/");
     }
