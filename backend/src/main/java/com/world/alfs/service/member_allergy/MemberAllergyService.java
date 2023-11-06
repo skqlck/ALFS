@@ -11,6 +11,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -26,9 +28,16 @@ public class MemberAllergyService {
         Optional<Member> member = memberRepository.findById(dto.getMember_id());
         Optional<Allergy> allergy = allergyRepository.findById(dto.getAllergy_id());
         MemberAllergy memberAllergy = dto.toEntity(member.get(),allergy.get());
-        System.out.println("여기는 MemberAllergyService "+memberAllergy.getId()+" "+memberAllergy.getMember().getId()+" "+memberAllergy.getAllergy().getId());
         MemberAllergy savedMemberAllergy = memberAllergyRepository.save(memberAllergy);
         return savedMemberAllergy.getId();
+    }
+
+    public List<Long> getFilteredAllergyId(Long memberId, List<Long> allergyList) {
+        List<Long> list = new ArrayList<>();
+        for (Long allergyId : allergyList) {
+            list.add(memberAllergyRepository.findAllergyIdByMemberIdAndAllergyId(memberId, allergyId));
+        }
+        return list;
     }
 
 }

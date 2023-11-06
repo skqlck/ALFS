@@ -6,11 +6,8 @@ import com.world.alfs.domain.member.repository.MemberRepository;
 import com.world.alfs.service.member.dto.AddMemberDto;
 import com.world.alfs.service.member.dto.LoginMemberDto;
 import lombok.RequiredArgsConstructor;
-import net.bytebuddy.dynamic.DynamicType;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-
-import javax.swing.text.html.Option;
 import java.util.Objects;
 import java.util.Optional;
 import java.util.regex.Pattern;
@@ -23,11 +20,11 @@ public class MemberService {
     private final MemberRepository userRepository;
 
     // 회원가입
-    public Long addMember(AddMemberDto addMemberDto){
-        if (checkIdentifier(addMemberDto.getIdentifier())) return -1L;
-        if (checkEmail(addMemberDto.getEmail())) return -2L;
-        if (checkPhoneNumber(addMemberDto.getPhoneNumber())) return -3L;
-        if (checkPassword(addMemberDto.getPassword(), addMemberDto.getPasswordCheck())) return -4L;
+    public Long addMember(AddMemberDto addMemberDto) throws Exception{
+        if (checkIdentifier(addMemberDto.getIdentifier())) throw new Exception("중복된 아이디 입니다.");
+        if (checkEmail(addMemberDto.getEmail())) throw new Exception("중복된 이메일 입니다.");
+        if (checkPhoneNumber(addMemberDto.getPhoneNumber())) throw new Exception("중복된 전화번호 입니다.");
+        if (checkPassword(addMemberDto.getPassword(), addMemberDto.getPasswordCheck())) throw new Exception("비밀번호가 서로 다릅니다.");
         Member member = userRepository.save(addMemberDto.toEntity());
         return member.getId();
     }

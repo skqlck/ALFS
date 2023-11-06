@@ -2,14 +2,19 @@ package com.world.alfs.service.product_ingredient;
 
 
 import com.world.alfs.controller.ApiResponse;
+import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.ingredient.repository.IngredientRepository;
+import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.domain.product_ingredient.ProductIngredient;
 import com.world.alfs.domain.product_ingredient.repostiory.ProductIngredientRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.PostMapping;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
 
 @RequiredArgsConstructor
 @Service
@@ -20,7 +25,7 @@ public class ProductIngredientService {
     private final IngredientRepository ingredientRepository;
     private final ProductRepository productRepository;
 
-    public Long addProductIngredient(Long productId, Long ingredientId){
+    public Long addProductIngredient(Long productId, Long ingredientId) {
         ProductIngredient productIngredient = ProductIngredient.builder()
                 .product(productRepository.findById(productId).get())
                 .ingredient(ingredientRepository.findById(ingredientId).get())
@@ -29,4 +34,14 @@ public class ProductIngredientService {
         return savedProductIngredient.getId();
     }
 
+    public List<Long> getAllIngredientId(Long productId) {
+        Optional<Product> product = productRepository.findById(productId);
+        System.out.println(product.get().getId());
+        List<ProductIngredient> list = productIngredientRepository.findAllByProduct(product.get());
+        List<Long> response = new ArrayList<>();
+        for(int i=0; i<list.size(); i++){
+            response.add(list.get(i).getIngredient().getId());
+        }
+        return response;
+    }
 }

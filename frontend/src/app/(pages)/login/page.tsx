@@ -29,11 +29,11 @@ export default function Page() {
         isClosable: true,
       });
     } else {
+      console.log(12324);
       await signIn("credentials", {
         identifier: e.id,
         password: e.password,
-        redirect: true,
-        callbackUrl: "/",
+        redirect: false,
       });
       localStorage.setItem("id", res);
       router.push("/main");

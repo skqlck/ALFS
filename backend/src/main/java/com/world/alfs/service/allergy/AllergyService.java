@@ -59,10 +59,17 @@ public class AllergyService {
                     .build();
             System.out.println("여기는 AllergyService  (member_id,allergy_id) "+dto.getMember_id() +" "+dto.getAllergy_id());
             list.add(dto);
-
         }
-
         return list;
     }
 
+    public List<Integer> getAllergyType(List<Long> memberAllergyList) {
+        List<Integer> list = new ArrayList<>();
+        for(Long memberAllergyId : memberAllergyList){
+            list.add(allergyRepository.findAllergyTypeById(memberAllergyId));
+        }
+        //list 에서 중복 값 빼고 반환하기.
+
+        return list;
+    }
 }

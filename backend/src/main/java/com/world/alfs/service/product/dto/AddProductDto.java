@@ -92,9 +92,9 @@ public class AddProductDto {
 
     }
 
-    public ProductImg toImgEntity() {
+    public ProductImg toImgEntity(Product product) {
         return ProductImg.builder()
-                .product_id(id)
+                .product(product)
                 .img_1(img_1)
                 .img_2(img_2)
                 .img_3(img_3)

@@ -1,0 +1,15 @@
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (1, 2, null, 2, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (2, 6, null, 2, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (3, 6, 183600, 1, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (4, 5, 127500, 1, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (5, 5, 25500, 1, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (6, 5, 25500, 1, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (7, 5, 25500, 1, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (8, 5, null, 2, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (9, 5, 25500, 1, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (10, 5, 25500, 1, 2, 5051279);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (11, 3, 59700, 1, 2, 5025443);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (12, 8, 67840, 1, 2, 5031703);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (13, 4, null, 0, 26, 5025443);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (14, 34, null, 0, 26, 5026468);
+INSERT INTO alfs.basket (id, count, purchase, status, member_id, product_id) VALUES (15, 8, null, 0, 2, 5031703);

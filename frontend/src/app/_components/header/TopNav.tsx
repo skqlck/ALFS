@@ -15,6 +15,7 @@ export default function TopNav() {
     localStorage.setItem("id", "null");
     router.push("/");
   };
+  console.log(session);
 
   return (
     <div className="min-w-[1000px] h-[30px] mt-[10px] flex justify-center">

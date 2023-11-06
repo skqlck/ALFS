@@ -1,1 +1,0 @@
-INSERT INTO alfs.supervisor (name, identifier, password) VALUES ('알렉스', 'ssafy@alfs.com','c204alfs');

@@ -4,7 +4,9 @@ import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
 import { GetProductDetail } from "@/app/api/detail/DetailPage";
+import { AddProductToCart } from "@/app/api/cart/CartPage";
 import AllergyNotice from "@/app/_components/modal/AllergyNotice";
+import AddToCart from "@/app/_components/modal/AddToCart";
 
 type ProductData = {
   id: number;
@@ -70,6 +72,12 @@ export default function Page() {
       });
     }
   };
+  const member_id: string = localStorage.getItem("id")!;
+  const AddCart = async (id: string, cnt: number, member_id: string) => {
+    const response: any = await AddProductToCart(id, cnt, member_id);
+    console.log("장바구니 추가요청", response);
+  };
+
   return (
     <>
       <div className="DetailBox whitespace-pre-line w-[1130px] h-[full] mt-[109px] mx-auto flex">
@@ -160,8 +168,11 @@ export default function Page() {
             <span className="text-[40px]">{formattedPrice}원</span>
           </div>
           <div className="Submit w-[633px] min-h-[62px] flex justify-end">
-            <button className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white">
-              <AllergyNotice />
+            <button
+              onClick={() => AddCart(productData.id, cnt, member_id)}
+              className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white"
+            >
+              <AddToCart />
             </button>
           </div>
         </div>

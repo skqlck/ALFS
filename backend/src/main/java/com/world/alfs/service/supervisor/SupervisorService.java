@@ -241,7 +241,7 @@ public class SupervisorService {
                     JSONObject fieldObject = fieldsArray.getJSONObject(i);
                     String inferText = fieldObject.optString("inferText");
 
-                    String[] words = inferText.split("[\\s,.\n]+"); // 공백, 줄바꿈문자, . 이랑 ,
+                    String[] words = inferText.split("[\\s,.\n):；·]+");
                     for (String word : words) {
                         if (!word.isEmpty()) {
                             result.add(word);
