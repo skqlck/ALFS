@@ -6,13 +6,13 @@ import Link from "next/link";
 import { GetList } from "../../api/list/ListPage";
 
 async function GetListData() {
-  const member_id: string = localStorage.getItem("id")!;
-  const response: any = await GetList(member_id);
-  console.log("리스트 불러오기", response);
+  // const member_id: string = localStorage.getItem("id")!;
+  // const response: any = await GetList(member_id);
+  // console.log("리스트 불러오기", response);
 
   return (
     <>
-      {response && (
+      {/* {response && (
         <div className="Container w-[800px] h-auto mt-[124px] ml-[418px]">
           총 {response.length}건
           <>
@@ -37,7 +37,7 @@ async function GetListData() {
             ))}
           </div>
         </div>
-      )}
+      )} */}
     </>
   );
 }
