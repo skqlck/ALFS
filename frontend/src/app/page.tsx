@@ -46,6 +46,7 @@ export default function Page() {
   const setAllergy = (e: any) => {
     console.log(e);
   };
+  console.log(process.env.NEXTAUTH_URL);
 
   useEffect(() => {
     AOS.init();
