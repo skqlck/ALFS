@@ -11,9 +11,4 @@ module.exports = {
       },
     ],
   },
-  env: {
-    // NEXTAUTH_URL: "https://k9c204.p.ssafy.io/api/auth",
-    // NEXTAUTH_URL: "http://localhost:3000",
-    NEXTAUTH_SECRET: "82b6a2e84414282b4bead56609a59b23",
-  },
 };

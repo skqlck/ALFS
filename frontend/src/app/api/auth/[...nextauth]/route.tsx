@@ -11,6 +11,8 @@ const handler = NextAuth({
         userId: { label: "Password", type: "password" },
       },
       async authorize(credentials: any) {
+        console.log(credentials);
+        console.log("들어와지긴함");
         const res = await fetch("https://k9c204.p.ssafy.io/api/member/login", {
           method: "POST",
           body: JSON.stringify(credentials),
