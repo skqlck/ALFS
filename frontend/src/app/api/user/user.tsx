@@ -30,6 +30,32 @@ export async function CheckPhone(props: String) {
   }
 }
 
+export async function UserSignup(props: any) {
+  console.log(props);
+  try {
+    const res = await baseAxios.post("/api/member/signup", {
+      member: {
+        identifier: props.id,
+        password: props.password,
+        passwordCheck: props.passwordCheck,
+        name: props.name,
+        email: props.email,
+        phoneNumber: props.phone_number,
+        birth: props.birth,
+      },
+      address: {
+        address_1: props.address_1,
+        address_2: props.address_2,
+        alias: props.alias,
+      },
+    });
+    console.log(res);
+    return res.data.data;
+  } catch (error) {
+    console.error(error);
+  }
+}
+
 export async function UserLogin(props: any) {
   try {
     const res = await baseAxios.post(`api/member/login`, {
@@ -78,7 +104,7 @@ export async function PlusAddress(props: any) {
   console.log(props);
   try {
     const res = await baseAxios.post(`api/address/`, {
-      member_id: localStorage.getItem("id"),
+      member_id: props.member_id,
       address: {
         address_1: props.address_1,
         address_2: props.address_2,

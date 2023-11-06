@@ -2,7 +2,7 @@
 
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
-import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Checkbox, Button } from "@chakra-ui/react";
+import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Checkbox, Button, useToast } from "@chakra-ui/react";
 import { BiEdit } from "react-icons/bi";
 import { AddressAll, ChangeStatus, PlusAddress } from "@/app/api/user/user";
 import {
@@ -18,6 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import DaumPost from "@/app/_components/location/Daumpost";
+import { useSession } from "next-auth/react";
+import PropsModal from "@/app/_components/modal/PropsModal";
 
 type Inputs = {
   id: number;
@@ -27,21 +29,32 @@ type Inputs = {
 };
 
 export default function Page() {
-  const [id, setId] = useState();
+  const { data: session } = useSession();
+
+  const toast = useToast();
   const [myAddress, setMyAddress] = useState([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit, watch, setValue } = useForm<Inputs>();
 
-  const GetAddress = async (id: any) => {
-    const res = await AddressAll(id);
+  const GetAddress = async () => {
+    const res = await AddressAll(session?.user?.name);
     if (res) {
       setMyAddress(res.data.data);
       console.log(res);
     }
   };
   const changeStatus = async (id: any) => {
-    const data = [id, Number(localStorage.getItem("id"))];
+    const data = [Number(session?.user?.name), id];
     const res = await ChangeStatus(data);
+    toast({
+      title: "기본 배송지가 변경되었습니다.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const setAddress = (address: string) => {
@@ -49,13 +62,21 @@ export default function Page() {
   };
 
   const handleAddress = async (e: any) => {
-    const res = await PlusAddress(e);
-    GetAddress(localStorage.getItem("id"));
+    const data = {
+      member_id: session?.user?.name,
+      address_1: e.address_1,
+      address_2: e.address_2,
+      alias: e.alias,
+    };
+    const res = await PlusAddress(data);
+    GetAddress();
   };
 
   useEffect(() => {
-    GetAddress(localStorage.getItem("id"));
-  }, [localStorage.getItem("id")]);
+    if (session?.user) {
+      GetAddress();
+    }
+  }, []);
 
   return (
     <div>
@@ -70,7 +91,7 @@ export default function Page() {
             <ModalOverlay />
             <ModalContent>
               <form onSubmit={handleSubmit(handleAddress)}>
-                <ModalHeader>새 배송지 입력</ModalHeader>
+                <ModalHeader>새 배송지 입력(최대 5개 입력가능)</ModalHeader>
                 <ModalCloseButton />
                 <ModalBody>
                   <div className="flex justify-evenly mb-[20px]">

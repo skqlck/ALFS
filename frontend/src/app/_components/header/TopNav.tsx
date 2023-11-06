@@ -1,7 +1,7 @@
 "use client";
 
 import React from "react";
-import { Menu, MenuButton, MenuList, MenuItem, Button } from "@chakra-ui/react";
+import { Menu, MenuButton, MenuList, MenuItem, Button, useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
@@ -9,10 +9,16 @@ import { useSession, signOut } from "next-auth/react";
 export default function TopNav() {
   const router = useRouter();
   const { data: session } = useSession();
+  const toast = useToast();
 
   const handleLogout = () => {
+    toast({
+      title: "로그아웃 되었습니다.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
     signOut({ redirect: false });
-    localStorage.setItem("id", "null");
     router.push("/");
   };
   console.log(session);

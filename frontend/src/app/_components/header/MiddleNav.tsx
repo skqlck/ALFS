@@ -11,7 +11,7 @@ export default function MiddleNav() {
   return (
     <div className="min-w-[1000px] h-[100px] justify-center flex ">
       <div className="min-w-[1000px] flex items-center justify-between">
-        <Link href="/main">
+        <Link href="/">
           <div className="flex justify-center items-center">
             <Image src={Logo} width={50} height={50} alt="" priority />
             <p className="text-[30px] ml-[10px]">

@@ -28,16 +28,18 @@ export default function Card({ name, image, id, title, price, sale, delivery }: 
   };
   return (
     <div className="w-[178px] h-[450px]">
-      <Image
-        src={image}
-        width={178}
-        height={240}
-        className={`${id}`}
-        alt="product image"
-        onClick={() => {
-          moveDetail(id);
-        }}
-      />
+      <Link href={{ pathname: `/detail/${id}` }}>
+        <Image
+          src={image}
+          width={178}
+          height={240}
+          className={`${id}`}
+          alt="product image"
+          onClick={() => {
+            moveDetail(id);
+          }}
+        />
+      </Link>
 
       <Link href={{ pathname: `/cart` }}>
         <Button className="w-[178px] h-[32px] rounded-none mt-[18px] border-2 text-[15px] flex items-center justify-center">

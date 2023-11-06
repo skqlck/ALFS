@@ -2,16 +2,12 @@
 
 import React, { useEffect, useState } from "react";
 import { Button, FormControl, FormHelperText, Input } from "@chakra-ui/react";
-import { useForm, SubmitHandler } from "react-hook-form";
+import { useForm } from "react-hook-form";
 import { useToast } from "@chakra-ui/react";
 
-import Link from "next/link";
 import DaumPost from "@/app/_components/location/Daumpost";
-import ChoiceAllergy from "@/app/_components/choiceAllergy/ChoiceAllergy";
 
-import { Tag, TagLabel, TagCloseButton } from "@chakra-ui/react";
-import { baseAxios } from "@/app/api/Api";
-import { CheckEmail, CheckId, CheckPhone } from "@/app/api/user/user";
+import { CheckEmail, CheckId, CheckPhone, UserSignup } from "@/app/api/user/user";
 
 type Inputs = {
   name: string;
@@ -38,9 +34,6 @@ export default function Page() {
   const phoneRex = /^010\d{3,4}\d{4}$/;
   const toast = useToast();
 
-  const [year, setYear] = useState<number>(1900);
-  const [month, setMonth] = useState<number>(1);
-  const [day, setDay] = useState<number>(1);
   const [allergy2, setAllergy2] = useState("");
   const [selectedAllergy2, setSelectedAllergy2] = useState<string[]>([]);
   const [hate, setHate] = useState("");
@@ -90,38 +83,18 @@ export default function Page() {
 
   //회원가입버튼
   const handleSignup = async (e: any) => {
-    console.log(e);
-    try {
-      const res = await baseAxios.post("/api/member/signup", {
-        member: {
-          identifier: e.id,
-          password: e.password,
-          passwordCheck: e.passwordCheck,
-          name: e.name,
-          email: e.email,
-          phoneNumber: e.phone_number,
-          birth: e.birth,
-        },
-        address: {
-          address_1: e.address_1,
-          address_2: e.address_2,
-          alias: e.alias,
-        },
-        allergy: e.allergy_1,
-        hate: e.hate,
-      });
-      toast({
-        title: "회원가입에 성공했습니다.",
-        status: "success",
-        duration: 3000,
-        isClosable: true,
-      });
-      setTimeout(() => {
-        window.location.replace("/login");
-      }, 2000);
-    } catch (error) {
-      console.error(error);
-    }
+    const userId = await UserSignup(e);
+    console.log(userId);
+
+    toast({
+      title: "회원가입에 성공했습니다. 로그인 페이지로 이동합니다.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    // setTimeout(() => {
+    //   window.location.replace("/login");
+    // }, 2000);
   };
 
   //중복검사버튼
@@ -133,6 +106,12 @@ export default function Page() {
           ...prev,
           [id]: true,
         }));
+        toast({
+          title: "사용가능한 아이디입니다.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else {
         toast({
           title: "중복된 아이디입니다.",
@@ -149,6 +128,12 @@ export default function Page() {
           ...prev,
           [id]: true,
         }));
+        toast({
+          title: "사용가능한 이메일입니다.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else {
         toast({
           title: "중복된 이메일입니다.",
@@ -165,6 +150,12 @@ export default function Page() {
           ...prev,
           [id]: true,
         }));
+        toast({
+          title: "사용가능한 번호입니다.",
+          status: "success",
+          duration: 3000,
+          isClosable: true,
+        });
       } else {
         toast({
           title: "중복된 번호입니다.",
@@ -190,9 +181,8 @@ export default function Page() {
 
     if (
       (id === "password" && pwRex.test(watch("password"))) ||
-      (id === "passwordCheck" && watch("passwordCheck") == watch("password")) ||
       (id === "name" && nameRex.test(watch("name"))) ||
-      (id === "address_2" && watch("address_2"))
+      (id === "address_1" && watch("address_1"))
     ) {
       setValidate((prev) => ({
         ...prev,
@@ -200,6 +190,19 @@ export default function Page() {
       }));
     }
   };
+  useEffect(() => {
+    if (watch("passwordCheck") === watch("password")) {
+      setValidate((prev) => ({
+        ...prev,
+        passwordCheck: true,
+      }));
+    } else {
+      setValidate((prev) => ({
+        ...prev,
+        passwordCheck: false,
+      }));
+    }
+  }, [watch("password"), watch("passwordCheck")]);
 
   //주소검색
   const setAddress = (address: string) => {
@@ -249,78 +252,6 @@ export default function Page() {
     });
   };
 
-  const changeYear = (e: any) => {
-    setShowText((prev) => ({
-      ...prev,
-      birth: true,
-    }));
-
-    const year = e.target.value;
-    if (year.length <= 4) {
-      setYear(year);
-      if (year < 1923 || year > 2024) {
-        setText((prev) => ({
-          ...prev,
-          birth: "정확한 날짜를 입력해주세요.",
-        }));
-        setValidate((prev) => ({
-          ...prev,
-          year: false,
-        }));
-      } else {
-        setValidate((prev) => ({
-          ...prev,
-          year: true,
-        }));
-      }
-    }
-  };
-  const changeMonth = (e: any) => {
-    const month = e.target.value;
-    if (month.length <= 2) {
-      setMonth(month);
-      if (month < 1 || month > 12 || month.length === 1) {
-        setText((prev) => ({
-          ...prev,
-          birth: "정확한 날짜를 입력해주세요.",
-        }));
-        setValidate((prev) => ({
-          ...prev,
-          month: false,
-        }));
-      } else {
-        setValidate((prev) => ({
-          ...prev,
-          month: true,
-        }));
-      }
-    }
-  };
-  const changeDay = (e: any) => {
-    const day = e.target.value;
-    if (day.length <= 2) {
-      setDay(day);
-      if (day < 1 || day > 31 || day.length === 1) {
-        setText((prev) => ({
-          ...prev,
-          birth: "정확한 날짜를 입력해주세요.",
-        }));
-        setValidate((prev) => ({
-          ...prev,
-          day: false,
-        }));
-      } else {
-        setValidate((prev) => ({
-          ...prev,
-          day: true,
-        }));
-      }
-    }
-  };
-
-  useEffect(() => {
-    setValue("birth", year + month + day);
-  }, [year, month, day, setValue]);
   return (
     <div className="min-w-[650px] flex justify-center">
       <form onSubmit={handleSubmit(handleSignup)}>
@@ -347,6 +278,7 @@ export default function Page() {
                       handleChange("id");
                     },
                   })}
+                  id="identifier"
                 />
                 {showtext.id &&
                   (validate.id ? null : (
@@ -422,6 +354,7 @@ export default function Page() {
                       handleChange("passwordCheck");
                     },
                   })}
+                  id="passwordCheck"
                 />
                 {showtext.passwordCheck &&
                   (validate.passwordCheck ? null : (
@@ -447,6 +380,7 @@ export default function Page() {
                       handleChange("name");
                     },
                   })}
+                  id="name"
                 />
                 {showtext.name &&
                   (validate.name ? null : (
@@ -508,7 +442,7 @@ export default function Page() {
                   type="number"
                   focusBorderColor="green.500"
                   borderColor="gray.300"
-                  placeholder="전화번호를 입력해주세요"
+                  placeholder="-을 제외한 전화번호를 입력해주세요"
                   {...register("phone_number", {
                     onChange() {
                       handleChange("phone_number");
@@ -542,6 +476,26 @@ export default function Page() {
             </div>
 
             <div className="flex justify-evenly mb-[20px]">
+              <div className="w-[100px] h-[40px] flex items-center">
+                생년월일<p className="text-red-500">*</p>
+              </div>
+              <div>
+                <div className="w-[300px]">
+                  <Input
+                    type="date"
+                    borderColor="gray.300"
+                    focusBorderColor="green.500"
+                    max="2023-11-17"
+                    {...register("birth")}
+                  />
+                </div>
+                {showtext.birth && <FormHelperText className="text-red-500 text-xs">*{text.birth}</FormHelperText>}
+              </div>
+
+              <div className="w-[100px]"></div>
+            </div>
+
+            <div className="flex justify-evenly mb-[20px]">
               <div className="w-[100px] h-[40px]  flex items-center">
                 주소<p className="text-red-500">*</p>
               </div>
@@ -568,11 +522,7 @@ export default function Page() {
                   borderColor="gray.300"
                   focusBorderColor="green.500"
                   placeholder="상세주소를 입력해주세요"
-                  {...register("address_2", {
-                    onChange() {
-                      handleChange("address_2");
-                    },
-                  })}
+                  {...register("address_2")}
                 ></Input>
               </div>
               <div className="w-[100px]"></div>
@@ -585,75 +535,21 @@ export default function Page() {
                   borderColor="gray.300"
                   focusBorderColor="green.500"
                   placeholder="주소명칭을 입력해주세요"
-                  {...register("alias", {
-                    onChange() {
-                      handleChange("alias");
-                    },
-                  })}
+                  {...register("alias")}
                 ></Input>
               </div>
               <div className="w-[100px]"></div>
             </div>
 
-            <div className="flex justify-evenly mb-[20px]">
-              <div className="w-[100px] h-[40px] flex items-center">
-                생년월일<p className="text-red-500">*</p>
-              </div>
-              <div>
-                <div className="w-[300px] h-[40px] border-gray-300 rounded-[6px] flex border-[1px]">
-                  <Input
-                    type="number"
-                    variant="unstyled"
-                    placeholder="YYYY"
-                    borderColor="gray.300"
-                    justifyContent="center"
-                    focusBorderColor="green.500"
-                    textAlign="center"
-                    value={year}
-                    onChange={changeYear}
-                  />
-                  <p className="flex items-center">/</p>
-                  <Input
-                    type="number"
-                    variant="unstyled"
-                    placeholder="MM"
-                    borderColor="gray.300"
-                    justifyContent="center"
-                    focusBorderColor="green.500"
-                    textAlign="center"
-                    value={month}
-                    onChange={changeMonth}
-                  />
-                  <p className="flex items-center">/</p>
-                  <Input
-                    type="number"
-                    variant="unstyled"
-                    placeholder="DD"
-                    borderColor="gray.300"
-                    justifyContent="center"
-                    focusBorderColor="green.500"
-                    textAlign="center"
-                    value={day}
-                    onChange={changeDay}
-                  />
-                </div>
-                {showtext.birth && !(validate.year && validate.month && validate.day) && (
-                  <FormHelperText className="text-red-500 text-xs">*{text.birth}</FormHelperText>
-                )}
-              </div>
-
-              <div className="w-[100px]"></div>
-            </div>
-
-            <div className="flex justify-evenly mb-[20px]">
+            {/* <div className="flex justify-evenly mb-[20px]">
               <div className="w-[100px] h-[40px]  flex items-center">알러지</div>
               <div className="w-[300px]">
                 <ChoiceAllergy data={setAllergy} />
               </div>
               <div className="w-[100px]"></div>
-            </div>
+            </div> */}
 
-            <div className="flex justify-evenly mb-[20px]">
+            {/* <div className="flex justify-evenly mb-[20px]">
               <div className="w-[100px] h-[40px]  flex items-center">추가입력</div>
               <div className="w-[300px]">
                 <Input
@@ -690,9 +586,9 @@ export default function Page() {
                   추가하기
                 </Button>
               </div>
-            </div>
+            </div> */}
 
-            <div className="flex justify-evenly mb-[20px]">
+            {/* <div className="flex justify-evenly mb-[20px]">
               <div className="w-[100px] h-[40px]  flex items-center">기피식품</div>
               <div className="w-[300px]">
                 <Input
@@ -729,7 +625,7 @@ export default function Page() {
                   추가하기
                 </Button>
               </div>
-            </div>
+            </div> */}
           </div>
 
           <div className="flex justify-evenly my-[50px]">
@@ -744,9 +640,7 @@ export default function Page() {
                   validate.email &&
                   validate.phone_number &&
                   validate.address_1 &&
-                  validate.year &&
-                  validate.month &&
-                  validate.day
+                  watch("birth")
                 )
               }
               variant="outline"

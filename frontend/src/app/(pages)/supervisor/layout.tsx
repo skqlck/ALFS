@@ -39,32 +39,6 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
                 </p>
               </Button>
             </a>
-            <a href="/supervisor/allergy">
-              <Button
-                width={200}
-                height={50}
-                variant="ghost"
-                color={pathname === "/supervisor/allergy" ? "green.500" : "your-default-color"}
-              >
-                <p className="w-full flex text-[20px] justify-between">
-                  알러지 관리 <AiOutlineRight />
-                </p>
-              </Button>
-            </a>
-            <a href="/supervisor/info">
-              <Button
-                width={200}
-                height={50}
-                variant="ghost"
-                color={
-                  pathname === ("/supervisor/info" || "/supervisor/info/modify") ? "green.500" : "your-default-color"
-                }
-              >
-                <p className="w-full flex text-[20px] justify-between">
-                  개인정보수정 <AiOutlineRight />
-                </p>
-              </Button>
-            </a>
           </div>
         </div>
 

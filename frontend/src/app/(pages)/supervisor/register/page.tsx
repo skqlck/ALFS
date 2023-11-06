@@ -5,44 +5,42 @@ import { Button, Input } from "@chakra-ui/react";
 import axios from "axios";
 import Image from "next/image";
 import React, { useState } from "react";
+import { GiConsoleController } from "react-icons/gi";
+import Logo from "../../../_asset/img/Logo.jpg";
 
 export default function Page() {
   const [file, setFile] = useState<File[]>([]);
   const [image, setImage] = useState<string>("");
   const [image1, setImage1] = useState<string>("");
   const [image2, setImage2] = useState<string>("");
-  const config = {
-    headers: {
-      "Content-Type": "multipart/form-data",
-      Accept: "application/json",
-    },
-  };
+  const [form, setForm] = useState([]);
+  const [form1, setForm1] = useState([]);
+  const [form2, setForm2] = useState([]);
 
   const uploadImage = async () => {
     const formData = new FormData();
-    for (let i = 0; i < file.length; i++) {
-      formData.append("images", file[i]); // 첫 번째 파일을 선택
-    }
+    formData.append(`images`, form[0]);
+    formData.append(`images`, form1[0]);
+    formData.append(`images`, form2[0]);
     const ocrRequest = { format: "jpg", name: "20구" };
-    formData.append("OcrFileRequest", JSON.stringify(ocrRequest));
+    formData.append("OcrFileRequest", new Blob([JSON.stringify(ocrRequest)], { type: "application/json" }));
 
-    const postSurvey = await axios({
-      method: "POST",
-      url: "http://k9c204.p.ssafy.io:8080/api/supervisor/ocr/file",
-      headers: {
-        "Content-Type": "multipart/form-data",
-      },
-      data: formData,
-    });
-
-    // console.log(res.data.img);
-    // setImage(res.data.img);
+    try {
+      const res = await baseAxios.post<any>("api/supervisor/ocr/file", formData, {
+        headers: {
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      console.log(res);
+    } catch (error) {
+      console.error("Error:", error);
+    }
   };
 
   const handlechangefile = (e: any) => {
     console.log(e.target.files);
     const [newfile] = e.target.files;
-    setFile([...file, e.target.files]);
+    setForm(e.target.files);
 
     const fileReader = new FileReader();
     fileReader.readAsDataURL(newfile);
@@ -54,7 +52,7 @@ export default function Page() {
   const handlechangefile1 = (e: any) => {
     console.log(e.target.files);
     const [newfile] = e.target.files;
-    setFile([...file, e.target.files]);
+    setForm1(e.target.files);
 
     const fileReader = new FileReader();
     fileReader.readAsDataURL(newfile);
@@ -66,7 +64,7 @@ export default function Page() {
   const handlechangefile2 = (e: any) => {
     console.log(e.target.files);
     const [newfile] = e.target.files;
-    setFile([...file, e.target.files]);
+    setForm2(e.target.files);
 
     const fileReader = new FileReader();
     fileReader.readAsDataURL(newfile);
@@ -80,45 +78,39 @@ export default function Page() {
       <div className=" border-black border-b-[4px]">
         <p className="text-[30px] mb-[50px]">상품등록</p>
       </div>
-      <div className="mt-[20px] border-b-[1px]">
-        <div className="flex justify-between items-center">
-          <p className="text-[20px]">상품 메인 사진</p>
-          <form onSubmit={uploadImage}>
+      <div className="flex">
+        <div className="mt-[20px] border-b-[1px]">
+          <div className="flex flex-col ustify-between items-center">
+            <p className="text-[20px]">상품 메인 사진</p>
             <Input type="file" onChange={handlechangefile}></Input>
-            <Button type="submit"></Button>
-          </form>
-        </div>
+          </div>
 
-        <div>
-          <Image width={500} height={500} src={image} alt=""></Image>
+          <div>
+            <Image width={250} height={250} src={image || Logo} alt=""></Image>
+          </div>
         </div>
-      </div>
-      <div className="mt-[20px] border-b-[1px]">
-        <div className="flex justify-between items-center">
-          <p className="text-[20px]">상품 상세정보 사진</p>
-          <form onSubmit={uploadImage}>
+        <div className="mt-[20px] border-b-[1px]">
+          <div className="flex flex-col justify-between items-center">
+            <p className="text-[20px]">상품 상세정보 사진</p>
             <Input type="file" onChange={handlechangefile1}></Input>
-            <Button type="submit"></Button>
-          </form>
-        </div>
+            <Image width={250} height={250} src={image1 || Logo} alt=""></Image>
+          </div>
 
-        <div>
-          <Image width={500} height={500} src={image1} alt=""></Image>
+          <div></div>
         </div>
-      </div>
-      <div className="mt-[20px] border-b-[1px]">
-        <div className="flex justify-between items-center">
-          <p className="text-[20px]">원재료 사진</p>
-          <form onSubmit={uploadImage}>
+        <div className="mt-[20px] border-b-[1px]">
+          <div className="flex flex-col justify-between items-center">
+            <p className="text-[20px]">원재료 사진</p>
+
             <Input type="file" onChange={handlechangefile2}></Input>
-            <Button type="submit"></Button>
-          </form>
-        </div>
+          </div>
 
-        <div>
-          <Image width={500} height={500} src={image2} alt=""></Image>
+          <div>
+            <Image width={250} height={250} src={image2 || Logo} alt=""></Image>
+          </div>
         </div>
       </div>
+
       <div className="flex justify-evenly mt-[20px]">
         <Button width={300} variant="outline" colorScheme="whatsapp" onClick={uploadImage}>
           상품 등록하기
