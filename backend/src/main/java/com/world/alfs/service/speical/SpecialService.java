@@ -1,5 +1,6 @@
 package com.world.alfs.service.speical;
 
+import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.domain.special.Special;
@@ -11,7 +12,8 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Optional;
+import java.util.ArrayList;
+import java.util.List;
 
 @RequiredArgsConstructor
 @Service
@@ -34,10 +36,19 @@ public class SpecialService {
         return special.getId();
     }
 
-//    public List<> getAllProduct(){
-//
-//    }
-//
+    public List<GetSpecialResponse> getAllSpecial(){
+
+        List<Special> specialList = specialRepository.findAll();
+
+        List<GetSpecialResponse> specialResponseList = new ArrayList<>();
+        for (Special special : specialList) {
+            GetSpecialResponse specialResponse = GetSpecialResponse.toGetSpecialListResponse(special);
+            specialResponseList.add(specialResponse);
+        }
+
+        return specialResponseList;
+    }
+
 //    public Long getProduct(Long id){
 //
 //    }

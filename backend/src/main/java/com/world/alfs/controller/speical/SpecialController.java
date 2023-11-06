@@ -2,11 +2,14 @@ package com.world.alfs.controller.speical;
 
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.speical.request.AddSpecialReqeust;
+import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.service.speical.SpecialService;
 import com.world.alfs.service.speical.dto.AddSpecialDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -23,13 +26,13 @@ public class SpecialController {
         return ApiResponse.ok(id);
     }
 
-//    @GetMapping("/all")
-//    public ApiResponse<List<GetSpecialListResponse>> getAllProduct(){
-//        List<GetSpecialListResponse> specialList = specialService.getAllProduct();
-//        return ApiResponse.ok(specialList);
-//    }
-//
-//
+    @GetMapping("/all")
+    public ApiResponse<List<GetSpecialResponse>> getAllSpecial(){
+        List<GetSpecialResponse> specialList = specialService.getAllSpecial();
+        return ApiResponse.ok(specialList);
+    }
+
+
 //    @GetMapping("/{id}")
 //    public ApiResponse<SpecialResponse> getProduct(@PathVariable Long id){
 //        Optional<SpecialResponse> saveSpecial =  specialService.getProduct(id);
