@@ -1,6 +1,5 @@
 import NextAuth from "next-auth/next";
 import CredentialsProvider from "next-auth/providers/credentials";
-import { baseAxios } from "../../Api";
 
 const handler = NextAuth({
   secret: process.env.NEXTAUTH_SECRET,
