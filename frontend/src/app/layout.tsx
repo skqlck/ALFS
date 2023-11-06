@@ -4,7 +4,7 @@ import "./globals.css";
 import localFont from "next/font/local";
 import Nav from "./_components/header/Nav";
 import Footer from "./_components/footer/Footer";
-import { getServerSession } from "next-auth";
+import { getServerSession } from "next-auth/next";
 import SessionProviders from "./_components/SessionProvider";
 import { Providers } from "./providers";
 
