@@ -28,6 +28,7 @@ export default function TopNav() {
       <div className="min-w-[1000px] flex items-center justify-end">
         {session ? (
           <>
+            {process.env.NEXTAUTH_URL}
             <Button variant="unstyled" marginRight="10px" onClick={handleLogout}>
               로그아웃
             </Button>
