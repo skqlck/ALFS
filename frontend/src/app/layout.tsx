@@ -22,16 +22,17 @@ export const metadata: Metadata = {
 };
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const session = await getServerSession();
   return (
     <html lang="en">
       <body className={myFont.className}>
-        <SessionProvider>
-          <Providers>
+        <Providers>
+          <SessionProvider session={session}>
             <Nav></Nav>
             {children}
             <Footer />
-          </Providers>
-        </SessionProvider>
+          </SessionProvider>
+        </Providers>
       </body>
     </html>
   );
