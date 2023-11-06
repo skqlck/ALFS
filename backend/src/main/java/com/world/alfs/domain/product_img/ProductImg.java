@@ -1,5 +1,6 @@
 package com.world.alfs.domain.product_img;
 
+import com.world.alfs.domain.product.Product;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
@@ -15,7 +16,9 @@ public class ProductImg {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
-    private Long productId;
+    @OneToOne
+    @JoinColumn(name = "product_id")
+    private Product product;
 
     @Column()
     private String img_1;
@@ -27,9 +30,9 @@ public class ProductImg {
     private String img_3;
 
     @Builder
-    public ProductImg(Long id, Long product_id, String img_1, String img_2, String img_3) {
+    public ProductImg(Long id, Product product, String img_1, String img_2, String img_3) {
         this.id = id;
-        this.productId = product_id;
+        this.product = product;
         this.img_1 = img_1;
         this.img_2 = img_2;
         this.img_3 = img_3;

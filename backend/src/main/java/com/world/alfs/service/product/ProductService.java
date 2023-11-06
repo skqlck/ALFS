@@ -26,7 +26,7 @@ public class ProductService {
 
     public Long addProduct(AddProductDto dto) {
         Product product = dto.toEntity();
-        ProductImg productImg = dto.toImgEntity();
+        ProductImg productImg = dto.toImgEntity(product);
         Product savedProduct = productRepository.save(product);
         productImgRepository.save(productImg);
         return savedProduct.getId();
