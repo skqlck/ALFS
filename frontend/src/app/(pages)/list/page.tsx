@@ -3,7 +3,7 @@
 import React from "react";
 import Card from "@/app/_components/card/Card";
 import Link from "next/link";
-import { GetList } from "../../api/list/ListPage";
+import { GetList } from "../../apis/list/ListPage";
 
 async function GetListData() {
   // const member_id: string = localStorage.getItem("id")!;

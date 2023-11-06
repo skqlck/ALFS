@@ -4,7 +4,7 @@ import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Checkbox, Button, useToast } from "@chakra-ui/react";
 import { BiEdit } from "react-icons/bi";
-import { AddressAll, ChangeStatus, PlusAddress } from "@/app/api/user/user";
+import { AddressAll, ChangeStatus, PlusAddress } from "@/app/apis/user/user";
 import {
   Modal,
   ModalOverlay,

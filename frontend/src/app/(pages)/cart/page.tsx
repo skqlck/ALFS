@@ -6,7 +6,7 @@ import { GrLocation } from "react-icons/gr";
 import Link from "next/link";
 import Image from "next/image";
 import CartItem from "@/app/_components/cartItem/CartItem";
-import { CartList } from "@/app/api/cart/CartPage";
+import { CartList } from "@/app/apis/cart/CartPage";
 import SnowImage from "../../_asset/img/SnowImage.svg";
 import WaterDropImage from "../../_asset/img/WaterDropImage.svg";
 import SunImage from "../../_asset/img/SunImage.svg";

@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Card from "@/app/_components/card/Card";
 import Link from "next/link";
-import { GetList } from "../../../api/list/ListPage";
+import { GetList } from "../../../apis/list/ListPage";
 import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { DeleteProduct } from "@/app/api/supervisor/supervisor";
+import { DeleteProduct } from "@/app/apis/supervisor/supervisor";
 import PropsModal from "@/app/_components/modal/PropsModal";
 import { useSession } from "next-auth/react";
 

@@ -5,7 +5,7 @@ import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 
-import { SupervisorLogin } from "@/app/api/supervisor/supervisor";
+import { SupervisorLogin } from "@/app/apis/supervisor/supervisor";
 
 type Inputs = {
   identifier: string;

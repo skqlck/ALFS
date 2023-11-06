@@ -1,6 +1,6 @@
 "use client";
 
-import { baseAxios } from "@/app/api/Api";
+import { baseAxios } from "@/app/apis/Api";
 import { Button, Input } from "@chakra-ui/react";
 import axios from "axios";
 import Image from "next/image";

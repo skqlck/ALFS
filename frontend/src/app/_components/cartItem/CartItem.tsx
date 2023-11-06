@@ -4,7 +4,7 @@ import React, { useState } from "react";
 import Image from "next/image";
 import { BsCheckCircle, BsCheckCircleFill } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
-import { AddCount, RemoveCount } from "@/app/api/cart/CartPage";
+import { AddCount, RemoveCount } from "@/app/apis/cart/CartPage";
 
 type CartItemProps = {
   isCheck: boolean;

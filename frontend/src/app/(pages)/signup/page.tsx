@@ -7,7 +7,7 @@ import { useToast } from "@chakra-ui/react";
 
 import DaumPost from "@/app/_components/location/Daumpost";
 
-import { CheckEmail, CheckId, CheckPhone, UserSignup } from "@/app/api/user/user";
+import { CheckEmail, CheckId, CheckPhone, UserSignup } from "@/app/apis/user/user";
 
 type Inputs = {
   name: string;

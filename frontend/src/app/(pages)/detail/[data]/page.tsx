@@ -3,8 +3,8 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { GetProductDetail } from "@/app/api/detail/DetailPage";
-import { AddProductToCart } from "@/app/api/cart/CartPage";
+import { GetProductDetail } from "@/app/apis/detail/DetailPage";
+import { AddProductToCart } from "@/app/apis/cart/CartPage";
 import AllergyNotice from "@/app/_components/modal/AllergyNotice";
 import AddToCart from "@/app/_components/modal/AddToCart";
 
