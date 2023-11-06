@@ -17,8 +17,6 @@ const handler = NextAuth({
           headers: { "Content-Type": "application/json" },
         });
         const user = await res.json();
-        console.log(user);
-        console.log(process.env.NEXTAUTH_URL);
         user.name = credentials.userId;
         // If no error and we have user data, return it
         if (res.ok && user) {
@@ -29,10 +27,6 @@ const handler = NextAuth({
     }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
-  pages: {
-    error: "/main",
-    signIn: "/login",
-  },
 });
 
 export { handler as GET, handler as POST };

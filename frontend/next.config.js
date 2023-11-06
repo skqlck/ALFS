@@ -17,6 +17,11 @@ const nextConfig = {
   experimental: {
     serverActions: true,
   },
+  env: {
+    // NEXTAUTH_URL: "http://localhost:3000",
+    NEXTAUTH_URL_INTERNAL: "https://k9c204.p.ssafy.io",
+    NEXTAUTH_SECRET: "+0wC9vJe7FO6ce0io2FBk9xEalqKfwv0EGiBhG2xgPA=",
+  },
 };
 
 module.exports = nextConfig;
