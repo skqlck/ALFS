@@ -67,9 +67,13 @@ public class Product {
     @Column(columnDefinition = "TEXT")
     private String content;
 
+    @Column()
+    private int category;
+
 
     @Builder
-    public Product(Long id, String name, String title, int price, int sale, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public Product(Long id, String name, String title, int price, int sale, String delivery, String seller, String pack, String count, String weight,
+                   String allergy, String expireDate, String information, String buyType, int stock, String content, int category) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -86,6 +90,7 @@ public class Product {
         this.buyType = buyType;
         this.stock = stock;
         this.content = content;
+        this.category = category;
     }
 
     public ProductResponse toResponse(ProductImg img) {
@@ -106,6 +111,7 @@ public class Product {
                 .buyType(buyType)
                 .stock(stock)
                 .content(content)
+                .category(category)
                 .main_img(img.getImg_1())
                 .detail_img(img.getImg_2())
                 .ingre_img(img.getImg_3())
@@ -119,6 +125,7 @@ public class Product {
                 .name(name)
                 .price(price)
                 .sale(sale)
+                .category(category)
                 .img(img.getImg_1())
                 .build();
     }
@@ -140,6 +147,7 @@ public class Product {
         buyType = dto.getBuyType();
         stock = dto.getStock();
         content = dto.getContent();
+        category = dto.getCategory();
     }
 
     public ProductIngredient toProductIngredient(Ingredient ingredient) {

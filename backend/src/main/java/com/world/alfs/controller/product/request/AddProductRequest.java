@@ -47,8 +47,10 @@ public class AddProductRequest {
 
     private String content;
 
+    private int category;
+
     @Builder
-    public AddProductRequest(Long id, String name, String title, int price, int sale, String img_1, String img_2, String img_3, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public AddProductRequest(Long id, String name, String title, int price, int sale, String img_1, String img_2, String img_3, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content, int category) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -68,6 +70,7 @@ public class AddProductRequest {
         this.buyType = buyType;
         this.stock = stock;
         this.content = content;
+        this.category = category;
     }
 
     public AddProductDto toDto() {
@@ -91,6 +94,7 @@ public class AddProductRequest {
                 .buyType(this.buyType)
                 .stock(this.stock)
                 .content(this.content)
+                .category(this.category)
                 .build();
 
     }

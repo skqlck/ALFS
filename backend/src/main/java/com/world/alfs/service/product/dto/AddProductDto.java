@@ -47,8 +47,10 @@ public class AddProductDto {
 
     private String content;
 
+    private Integer category;
+
     @Builder
-    public AddProductDto(Long id, String name, String title, int price, int sale, String img_1, String img_2, String img_3, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content) {
+    public AddProductDto(Long id, String name, String title, int price, int sale, String img_1, String img_2, String img_3, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate, String information, String buyType, int stock, String content, Integer category) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -56,7 +58,7 @@ public class AddProductDto {
         this.sale = sale;
         this.img_1 = img_1;
         this.img_2 = img_2;
-        this.img_3= img_3;
+        this.img_3 = img_3;
         this.delivery = delivery;
         this.seller = seller;
         this.pack = pack;
@@ -68,6 +70,7 @@ public class AddProductDto {
         this.buyType = buyType;
         this.stock = stock;
         this.content = content;
+        this.category = category;
     }
 
     public Product toEntity() {
@@ -88,6 +91,7 @@ public class AddProductDto {
                 .buyType(this.buyType)
                 .stock(this.stock)
                 .content(this.content)
+                .category(this.category)
                 .build();
 
     }

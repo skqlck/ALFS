@@ -27,7 +27,6 @@ public class ProductController {
 
     private final ProductService productService;
     private final ProductIngredientService productIngredientService;
-    private final IngredientAllergyService ingredientAllergyService;
     private final MemberAllergyService memberAllergyService;
     private final AllergyService allergyService;
 
