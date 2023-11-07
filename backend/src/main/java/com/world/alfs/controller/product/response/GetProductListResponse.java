@@ -5,8 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.util.List;
-
+import java.util.Set;
 
 @Data
 @NoArgsConstructor
@@ -24,9 +23,10 @@ public class GetProductListResponse {
     private String img;
 
 
-    private List<Integer> filterCode;
+    private Set<Integer> filterCode;
+
     @Builder
-    public GetProductListResponse(Long id, String name, String title, int price, int sale, String img, List<Integer> filterCode) {
+    public GetProductListResponse(Long id, String name, String title, int price, int sale, String img, Set<Integer> filterCode) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -36,18 +36,17 @@ public class GetProductListResponse {
         this.filterCode = filterCode;
     }
 
-    public GetProductListResponse toGetProductListResponse(Product product){
+    public GetProductListResponse toGetProductListResponse(Product product) {
         return GetProductListResponse.builder()
                 .id(product.getId())
                 .name(product.getName())
                 .title(product.getTitle())
                 .price(product.getPrice())
                 .sale(product.getSale())
-//                .img(productImg)
                 .build();
     }
 
-    public void setCode(List<Integer> filterCode) {
+    public void setCode(Set<Integer> filterCode) {
         this.filterCode = filterCode;
     }
 }

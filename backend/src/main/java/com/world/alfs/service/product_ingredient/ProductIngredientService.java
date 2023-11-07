@@ -36,7 +36,6 @@ public class ProductIngredientService {
 
     public List<Ingredient> getAllIngredientId(Long productId) {
         Optional<Product> product = productRepository.findById(productId);
-        System.out.println(product.get().getId());
         List<ProductIngredient> list = productIngredientRepository.findAllByProduct(product.get());
         List<Ingredient> response = new ArrayList<>();
         for(int i=0; i<list.size(); i++){

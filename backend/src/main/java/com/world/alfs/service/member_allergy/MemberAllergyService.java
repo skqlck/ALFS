@@ -32,12 +32,11 @@ public class MemberAllergyService {
         return savedMemberAllergy.getId();
     }
 
-    public List<Long> getFilteredAllergyId(Long memberId, List<Long> allergyList) {
+    public List<Long> getFilteredAllergyId(Long memberId) {
         List<Long> list = new ArrayList<>();
-        for (Long allergyId : allergyList) { //7 3 1 10
-            MemberAllergy memberAllergy = memberAllergyRepository.findByMemberIdAndAllergyId(memberId,allergyId);
-//            list.add(memberAllergyRepository.findAllergyIdByMemberIdAndAllergyId(memberId, allergyId));
-            list.add(memberAllergy.getAllergy().getId());
+        List<MemberAllergy> memberAllergyList = memberAllergyRepository.findByMemberId(memberId);
+        for(MemberAllergy ma : memberAllergyList){
+            list.add(ma.getAllergy().getId());
         }
         return list;
     }
