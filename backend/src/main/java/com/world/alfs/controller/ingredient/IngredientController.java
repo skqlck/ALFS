@@ -18,13 +18,13 @@ public class IngredientController {
 
     private final IngredientService ingredientService;
 
-    @GetMapping
+    @PostMapping
     public ApiResponse<Long> checkIngredient(@RequestBody List<String> productList) {
         ingredientService.checkIngredient(productList);
         return ApiResponse.ok(1L);
     }
 
-    @PostMapping
+    @PostMapping("/add")
     public ApiResponse<Long> addIngredient(@RequestBody AddIngredientRequest request) {
         List<AddIngredientDto> dtoList = request.toDto();
         Long productId = request.getProductId();
