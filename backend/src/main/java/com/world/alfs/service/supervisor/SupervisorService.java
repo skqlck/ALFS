@@ -45,7 +45,7 @@ public class SupervisorService {
 
         if(supervisor.isPresent()) {
             supervisorLoginResponse = SupervisorLoginResponse.builder()
-                    .identifier(supervisor.get().getIdentifier())
+                    .supervisorId(supervisor.get().getId())
                     .build();
             return supervisorLoginResponse;
         }else{
