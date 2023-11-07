@@ -3,7 +3,9 @@ package com.world.alfs.domain.product;
 
 import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
+import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.product_img.ProductImg;
+import com.world.alfs.domain.product_ingredient.ProductIngredient;
 import com.world.alfs.service.product.dto.AddProductDto;
 import lombok.AccessLevel;
 import lombok.Builder;
@@ -138,6 +140,13 @@ public class Product {
         buyType = dto.getBuyType();
         stock = dto.getStock();
         content = dto.getContent();
+    }
+
+    public ProductIngredient toProductIngredient(Ingredient ingredient) {
+        return ProductIngredient.builder()
+                .product(this)
+                .ingredient(ingredient)
+                .build();
     }
 
 }

@@ -11,12 +11,17 @@ import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
 import com.world.alfs.service.product.dto.AddProductDto;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpEntity;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+
+import static com.world.alfs.common.exception.ErrorCode.PRODUCT_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -36,7 +41,7 @@ public class ProductService {
 
     public Optional<ProductResponse> getProduct(Long id){
         Product product = productRepository.findById(id)
-                .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
 
         ProductImg img = productImgRepository.findByProductId(product.getId());
         ProductResponse response = product.toResponse(img);
