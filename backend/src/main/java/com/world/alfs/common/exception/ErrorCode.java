@@ -26,7 +26,8 @@ public enum ErrorCode {
 
 
     /* 500 INTERNAL_SERVER_ERROR : 서버 내부 로직 에러 */
-    DUPLICATE_SPECIAL_ID(HttpStatus.INTERNAL_SERVER_ERROR, "상품 아이디가 중복됩니다.");
+    DUPLICATE_SPECIAL_ID(HttpStatus.INTERNAL_SERVER_ERROR, "상품 아이디가 중복됩니다."),
+    SUPERVISOR_ID_MISMATCH(HttpStatus.FORBIDDEN, "관리자 아이디가 일치하지 않습니다.");
 
     private final HttpStatus httpStatus;
     private final String description;

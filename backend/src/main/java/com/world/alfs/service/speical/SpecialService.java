@@ -10,6 +10,8 @@ import com.world.alfs.domain.special.repository.SpecialRepository;
 import com.world.alfs.domain.supervisor.Supervisor;
 import com.world.alfs.domain.supervisor.repository.SupervisorRepository;
 import com.world.alfs.service.speical.dto.AddSpecialDto;
+import com.world.alfs.service.speical.dto.DeleteSpecialDto;
+import com.world.alfs.service.speical.dto.SetSpecialDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -56,17 +58,32 @@ public class SpecialService {
         return GetSpecialResponse.toGetSpecialListResponse(special);
     }
 
-    public Long setSpecial(Long id, AddSpecialDto dto){
+    public Long setSpecial(Long id, SetSpecialDto dto){
 
-        Product product = productRepository.findById(dto.getProductId()).orElseThrow(()->new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
-        Supervisor supervisor = supervisorRepository.findById(dto.getSupervisorId()).orElseThrow(()->new CustomException(ErrorCode.SUPERVISOR_NOT_FOUND));
+        // 이벤트 특가상품이 존재하는지 확인
+        Product product = productRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
         Special special= specialRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        // 이벤트 특가상품의 관리자와 dto에 보내준 관리자 id와 일치하는지 비교
+        Supervisor supervisor = supervisorRepository.findById(special.getSupervisor().getId()).orElseThrow(()->new CustomException(ErrorCode.SUPERVISOR_NOT_FOUND));
+        if (!special.getSupervisor().getId().equals(dto.getSupervisorId())) {
+            throw new CustomException(ErrorCode.SUPERVISOR_ID_MISMATCH);
+        }
 
         special.setSpecial(dto, product, supervisor);
         return special.getId();
     }
 
-    public Long deleteSpecial(Long id){
+    public Long deleteSpecial(Long id, DeleteSpecialDto dto){
+
+        // 이벤트 특가상품이 존재하는지 확인
+        Special special= specialRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+
+        // id에 해당하는 이벤트 특가상품의 관리자와 dto에 보내준 관리자 id와 일치하는지 비교
+                if (!special.getSupervisor().getId().equals(dto.getSupervisorId())) {
+            throw new CustomException(ErrorCode.SUPERVISOR_ID_MISMATCH);
+        }
+
         specialRepository.deleteById(id);
         return id;
     }

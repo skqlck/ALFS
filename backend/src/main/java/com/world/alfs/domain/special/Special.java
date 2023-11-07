@@ -1,14 +1,12 @@
 package com.world.alfs.domain.special;
 
-import com.world.alfs.domain.TimeBaseEntity;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.supervisor.Supervisor;
-import com.world.alfs.service.speical.dto.AddSpecialDto;
+import com.world.alfs.service.speical.dto.SetSpecialDto;
 import lombok.AccessLevel;
 import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
-import net.bytebuddy.implementation.bind.annotation.Super;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -56,7 +54,7 @@ public class Special {
         this.end = end;
     }
 
-    public void setSpecial(AddSpecialDto dto, Product product, Supervisor supervisor){
+    public void setSpecial(SetSpecialDto dto, Product product, Supervisor supervisor){
         this.status = dto.getStatus();
         this.count = dto.getCount();
         this.salePrice = dto.getSalePrice();
