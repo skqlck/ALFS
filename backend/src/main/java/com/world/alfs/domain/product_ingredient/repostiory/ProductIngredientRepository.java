@@ -15,6 +15,7 @@ public interface ProductIngredientRepository extends JpaRepository<ProductIngred
     List<ProductIngredient> findByIngredientId(Long id);
     @Query("SELECT DISTINCT pi.product.id FROM ProductIngredient pi WHERE pi.ingredient.id IN :ingredientIdList")
     List<Long> findDistinctProductIdsByIngredientIds(List<Long> ingredientIdList);
+    boolean existsByProductIdAndIngredientId(Long productId, Long ingredientId);
 
     List<ProductIngredient> findAllByProduct(Product product);
 }

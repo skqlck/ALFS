@@ -16,6 +16,9 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 
+import static com.world.alfs.common.exception.ErrorCode.DUPLICATE_PRODUCT_INGREDIENT;
+import static com.world.alfs.common.exception.ErrorCode.PRODUCT_NOT_FOUND;
+
 @Slf4j
 @RequiredArgsConstructor
 @Service
@@ -67,10 +70,15 @@ public class IngredientService {
                     .orElseThrow(() -> new CustomException(ErrorCode.INGREDIENT_NOT_FOUND));
 
             Product product = productRepository.findById(productId)
-                    .orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+                    .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
 
-            ProductIngredient productIngredient = product.toProductIngredient(ingredient);
-            productIngredientList.add(productIngredient);
+            boolean exists = productIngredientRepository.existsByProductIdAndIngredientId(productId, ingredient.getId());
+            if (exists) {
+                throw new CustomException(DUPLICATE_PRODUCT_INGREDIENT);
+            } else {
+                ProductIngredient productIngredient = product.toProductIngredient(ingredient);
+                productIngredientList.add(productIngredient);
+            }
         }
 
         productIngredientRepository.saveAll(productIngredientList);
