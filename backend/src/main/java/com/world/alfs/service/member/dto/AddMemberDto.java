@@ -26,8 +26,11 @@ public class AddMemberDto {
 
     private int point;
 
+    private boolean activate;
+
+
     @Builder
-    public AddMemberDto(String identifier, String password, String passwordCheck, String name, String email, String phoneNumber, String birth, int point) {
+    public AddMemberDto(String identifier, String password, String passwordCheck, String name, String email, String phoneNumber, String birth, int point, boolean activate) {
         this.identifier = identifier;
         this.password = password;
         this.passwordCheck = passwordCheck;
@@ -36,6 +39,7 @@ public class AddMemberDto {
         this.phoneNumber = phoneNumber;
         this.birth = birth;
         this.point = point;
+        this.activate = activate;
     }
 
     public Member toEntity() {
@@ -47,6 +51,7 @@ public class AddMemberDto {
                 .point(0)
                 .email(email)
                 .phoneNumber(phoneNumber)
+                .activate(true)
                 .build();
     }
 }
