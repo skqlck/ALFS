@@ -8,7 +8,7 @@ import java.time.LocalDateTime;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GetSpecialResponse {
+public class GetSpecialListResponse {
 
     // product
     private Long productId;
@@ -30,9 +30,6 @@ public class GetSpecialResponse {
     private int productCategory;
 
     private String productImg;
-    private String productMainImg;
-    private String productDetailImg;
-    private String productIngreImg;
 
     // special
     private Long supervisorId;

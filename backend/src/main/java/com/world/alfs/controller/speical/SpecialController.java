@@ -4,6 +4,7 @@ import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.speical.request.AddSpecialReqeust;
 import com.world.alfs.controller.speical.request.DeleteSpecialReqeust;
 import com.world.alfs.controller.speical.request.SetSpecialReqeust;
+import com.world.alfs.controller.speical.response.GetSpecialListResponse;
 import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.service.speical.SpecialService;
 import com.world.alfs.service.speical.dto.AddSpecialDto;
@@ -24,15 +25,15 @@ public class SpecialController {
     private final SpecialService specialService;
 
     @PostMapping()
-    public ApiResponse<Long> addSpecial(@RequestBody AddSpecialReqeust request) throws Exception {
+    public ApiResponse<Long> addSpecial(@RequestBody AddSpecialReqeust request) {
         AddSpecialDto dto = request.toDto();
         Long id = specialService.addSpecial(dto);
         return ApiResponse.ok(id);
     }
 
     @GetMapping("/all")
-    public ApiResponse<List<GetSpecialResponse>> getAllSpecial(){
-        List<GetSpecialResponse> specialList = specialService.getAllSpecial();
+    public ApiResponse<List<GetSpecialListResponse>> getAllSpecial(){
+        List<GetSpecialListResponse> specialList = specialService.getAllSpecial();
         return ApiResponse.ok(specialList);
     }
 
