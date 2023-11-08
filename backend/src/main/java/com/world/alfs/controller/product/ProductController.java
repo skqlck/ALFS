@@ -41,6 +41,12 @@ public class ProductController {
         Optional<ProductResponse> savedProduct = productService.getProduct(id);
         return ApiResponse.ok(savedProduct);
     }
+    
+    @GetMapping("/all")
+    public ApiResponse<List<GetProductListResponse>> getAllProduct() {
+        List<GetProductListResponse> response = productService.getAllProduct();
+        return ApiResponse.ok(response);
+    }
 
     @GetMapping("/all/{memberId}")
     public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Long memberId) {
