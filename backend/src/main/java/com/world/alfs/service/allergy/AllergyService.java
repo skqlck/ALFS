@@ -66,8 +66,6 @@ public class AllergyService {
         for (Long memberAllergyId : memberAllergyList) {
             list.add(allergyRepository.findAllergyTypeById(memberAllergyId));
         }
-        //list 에서 중복 값 빼고 반환하기.
-
         return list;
     }
 
