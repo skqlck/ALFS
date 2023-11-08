@@ -58,10 +58,10 @@ public class SupervisorController {
     public ApiResponse<FileIngredientResponse> getFileIngredient(@RequestPart("images") List<MultipartFile> multipartFile, @RequestPart("OcrFileRequest") OcrFileRequest request){
 
         List<String> imgUrls = new ArrayList<>();
-        for(MultipartFile file : multipartFile){
+        for(int i = 0; i < multipartFile.size()-1; i++){
             String imgUrl = null;
             try {
-                imgUrl = awsS3Service.uploadFiles(file, "static");
+                imgUrl = awsS3Service.uploadFiles(multipartFile.get(i), "static");
                 if(imgUrl == null || imgUrl.isEmpty()){
                     return ApiResponse.badRequest("이미지가 없습니다.");
                 }
