@@ -1,5 +1,6 @@
 package com.world.alfs.controller.manufacturing_allergy;
 
+import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.manufacturing_allergy.request.AddManuAllergyRequest;
 import com.world.alfs.controller.manufacturing_allergy.request.GetManuAllergyRequest;
 import com.world.alfs.service.manufacturing_allergy.ManufacturingAllergyService;
@@ -31,11 +32,11 @@ public class ManufacturingAllergyController {
     }
 
     @PostMapping("/add")
-    public Long addManuAllergy(@RequestBody AddManuAllergyRequest request) {
+    public ApiResponse<Long> addManuAllergy(@RequestBody AddManuAllergyRequest request) {
         List<AddManuAllergyDto> dtoList = request.toDto();
         Long productId = manufacturingAllergyService.addManuAllergy(request.getProductId(), dtoList);
 
-        return productId;
+        return ApiResponse.ok(productId);
     }
 
 }
