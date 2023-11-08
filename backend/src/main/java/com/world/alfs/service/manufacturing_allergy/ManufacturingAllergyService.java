@@ -32,9 +32,9 @@ public class ManufacturingAllergyService {
     private final AllergyRepository allergyRepository;
 
     // 제조시설 알러지 조회
-    public boolean getManuAllergy(GetManuAllergyDto dto) {
+    public boolean getManuAllergy(Long productId, Long memberId) {
         // 회원 알러지 찾기
-        List<MemberAllergy> memberAllergyList = memberAllergyRepository.findByMemberId(dto.getMemberId());
+        List<MemberAllergy> memberAllergyList = memberAllergyRepository.findByMemberId(memberId);
 
         // 알러지 id만 저장
         List<Long> allergyList = new ArrayList<>();
@@ -43,7 +43,7 @@ public class ManufacturingAllergyService {
         }
 
         // 제조시설 알러지 테이블에서 해당 상품 중에서 회원 알러지에 해당하는 개수 조회
-        int cnt = manufacturingAllergyRepository.findCountByProductAndAllergy(dto.getProductId(), allergyList);
+        int cnt = manufacturingAllergyRepository.findCountByProductAndAllergy(productId, allergyList);
 
         return cnt > 0;
     }
@@ -56,7 +56,7 @@ public class ManufacturingAllergyService {
                 .orElseThrow(() ->  new CustomException(PRODUCT_NOT_FOUND));
 
         for (AddManuAllergyDto addManuAllergyDto : dtoList) {
-            Allergy allergy = allergyRepository.findByAllergyName(addManuAllergyDto.getAllergyName())
+            Allergy allergy = allergyRepository.findByAllergyNameAndAllergyType(addManuAllergyDto.getAllergyName(), 1)
                     .orElseThrow(() -> new CustomException(ALLERGY_NOT_FOUND));
 
             boolean exists = manufacturingAllergyRepository.existsByProductAndAllergy(product, allergy);

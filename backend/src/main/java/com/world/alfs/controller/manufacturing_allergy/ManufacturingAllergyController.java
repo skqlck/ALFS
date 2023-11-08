@@ -24,14 +24,6 @@ public class ManufacturingAllergyController {
     private final ManufacturingAllergyService manufacturingAllergyService;
 
     @PostMapping
-    public boolean getManuAllergy(@RequestBody GetManuAllergyRequest request) {
-        GetManuAllergyDto dto = request.toDto();
-        boolean isManuAllergy = manufacturingAllergyService.getManuAllergy(dto);
-
-        return isManuAllergy;
-    }
-
-    @PostMapping("/add")
     public ApiResponse<Long> addManuAllergy(@RequestBody AddManuAllergyRequest request) {
         List<AddManuAllergyDto> dtoList = request.toDto();
         Long productId = manufacturingAllergyService.addManuAllergy(request.getProductId(), dtoList);

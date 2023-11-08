@@ -10,6 +10,7 @@ import com.world.alfs.domain.product.Product;
 import com.world.alfs.service.Ingredient_allergy.IngredientAllergyService;
 import com.world.alfs.service.allergy.AllergyService;
 import com.world.alfs.service.ingredient.IngredientService;
+import com.world.alfs.service.manufacturing_allergy.ManufacturingAllergyService;
 import com.world.alfs.service.member_allergy.MemberAllergyService;
 import com.world.alfs.service.product.ProductService;
 import com.world.alfs.service.product.dto.AddProductDto;
@@ -32,6 +33,7 @@ public class ProductController {
     private final ProductIngredientService productIngredientService;
     private final MemberAllergyService memberAllergyService;
     private final AllergyService allergyService;
+    private final ManufacturingAllergyService manufacturingAllergyService;
 
     @PostMapping()
     public Long addProduct(@RequestBody AddProductRequest request) {
@@ -71,6 +73,13 @@ public class ProductController {
                     }
                 }
             }
+
+            // 제조시설 알러지 필터 체크
+            boolean isManuAllergy = manufacturingAllergyService.getManuAllergy(product_list.get(i), memberId);
+            if (isManuAllergy) {
+                FilterCode.add(2);
+            }
+
             //FilterCode 중복 제거
             response.get(i).setCode(FilterCode);
         }
