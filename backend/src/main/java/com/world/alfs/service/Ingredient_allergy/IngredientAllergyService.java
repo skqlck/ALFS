@@ -1,11 +1,9 @@
 package com.world.alfs.service.Ingredient_allergy;
 
-import com.world.alfs.domain.allergy.Allergy;
-import com.world.alfs.domain.ingredient.repository.IngredientRepository;
+import com.world.alfs.domain.ingredient.Ingredient;
+import com.world.alfs.domain.ingredient_allergy.IngredientAllergy;
 import com.world.alfs.domain.ingredient_allergy.repository.IngredientAllergyRepository;
 import lombok.RequiredArgsConstructor;
-import org.springframework.data.jpa.repository.Query;
-import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -18,12 +16,21 @@ import java.util.List;
 public class IngredientAllergyService {
     private final IngredientAllergyRepository ingredientAllergyRepository;
 
-    public List<Long> getAllAllergyId(List<Long> ingredientList) {
-        List<Long> response = new ArrayList<>();
-        List<Allergy> list = ingredientAllergyRepository.findAllergiesByIngredientIdIn(ingredientList);
-        for(int i=0; i<list.size(); i++){
-            response.add(list.get(i).getId());
+    public List<Long> getAllAllergyId(List<Long> list, Ingredient ingredient) {
+//        List<Long> response = new ArrayList<>();
+//        for (int i = 0; i < ingredientList.size(); i++) {
+//            List<IngredientAllergy> ingredientAllergyList = ingredientAllergyRepository.findAllByIngredientIn(ingredientList);
+//            for (int j = 0; j < ingredientAllergyList.size(); j++) {
+//                Long input = ingredientAllergyList.get(j).getAllergy().getId();
+//                response.add(input);
+//            }
+//        }
+        List<IngredientAllergy> ingredientAllergyList = ingredientAllergyRepository.findAllByIngredient(ingredient);
+        for (int j = 0; j < ingredientAllergyList.size(); j++) {
+            Long input = ingredientAllergyList.get(j).getAllergy().getId();
+            list.add(input);
         }
-        return response;
+
+        return list;
     }
 }

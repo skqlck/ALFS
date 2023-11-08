@@ -32,8 +32,11 @@ public class Member {
     @Column(name = "phone_number",nullable = false)
     private String phoneNumber;
 
+    @Column
+    private Boolean activate;
+
     @Builder
-    public Member(Long id, String name, String identifier, String password, String birth, int point, String email, String phoneNumber) {
+    public Member(Long id, String name, String identifier, String password, String birth, int point, String email, String phoneNumber, boolean activate) {
         this.id = id;
         this.name = name;
         this.identifier = identifier;
@@ -42,5 +45,6 @@ public class Member {
         this.point = point;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.activate = activate;
     }
 }

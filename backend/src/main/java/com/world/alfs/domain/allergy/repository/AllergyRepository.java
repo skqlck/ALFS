@@ -5,6 +5,7 @@ import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
 import java.util.List;
+import java.util.Optional;
 
 @Repository
 public interface AllergyRepository extends JpaRepository<Allergy, Long> {
@@ -13,7 +14,7 @@ public interface AllergyRepository extends JpaRepository<Allergy, Long> {
 
     Allergy findByAllergyName(String s);
 
-    Allergy findByAllergyNameAndAllergyType(String s, int isAllergy);
+    Optional<Allergy> findByAllergyNameAndAllergyType(String s, int isAllergy);
 
     Integer findAllergyTypeById(Long memberAllergyId);
 }

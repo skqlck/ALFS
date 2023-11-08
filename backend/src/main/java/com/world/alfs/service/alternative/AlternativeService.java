@@ -1,14 +1,13 @@
 package com.world.alfs.service.alternative;
 
-import com.world.alfs.controller.alternative.request.GetAlternativeProductAllRequest;
+import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.controller.alternative.response.CategoryResponse;
 import com.world.alfs.controller.product.response.GetProductListResponse;
-import com.world.alfs.controller.product.response.ProductResponse;
-import com.world.alfs.domain.allergy.repository.AllergyRepository;
 import com.world.alfs.domain.alternative.Alternative;
 import com.world.alfs.domain.alternative.repository.AlternativeRepository;
 import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.ingredient.repository.IngredientRepository;
+import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
@@ -22,8 +21,10 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
 import java.util.stream.Collectors;
+
+import static com.world.alfs.common.exception.ErrorCode.INGREDIENT_NOT_FOUND;
+import static com.world.alfs.common.exception.ErrorCode.PRODUCT_NOT_FOUND;
 
 @Transactional
 @Service
@@ -58,10 +59,11 @@ public class AlternativeService {
     // 카테고리에 해당하는 대체 식품 가져오기
     public List<GetProductListResponse> getAlternativeProduct(String alternativeName) {
         // 원재료명 아이디 찾기
-        Optional<Ingredient> ingredient = ingredientRepository.findByName(alternativeName);
+        Ingredient ingredient = ingredientRepository.findByName(alternativeName)
+                .orElseThrow(() -> new CustomException(INGREDIENT_NOT_FOUND));
 
         // 원재료명이 포함된 상품 찾기
-        List<ProductIngredient> productIngredientList = productIngredientRepository.findByIngredientId(ingredient.get().getId());
+        List<ProductIngredient> productIngredientList = productIngredientRepository.findByIngredientId(ingredient.getId());
 
         // 상품 테이블에서 상품 목록 가져오기
         List<GetProductListResponse> productListResponse = new ArrayList<>();
@@ -81,8 +83,9 @@ public class AlternativeService {
         // 원재료명 아이디 찾기
         List<Long> idList = new ArrayList<>();
         for (String alternative : dto.getAlternativeCategoryList()) {
-            Optional<Ingredient> ingredient = ingredientRepository.findByName(alternative);
-            idList.add(ingredient.get().getId());
+            Ingredient ingredient = ingredientRepository.findByName(alternative)
+                            .orElseThrow(() -> new CustomException(INGREDIENT_NOT_FOUND));
+            idList.add(ingredient.getId());
         }
 
         // 원재료명이 포함된 상품 찾기
@@ -93,7 +96,9 @@ public class AlternativeService {
 
         for (Long id : list) {
             ProductImg img = productImgRepository.findByProductId(id);
-            GetProductListResponse response = productRepository.findById(id).get().toListResponse(img);
+            Product product = productRepository.findById(id)
+                    .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
+            GetProductListResponse response = product.toListResponse(img);
             productListResponse.add(response);
         }
 

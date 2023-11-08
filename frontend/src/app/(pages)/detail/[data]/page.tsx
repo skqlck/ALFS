@@ -73,10 +73,6 @@ export default function Page() {
     }
   };
   const member_id: string = localStorage.getItem("id")!;
-  const AddCart = async (id: string, cnt: number, member_id: string) => {
-    const response: any = await AddProductToCart(id, cnt, member_id);
-    console.log("장바구니 추가요청", response);
-  };
 
   return (
     <>
@@ -168,11 +164,8 @@ export default function Page() {
             <span className="text-[40px]">{formattedPrice}원</span>
           </div>
           <div className="Submit w-[633px] min-h-[62px] flex justify-end">
-            <button
-              onClick={() => AddCart(productData.id, cnt, member_id)}
-              className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white"
-            >
-              <AddToCart />
+            <button className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white">
+              <AddToCart id={productData.id} cnt={cnt} member_id={member_id} />
             </button>
           </div>
         </div>

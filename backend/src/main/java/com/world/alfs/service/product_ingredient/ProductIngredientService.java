@@ -34,13 +34,13 @@ public class ProductIngredientService {
         return savedProductIngredient.getId();
     }
 
-    public List<Long> getAllIngredientId(Long productId) {
+    public List<Ingredient> getAllIngredientId(Long productId) {
         Optional<Product> product = productRepository.findById(productId);
-        System.out.println(product.get().getId());
         List<ProductIngredient> list = productIngredientRepository.findAllByProduct(product.get());
-        List<Long> response = new ArrayList<>();
+        List<Ingredient> response = new ArrayList<>();
         for(int i=0; i<list.size(); i++){
-            response.add(list.get(i).getIngredient().getId());
+            Optional<Ingredient> ingredient = ingredientRepository.findById(list.get(i).getIngredient().getId());
+            response.add(ingredient.get());
         }
         return response;
     }

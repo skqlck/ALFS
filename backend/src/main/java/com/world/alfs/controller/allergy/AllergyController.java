@@ -30,11 +30,10 @@ public class AllergyController {
         return ApiResponse.ok(response);
     }
 
-    @GetMapping("/check/{memberId}/{isAllergy}")
+    @PostMapping("/check/{memberId}/{isAllergy}")
     public ApiResponse<List<AddMemberAllergyDto>> checkAllergyName(@RequestBody List<String> list, @PathVariable Long memberId, @PathVariable int isAllergy) {
-        //allervyNameList을 매개변수로 받아오기
+
         List<AddMemberAllergyDto> dto = allergyService.checkAllergyName(memberId, list, isAllergy);
-        System.out.println("여기는 AllergyController " + dto.get(0).getMember_id());
 
         // HTTP 요청 헤더 설정
         HttpHeaders headers = new HttpHeaders();
@@ -45,14 +44,10 @@ public class AllergyController {
         System.out.println(requestEntity.getBody());
 
         // HTTP POST 요청 보내기
-        ResponseEntity<ApiResponse> response = restTemplate.postForEntity("http://localhost:8080/api/member_allergy", requestEntity, ApiResponse.class);
+        restTemplate.postForEntity("http://localhost:8080/api/member_allergy", requestEntity, ApiResponse.class);
 
         //요청 응답 처리 부분
-        if (response.getStatusCode().is2xxSuccessful()) {
-            return ApiResponse.ok(dto);
-        } else {
-            return ApiResponse.badRequest("회원 알러지 등록에 실패했습니다.");
-        }
+        return ApiResponse.ok(dto);
     }
 
     @GetMapping("/hate")

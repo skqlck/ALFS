@@ -1,13 +1,17 @@
 "use client";
 
-import React from "react";
+import React, { useState, useEffect } from "react";
 import Card from "@/app/_components/card/Card";
 import Link from "next/link";
 import { GetList } from "../../api/list/ListPage";
 
 async function GetListData() {
-  const member_id: string = localStorage.getItem("id")!;
-  const response: any = await GetList(member_id);
+  const [memberId, setMemberId] = useState<string>("");
+  useEffect(() => {
+    const member_id: string = localStorage.getItem("id")!;
+    setMemberId(member_id);
+  }, []);
+  const response: any = await GetList(memberId);
   console.log("리스트 불러오기", response);
 
   return (

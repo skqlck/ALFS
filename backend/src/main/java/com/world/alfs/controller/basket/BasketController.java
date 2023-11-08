@@ -73,14 +73,24 @@ public class BasketController{
     }
 
     // 장바구니 상품 삭제
-    @DeleteMapping("/removeBasket")
-    public ApiResponse removeBasket(@RequestBody MemberBasketRequest memberBasketRequest){
-        try {
-            return ApiResponse.ok(basketService.changeBasketStatus(memberBasketRequest.getMember_id(), memberBasketRequest.getBasket_id(), 2));
+    @PutMapping("/removeBasket")
+    public ApiResponse removeBasket(@RequestBody PurchaseRequest purchaseRequest){
+        Long member_id = purchaseRequest.getMember_id();
+        List<Long> basket_ids = purchaseRequest.getBasket_ids();
+        List<Long> successList = new ArrayList<>();
+        HashMap<Long, String> failList = new HashMap<>();
+        for (Long basket_id : basket_ids){
+            try {
+                successList.add(basketService.changeBasketStatus(member_id, basket_id, 2));
+            }
+            catch (Exception e){
+                failList.put(basket_id, e.getMessage());
+            }
         }
-        catch (Exception e){
-            return ApiResponse.badRequest(e.getMessage());
-        }
+        HashMap<String, Object> response = new HashMap<>();
+        response.put("success_list", successList);
+        response.put("failed_list", failList);
+        return ApiResponse.ok(response);
     }
 
     // 결제

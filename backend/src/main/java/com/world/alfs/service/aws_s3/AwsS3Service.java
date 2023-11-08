@@ -3,6 +3,8 @@ package com.world.alfs.service.aws_s3;
 import com.amazonaws.services.s3.AmazonS3Client;
 import com.amazonaws.services.s3.model.CannedAccessControlList;
 import com.amazonaws.services.s3.model.PutObjectRequest;
+import com.world.alfs.common.exception.CustomException;
+import com.world.alfs.common.exception.ErrorCode;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
@@ -26,7 +28,7 @@ public class AwsS3Service {
 
     public String uploadFiles(MultipartFile multipartFile, String dirName) throws IOException {
         File uploadFile = convert(multipartFile)  // 파일 변환할 수 없으면 에러
-                    .orElseThrow(() -> new IllegalArgumentException("error: MultipartFile -> File convert fail"));
+                    .orElseThrow(() -> new CustomException(ErrorCode.FILE_CONVERT_FAIL));
 
         log.debug("uploadFiles");
         return upload(uploadFile, dirName, multipartFile.getOriginalFilename());

@@ -4,9 +4,20 @@ import React, { useState } from "react";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import { Modal, ModalOverlay, ModalContent, ModalFooter, ModalBody, ModalCloseButton } from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
+import { AddProductToCart } from "@/app/api/cart/CartPage";
 
-export default function AddToCart(props: any) {
+type ItemProps = {
+  id: string;
+  cnt: number;
+  member_id: string;
+};
+
+export default function AddToCart({ id, cnt, member_id }: ItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const AddCart = async (id: string, cnt: number, member_id: string) => {
+    const response: any = await AddProductToCart(id, cnt, member_id);
+    console.log("장바구니 추가요청", response);
+  };
   return (
     <div>
       <button
@@ -22,13 +33,18 @@ export default function AddToCart(props: any) {
         <ModalContent>
           <ModalCloseButton />
           <ModalBody>
-            {props.message}
             <br />
             장바구니 페이지로 이동하시겠습니까?
           </ModalBody>
           <ModalFooter>
             <Button colorScheme="whatsapp" variant="outline" mr={3}>
-              <Link href={{ pathname: `/cart` }} colorScheme="whatsapp" variant="outline" mr={3}>
+              <Link
+                href={{ pathname: `/cart` }}
+                colorScheme="whatsapp"
+                variant="outline"
+                mr={3}
+                onClick={() => AddCart(id, cnt, member_id)}
+              >
                 Move
               </Link>
             </Button>

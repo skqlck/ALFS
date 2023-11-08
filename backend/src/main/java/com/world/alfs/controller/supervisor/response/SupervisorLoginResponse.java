@@ -6,10 +6,10 @@ import lombok.Data;
 @Data
 public class SupervisorLoginResponse {
 
-    private String identifier;
+    private Long supervisorId;
 
     @Builder
-    public SupervisorLoginResponse(String identifier) {
-        this.identifier = identifier;
+    public SupervisorLoginResponse(Long supervisorId) {
+        this.supervisorId = supervisorId;
     }
 }

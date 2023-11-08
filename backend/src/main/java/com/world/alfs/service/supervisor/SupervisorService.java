@@ -1,5 +1,7 @@
 package com.world.alfs.service.supervisor;
 
+import com.world.alfs.common.exception.CustomException;
+import com.world.alfs.common.exception.ErrorCode;
 import com.world.alfs.controller.supervisor.response.SupervisorLoginResponse;
 import com.world.alfs.domain.supervisor.Supervisor;
 import com.world.alfs.domain.supervisor.repository.SupervisorRepository;
@@ -43,7 +45,7 @@ public class SupervisorService {
 
         if(supervisor.isPresent()) {
             supervisorLoginResponse = SupervisorLoginResponse.builder()
-                    .identifier(supervisor.get().getIdentifier())
+                    .supervisorId(supervisor.get().getId())
                     .build();
             return supervisorLoginResponse;
         }else{
@@ -158,7 +160,7 @@ public class SupervisorService {
         connection.connect();
         DataOutputStream outputStream = new DataOutputStream(connection.getOutputStream());
         File file = awsS3Service.convert(dto.getFile())
-                                .orElseThrow(() -> new Exception("error: MultipartFile -> File convert fail"));
+                                .orElseThrow(() -> new CustomException(ErrorCode.FILE_CONVERT_FAIL));
         outputStream.write(json.toString().getBytes(StandardCharsets.UTF_8));
 
         writeMultiPart(outputStream, postParams, file, boundary);
