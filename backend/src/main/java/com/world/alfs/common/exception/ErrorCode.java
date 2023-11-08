@@ -27,6 +27,7 @@ public enum ErrorCode {
     DUPLICATE_SPECIAL_ID(HttpStatus.CONFLICT, "상품 아이디가 중복됩니다."),
     DUPLICATE_PRODUCT_INGREDIENT(HttpStatus.CONFLICT, "이미 상품의 원재료로 등록되었습니다."),
     DUPLICATE_MANUFACTURING_ALLERGY(HttpStatus.CONFLICT, "이미 상품에 등록된 제조시설 알러지 원재료입니다."),
+    DUPLICATE_MEMBER_ALLERGY(HttpStatus.CONFLICT, "이미 등록된 회원의 알러지입니다."),
 
     /* 500 INTERNAL_SERVER_ERROR : 서버 내부 로직 에러 */
     SUPERVISOR_ID_MISMATCH(HttpStatus.FORBIDDEN, "관리자 아이디가 일치하지 않습니다.");

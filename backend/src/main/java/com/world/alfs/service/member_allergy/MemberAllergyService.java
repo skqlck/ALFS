@@ -1,5 +1,7 @@
 package com.world.alfs.service.member_allergy;
 
+import com.world.alfs.common.exception.CustomException;
+import com.world.alfs.common.exception.ErrorCode;
 import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.allergy.repository.AllergyRepository;
 import com.world.alfs.domain.member.Member;
@@ -27,9 +29,17 @@ public class MemberAllergyService {
     public Long addMemberAllergy(AddMemberAllergyDto dto) {
         Optional<Member> member = memberRepository.findById(dto.getMember_id());
         Optional<Allergy> allergy = allergyRepository.findById(dto.getAllergy_id());
-        MemberAllergy memberAllergy = dto.toEntity(member.get(),allergy.get());
-        MemberAllergy savedMemberAllergy = memberAllergyRepository.save(memberAllergy);
-        return savedMemberAllergy.getId();
+
+        boolean exists = memberAllergyRepository.existsByMemberIdAndAllergyId(dto.getMember_id(), dto.getAllergy_id());
+
+        if (!exists) {
+            MemberAllergy memberAllergy = dto.toEntity(member.get(),allergy.get());
+            MemberAllergy savedMemberAllergy = memberAllergyRepository.save(memberAllergy);
+
+            return savedMemberAllergy.getId();
+        } else {
+            return -1L;
+        }
     }
 
     public List<Long> getFilteredAllergyId(Long memberId) {
