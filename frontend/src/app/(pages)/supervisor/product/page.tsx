@@ -33,7 +33,6 @@ export default function Page({}: Props) {
     const res = await DeleteProduct(e);
     console.log(res);
     getData();
-    return <PropsModal props="상품이 삭제되었습니다."></PropsModal>;
   };
 
   // useEffect(() => {

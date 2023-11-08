@@ -3,8 +3,8 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Checkbox, Button, useToast } from "@chakra-ui/react";
-import { BiEdit } from "react-icons/bi";
-import { AddressAll, ChangeStatus, PlusAddress } from "@/app/api/user/user";
+import { AiOutlineClose } from "react-icons/ai";
+import { AddressAll, ChangeStatus, DeleteAddress, PlusAddress } from "@/app/api/user/user";
 import {
   Modal,
   ModalOverlay,
@@ -45,8 +45,24 @@ export default function Page() {
   const changeStatus = async (id: any) => {
     const data = [Number(userId), id];
     const res = await ChangeStatus(data);
+    GetAddress(userId);
     toast({
-      title: "기본 배송지가 변경되었습니다.",
+      title: "기본배송지가 설정되었습니다.",
+      status: "success",
+      duration: 3000,
+      isClosable: true,
+    });
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
+  };
+
+  const deleteMyAddress = async (id: any) => {
+    const data = [Number(userId), id];
+    const res = await DeleteAddress(data);
+    console.log(res);
+    toast({
+      title: "주소가 삭제되었습니다.",
       status: "success",
       duration: 3000,
       isClosable: true,
@@ -152,7 +168,7 @@ export default function Page() {
                 <Th width={100}>선택</Th>
                 <Th width={200}>명칭</Th>
                 <Th width={400}>주소</Th>
-                <Th width={100}>수정</Th>
+                <Th width={100}>삭제</Th>
               </Tr>
             </Thead>
             {myAddress.map((data: any) => (
@@ -171,8 +187,12 @@ export default function Page() {
                       {data.address_1} <br />
                       {data.address_2}
                     </Td>
-                    <Td>
-                      <BiEdit className="text-[20px]"></BiEdit>
+                    <Td
+                      onClick={() => {
+                        deleteMyAddress(data.id);
+                      }}
+                    >
+                      <AiOutlineClose className="text-[20px]"></AiOutlineClose>
                     </Td>
                   </Tr>
                 </Tbody>

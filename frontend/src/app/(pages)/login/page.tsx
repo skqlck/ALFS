@@ -6,10 +6,10 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
+import { setCookie, getCookie } from "cookies-next";
 
 type Inputs = {
-  id: string;
+  identifier: string;
   password: string;
 };
 
@@ -20,6 +20,7 @@ export default function Page() {
 
   const handleLogin = async (e: any) => {
     const res = await UserLogin(e);
+    console.log(res);
 
     if (res === null) {
       toast({
@@ -29,10 +30,15 @@ export default function Page() {
         isClosable: true,
       });
     } else {
+      setCookie("memberId", res, {
+        path: "/",
+      });
+
       localStorage.setItem("id", res);
-      window.location.replace("/");
+      router.push("/");
     }
   };
+
   return (
     <div className="min-w-[650px] flex justify-center">
       <form onSubmit={handleSubmit(handleLogin)}>
@@ -47,7 +53,7 @@ export default function Page() {
                 focusBorderColor="green.500"
                 borderColor="gray.300"
                 placeholder="아이디를 입력해주세요"
-                {...register("id")}
+                {...register("identifier")}
               />
             </div>
           </div>

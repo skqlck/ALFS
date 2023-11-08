@@ -19,7 +19,6 @@ export default function Page() {
 
   const handleLogin = async (e: any) => {
     const res = await SupervisorLogin(e);
-    console.log(res);
     if (!res) {
       toast({
         title: "잘못된 아이디 혹은 비밀번호 입니다.",
@@ -28,8 +27,7 @@ export default function Page() {
         isClosable: true,
       });
     } else {
-      // await signInWithEmailAndPassword(auth, e.email, e.password);
-      // localStorage.setItem("id", res);
+      localStorage.setItem("supervisorId", res.data.supervisorId);
       router.push("/supervisor/register");
     }
   };

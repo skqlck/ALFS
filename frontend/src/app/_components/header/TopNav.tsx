@@ -4,12 +4,12 @@ import React, { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuList, MenuItem, Button, useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { getCookie, deleteCookie } from "cookies-next";
 
 export default function TopNav() {
   const router = useRouter();
   const toast = useToast();
   const [id, setId] = useState<any>();
-
   const handleLogout = () => {
     toast({
       title: "로그아웃 되었습니다.",

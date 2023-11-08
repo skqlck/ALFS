@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import {
   Modal,
   ModalOverlay,
@@ -12,9 +12,8 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-function PropsModal(props: any) {
+function PropsModal() {
   const [show, setShow] = useState(true);
-  console.log(1234);
 
   return (
     <div>
@@ -23,7 +22,7 @@ function PropsModal(props: any) {
         <ModalContent>
           <ModalHeader>알림</ModalHeader>
           <ModalCloseButton />
-          <ModalBody>{props}</ModalBody>
+          <ModalBody>asdf</ModalBody>
 
           <ModalFooter>
             <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={() => setShow(false)}>
