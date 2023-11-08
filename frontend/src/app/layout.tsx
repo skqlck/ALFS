@@ -6,12 +6,6 @@ import Nav from "./_components/header/Nav";
 import Footer from "./_components/footer/Footer";
 import { Providers } from "./providers";
 
-// Font files can be colocated inside of `app`
-const myFont = localFont({
-  src: "./fonts/GmarketSansTTFMedium.ttf",
-  display: "swap",
-});
-
 const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
@@ -22,7 +16,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en">
-      <body className={myFont.className}>
+      <body>
         <Providers>
           <Nav></Nav>
           {children}

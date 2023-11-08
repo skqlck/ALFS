@@ -18,8 +18,8 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import DaumPost from "@/app/_components/location/Daumpost";
-import { useSession } from "next-auth/react";
 import PropsModal from "@/app/_components/modal/PropsModal";
+import Loading from "@/app/_components/loading/loading";
 
 type Inputs = {
   id: string;

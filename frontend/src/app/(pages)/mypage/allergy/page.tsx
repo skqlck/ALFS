@@ -69,7 +69,7 @@ export default function Page() {
     e.preventDefault();
     const allergy_data = { memberId: memberId, allergy: [...allergy_1, ...selectedAllergy2] };
     console.log(allergy_data);
-    await RegisterAllergy(allergy_data);
+  await RegisterAllergy(allergy_data);
     const hate_data = { memberId: memberId, hate: selectedHate };
     await RegisterHate(hate_data);
   };

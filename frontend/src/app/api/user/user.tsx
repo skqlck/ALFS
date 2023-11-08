@@ -133,23 +133,18 @@ export async function DeleteAddress(props: any) {
 }
 
 export async function RegisterAllergy(props: any) {
-  console.log(props);
   try {
-    const res = await baseAxios.post(`api/allergy/check/${props.memberId}/1`);
+    const res = await baseAxios.post(`api/allergy/check/${props.memberId}/1`, props.allergy);
+    console.log(res);
     return res;
   } catch (e) {
     console.error(e);
   }
 }
 export async function RegisterHate(props: any) {
-  console.log(props);
   try {
-    const res = await baseAxios.post(`api/allergy/check/${props.memberId}/0`, {
-      data: {
-        member_id: props[0],
-        address_id: props[1],
-      },
-    });
+    const res = await baseAxios.post(`api/allergy/check/${props.memberId}/0`, props.hate);
+    console.log(res);
     return res;
   } catch (e) {
     console.error(e);
