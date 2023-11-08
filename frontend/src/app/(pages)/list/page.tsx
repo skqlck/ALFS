@@ -7,17 +7,22 @@ import { GetList } from "../../api/list/ListPage";
 
 async function GetListData() {
   const [memberId, setMemberId] = useState<string>("");
+  const [response, setResponse] = useState<any>([]);
   useEffect(() => {
-    const member_id: string = localStorage.getItem("id")!;
-    setMemberId(member_id);
+    const ListData = async () => {
+      const member_id: string = localStorage.getItem("id")!;
+      setMemberId(member_id);
+      const res: any = await GetList(memberId);
+      console.log("리스트 불러오기", response);
+      setResponse(res);
+    };
+    ListData();
   }, []);
-  const response: any = await GetList(memberId);
-  console.log("리스트 불러오기", response);
 
   return (
     <>
       {response && (
-        <div className="Container w-[800px] h-auto mt-[124px] ml-[418px]">
+        <div className="Container flex flex-col justify-center w-[1000px] h-auto mt-[124px]">
           총 {response.length}건
           <>
             <span className="flex justify-end">가격높은순</span>
@@ -48,9 +53,11 @@ async function GetListData() {
 export default function Page() {
   return (
     <>
-      <React.Suspense fallback={<div>Loading...</div>}>
-        <GetListData />
-      </React.Suspense>
+      <div className="flex flex-col items-center">
+        <React.Suspense fallback={<div className="flex flex-col items-center">Loading...</div>}>
+          <GetListData />
+        </React.Suspense>
+      </div>
     </>
   );
 }
