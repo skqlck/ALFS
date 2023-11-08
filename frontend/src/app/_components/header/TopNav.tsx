@@ -1,16 +1,15 @@
 "use client";
 
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Menu, MenuButton, MenuList, MenuItem, Button, useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useSession, signOut } from "next-auth/react";
+import { getCookie, deleteCookie } from "cookies-next";
 
 export default function TopNav() {
   const router = useRouter();
-  const { data: session } = useSession();
   const toast = useToast();
-
+  const [id, setId] = useState<any>();
   const handleLogout = () => {
     toast({
       title: "로그아웃 되었습니다.",
@@ -18,17 +17,20 @@ export default function TopNav() {
       duration: 3000,
       isClosable: true,
     });
-    signOut({ redirect: false });
-    router.push("/");
+    localStorage.setItem("id", "null");
+    window.location.replace("/");
   };
-  console.log(session);
+
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    setId(id);
+  }, []);
 
   return (
     <div className="min-w-[1000px] h-[30px] mt-[10px] flex justify-center">
       <div className="min-w-[1000px] flex items-center justify-end">
-        {session ? (
+        {id !== "null" ? (
           <>
-            {process.env.NEXTAUTH_URL}
             <Button variant="unstyled" marginRight="10px" onClick={handleLogout}>
               로그아웃
             </Button>

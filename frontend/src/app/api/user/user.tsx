@@ -59,7 +59,7 @@ export async function UserSignup(props: any) {
 export async function UserLogin(props: any) {
   try {
     const res = await baseAxios.post(`api/member/login`, {
-      identifier: props.id,
+      identifier: props.identifier,
       password: props.password,
     });
     return res.data.data;
@@ -109,6 +109,45 @@ export async function PlusAddress(props: any) {
         address_1: props.address_1,
         address_2: props.address_2,
         alias: props.alias,
+      },
+    });
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function DeleteAddress(props: any) {
+  console.log(props);
+  try {
+    const res = await baseAxios.delete(`api/address/`, {
+      data: {
+        member_id: props[0],
+        address_id: props[1],
+      },
+    });
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function RegisterAllergy(props: any) {
+  console.log(props);
+  try {
+    const res = await baseAxios.post(`api/allergy/check/${props.memberId}/1`);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+export async function RegisterHate(props: any) {
+  console.log(props);
+  try {
+    const res = await baseAxios.post(`api/allergy/check/${props.memberId}/0`, {
+      data: {
+        member_id: props[0],
+        address_id: props[1],
       },
     });
     return res;

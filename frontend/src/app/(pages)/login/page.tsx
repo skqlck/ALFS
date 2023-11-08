@@ -1,15 +1,14 @@
 "use client";
 
-import { UserLogin } from "@/app/apis/user/user";
+import { UserLogin } from "@/app/api/user/user";
 import { Button, FormControl, Input, useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { signIn } from "next-auth/react";
 
 type Inputs = {
-  id: string;
+  identifier: string;
   password: string;
 };
 
@@ -29,16 +28,11 @@ export default function Page() {
         isClosable: true,
       });
     } else {
-      await signIn("credentials", {
-        identifier: e.id,
-        password: e.password,
-        userId: res,
-        redirect: false,
-      });
-
-      router.push("/");
+      localStorage.setItem("id", res);
+      window.location.replace("/");
     }
   };
+
   return (
     <div className="min-w-[650px] flex justify-center">
       <form onSubmit={handleSubmit(handleLogin)}>
@@ -53,7 +47,7 @@ export default function Page() {
                 focusBorderColor="green.500"
                 borderColor="gray.300"
                 placeholder="아이디를 입력해주세요"
-                {...register("id")}
+                {...register("identifier")}
               />
             </div>
           </div>

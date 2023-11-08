@@ -31,7 +31,9 @@ export default function MiddleNav() {
 
         <div className="flex gap-[20px]">
           <FaRegHeart className="min-w-[40px] h-[40px]" />
-          <AiOutlineShoppingCart className="min-w-[40px] h-[40px]" />
+          <Link href={{ pathname: `/cart` }}>
+            <AiOutlineShoppingCart className="min-w-[40px] h-[40px]" />
+          </Link>
         </div>
       </div>
     </div>

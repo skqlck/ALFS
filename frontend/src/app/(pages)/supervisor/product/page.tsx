@@ -2,10 +2,10 @@
 import React, { useEffect, useState } from "react";
 import Card from "@/app/_components/card/Card";
 import Link from "next/link";
-import { GetList } from "../../../apis/list/ListPage";
+import { GetList } from "../../../api/list/ListPage";
 import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { DeleteProduct } from "@/app/apis/supervisor/supervisor";
+import { DeleteProduct } from "@/app/api/supervisor/supervisor";
 import PropsModal from "@/app/_components/modal/PropsModal";
 import { useSession } from "next-auth/react";
 
@@ -14,7 +14,6 @@ type Props = {};
 export default function Page({}: Props) {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
-  const { data: session } = useSession();
 
   const getData = async () => {
     // const res = await GetList(session?.user?.name);
@@ -34,14 +33,13 @@ export default function Page({}: Props) {
     const res = await DeleteProduct(e);
     console.log(res);
     getData();
-    return <PropsModal props="상품이 삭제되었습니다."></PropsModal>;
   };
 
-  useEffect(() => {
-    if (session?.user) {
-      getData();
-    }
-  }, []);
+  // useEffect(() => {
+  //   if (session?.user) {
+  //     getData();
+  //   }
+  // }, []);
 
   return (
     <div>

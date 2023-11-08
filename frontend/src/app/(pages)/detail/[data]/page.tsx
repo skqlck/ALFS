@@ -3,8 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useParams } from "next/navigation";
-import { GetProductDetail } from "@/app/apis/detail/DetailPage";
-import { AddProductToCart } from "@/app/apis/cart/CartPage";
+import { GetProductDetail } from "@/app/api/detail/DetailPage";
 import AllergyNotice from "@/app/_components/modal/AllergyNotice";
 import AddToCart from "@/app/_components/modal/AddToCart";
 
@@ -41,7 +40,7 @@ export default function Page() {
   useEffect(() => {
     const fetchProductData = async () => {
       try {
-        const response: ProductData = await GetProductDetail(numId);
+        let response: ProductData = await GetProductDetail(numId);
         console.log("리스폰스", response);
         setProductData(response);
       } catch (error) {
@@ -73,14 +72,10 @@ export default function Page() {
     }
   };
   const member_id: string = localStorage.getItem("id")!;
-  const AddCart = async (id: string, cnt: number, member_id: string) => {
-    const response: any = await AddProductToCart(id, cnt, member_id);
-    console.log("장바구니 추가요청", response);
-  };
 
   return (
     <>
-      <div className="DetailBox whitespace-pre-line w-[1130px] h-[full] mt-[109px] mx-auto flex">
+      <div className="DetailBox w-[1130px] h-[full] mt-[109px] mx-auto flex whitespace-pre-line">
         <div className="ImgBox w-[414px] h-[612px]">
           <Image src={productData.main_img} width={414} height={622} className="DetailImg" alt="detail Img" />
         </div>
@@ -89,7 +84,7 @@ export default function Page() {
           <div className="Subtitle w-[633px] h-[26px] text-[16px] opacity-[0.3] mt-[7px]">{productData.title}</div>
           <div className="Price w-[633px] h-[26px] mt-[7px] text-[20px]">
             {discount !== 0 && (
-              <span className="Discount" style={{ color: "red" }}>
+              <span className="Discount mr-[10px]" style={{ color: "red" }}>
                 {discount}%
               </span>
             )}
@@ -121,16 +116,29 @@ export default function Page() {
             <div className="DeliveryTitle w-[130px] h-[full]">중량/용량</div>
             <div className="DeliveryContents w-[503px] h-[full]">{productData.weight}</div>
           </div>
-          <div className="Delivery w-[full] min-h-[67px] border-t border-opacity-10 flex items-center text-[15px]">
-            <div className="DeliveryTitle w-[130px] h-[full] ">알레르기정보</div>
-            <div className="DeliveryContents w-[503px] h-[full]">{productData.allergy}</div>
-          </div>
-          <div className="Delivery w-[full] min-h-[67px] border-t border-opacity-10 flex items-center text-[15px]">
-            <div className="DeliveryTitle w-[130px] h-[full]">유통기한(또는 소비기한) 정보</div>
-            <div className="DeliveryContents w-[503px] h-[full]">
-              수령일 포함 180일 이상 남은 제품을 보내드립니다.(총 유통기한 365일)
+          {productData.allergy.trim() !== "" && (
+            <div className="Delivery w-[full] min-h-[67px] border-t border-opacity-10 flex items-center text-[15px]">
+              <div className="DeliveryTitle w-[130px] h-[full] ">알레르기정보</div>
+              <div className="DeliveryContents w-[503px] h-[full]">{`${productData.allergy.replace(
+                /\\n/g,
+                "\n"
+              )}`}</div>
             </div>
-          </div>
+          )}
+          {productData.expireDate.trim() !== "" && (
+            <div className="ExpireDate w-[full] min-h-[67px] border-t border-opacity-10 flex items-center text-[15px]">
+              <div className="ExpireDateTitle w-[130px] h-[full]">유통기한</div>
+              <div className="DeliveryContents w-[503px] h-[full]">{productData.expireDate.replace(/\\n/g, "\n")}</div>
+            </div>
+          )}
+          {productData.information.trim() !== "" && (
+            <div className="Information w-[full] min-h-[67px] border-t border-opacity-10 flex items-center text-[15px]">
+              <div className="DeliveryTitle w-[130px] h-[full]">유의사항</div>
+              <div className="DeliveryContents w-[503px] h-[full]">
+                <p className="whitespace-pre-line">{productData.information.replace(/\\n/g, "\n")}</p>
+              </div>
+            </div>
+          )}
           <div className="Delivery w-[full] min-h-[87px] border-t border-b border-opacity-10 flex items-center text-[15px]">
             <div className="DeliveryTitle w-[130px] h-[full]">상품선택</div>
             <div className="DeliveryContents w-[503px] h-[full] pl-[5px] ml-[60px] mt-[13px] border border-opacity-10">
@@ -168,11 +176,8 @@ export default function Page() {
             <span className="text-[40px]">{formattedPrice}원</span>
           </div>
           <div className="Submit w-[633px] min-h-[62px] flex justify-end">
-            <button
-              onClick={() => AddCart(productData.id, cnt, member_id)}
-              className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white"
-            >
-              <AddToCart />
+            <button className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white">
+              <AddToCart id={productData.id} cnt={cnt} member_id={member_id} />
             </button>
           </div>
         </div>

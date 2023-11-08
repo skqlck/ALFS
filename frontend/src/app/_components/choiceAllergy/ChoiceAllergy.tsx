@@ -49,7 +49,6 @@ export default function ChoiceAllergy(props: any) {
   const handleToggleAllergy = (data: any) => {
     setSelectedAllergies((prevSelected: any) => {
       const isAlreadySelected = prevSelected.some((item: any) => item === data);
-
       if (isAlreadySelected) {
         return prevSelected.filter((item: any) => item !== data);
       } else {
@@ -59,6 +58,7 @@ export default function ChoiceAllergy(props: any) {
   };
   const sendAllergy = () => {
     onClose();
+    console.log(selectedAllergies);
     props.data(selectedAllergies);
   };
   return (
@@ -83,10 +83,10 @@ export default function ChoiceAllergy(props: any) {
                 <div
                   key={data.idx}
                   className={`border-[5px] ${
-                    selectedAllergies.find((item: any) => item === data.idx) ? "border-green-500" : ""
+                    selectedAllergies.find((item: any) => item === data.name) ? "border-green-500" : ""
                   }`}
                   onClick={() => {
-                    handleToggleAllergy(data.idx);
+                    handleToggleAllergy(data.name);
                   }}
                 >
                   <Image src={data.image} alt="adf" priority className="w-[100%] h-[100px] mb-[10px]" />

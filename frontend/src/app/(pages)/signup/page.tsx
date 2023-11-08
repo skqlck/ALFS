@@ -7,7 +7,7 @@ import { useToast } from "@chakra-ui/react";
 
 import DaumPost from "@/app/_components/location/Daumpost";
 
-import { CheckEmail, CheckId, CheckPhone, UserSignup } from "@/app/apis/user/user";
+import { CheckEmail, CheckId, CheckPhone, UserSignup } from "@/app/api/user/user";
 
 type Inputs = {
   name: string;
@@ -92,9 +92,9 @@ export default function Page() {
       duration: 3000,
       isClosable: true,
     });
-    // setTimeout(() => {
-    //   window.location.replace("/login");
-    // }, 2000);
+    setTimeout(() => {
+      window.location.replace("/login");
+    }, 2000);
   };
 
   //중복검사버튼

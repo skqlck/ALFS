@@ -46,6 +46,18 @@ export async function RemoveCount(id: number, member_id: string) {
   }
 }
 
+export async function RemoveBasket(ids: Array<number>, member_id: string) {
+  try {
+    const res = await baseAxios.put(`api/basket/removeBasket`, {
+      member_id: Number(member_id),
+      basket_ids: ids,
+    });
+    return res.data.data;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export async function PurchaseItem(id: string, member_id: string) {
   try {
     const res = await baseAxios.put(`api/basket/purchase`, {
