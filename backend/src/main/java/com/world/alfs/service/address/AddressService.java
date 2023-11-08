@@ -1,5 +1,6 @@
 package com.world.alfs.service.address;
 
+import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.address.response.GetAddressResponse;
 import com.world.alfs.domain.address.Address;
 import com.world.alfs.domain.address.repository.AddressRepository;
@@ -59,6 +60,28 @@ public class AddressService {
         }
         target.get().setStatus(true);
         return Optional.of(addressRepository.save(target.get()).toGetAddressResponse());
+    }
+
+    // 주소지 삭제
+    public ApiResponse deleteAddress(Long member_id, Long address_id){
+        List<Address> addressList = addressRepository.findByMember(memberRepository.findById(member_id).orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다.")));
+        if (addressList.size() < 2) throw new IllegalArgumentException("주소지는 최소 1개 이상 존재해야합니다.");
+        addressRepository.delete(addressList.stream()
+                .filter(address -> address.getId() == address_id)
+                .findAny()
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 주소지 입니다.")));
+        return ApiResponse.ok("성공적으로 삭제되었습니다.");
+    }
+
+    // 주소지 수정
+    public ApiResponse updateAddress(Long member_id, Long address_id, AddressDto addressDto){
+        Address address = addressRepository.findById(address_id)
+                .stream().filter(e -> e.getMember().getId() == member_id).findAny()
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않은 주소입니다."));
+        address.setAddress_1(addressDto.getAddress_1());
+        address.setAddress_2(addressDto.getAddress_2());
+        address.setAlias(addressDto.getAlias());
+        return ApiResponse.ok(addressRepository.save(address).toGetAddressResponse());
     }
 
 }

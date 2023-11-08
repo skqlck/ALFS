@@ -3,6 +3,7 @@ package com.world.alfs.controller.address;
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.address.request.AddAddressRequest;
 import com.world.alfs.controller.address.request.SetDefaultRequest;
+import com.world.alfs.controller.address.request.UpdateAddressRequest;
 import com.world.alfs.controller.address.response.GetAddressResponse;
 import com.world.alfs.service.address.AddressService;
 import lombok.RequiredArgsConstructor;
@@ -42,5 +43,25 @@ public class AddressController {
             return ApiResponse.created("주소가 추가되었습니다.", address.get());
         }
         return ApiResponse.badRequest("잘못된 정보입니다.");
+    }
+
+    @PostMapping("/delete")
+    public ApiResponse deleteAddress(@RequestBody SetDefaultRequest setDefaultRequest){
+        try {
+            return addressService.deleteAddress(setDefaultRequest.getMember_id(), setDefaultRequest.getAddress_id());
+        }
+        catch (Exception e){
+            return ApiResponse.badRequest(e.getMessage());
+        }
+    }
+
+    @PutMapping("/update")
+    public ApiResponse updateAddress(@RequestBody UpdateAddressRequest updateAddressRequest){
+        try {
+            return addressService.updateAddress(updateAddressRequest.getMember_id(), updateAddressRequest.getAddress_id(), updateAddressRequest.getAddress());
+        }
+        catch (Exception e){
+            return ApiResponse.badRequest(e.getMessage());
+        }
     }
 }
