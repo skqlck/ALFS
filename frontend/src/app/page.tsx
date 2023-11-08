@@ -46,7 +46,6 @@ export default function Page() {
   const setAllergy = (e: any) => {
     console.log(e);
   };
-  console.log(process.env.NEXTAUTH_URL);
 
   useEffect(() => {
     AOS.init();
@@ -157,15 +156,7 @@ export default function Page() {
         </div>
 
         <div className="min-w-[1000px] flex justify-center">
-          <div className="w-[1000px] flex justify-center mt-[50px]" data-aos="fade-down">
-            <p className="text-[30px]">
-              <b>ALFS</b>
-            </p>
-          </div>
-        </div>
-
-        <div className="min-w-[1000px] flex justify-center">
-          <div className="w-[500px] flex justify-evenly my-[50px]" data-aos="fade-down">
+          <div className="w-[700px] flex justify-evenly mt-[50px]" data-aos="fade-down">
             <a href="/main">
               <Button variant="outline" colorScheme="whatsapp" width={200}>
                 구매하러 가기
@@ -174,6 +165,11 @@ export default function Page() {
             <a href="/mypage/allergy">
               <Button variant="outline" colorScheme="whatsapp" width={200}>
                 알러지 등록하러 가기
+              </Button>
+            </a>
+            <a href="/login">
+              <Button variant="outline" colorScheme="whatsapp" width={200}>
+                로그인 및 회원가입
               </Button>
             </a>
           </div>

@@ -135,7 +135,7 @@ export async function DeleteAddress(props: any) {
 export async function RegisterAllergy(props: any) {
   console.log(props);
   try {
-    const res = await baseAxios.post(`api/allergy/check${props.memberId}/1`, {});
+    const res = await baseAxios.post(`api/allergy/check/${props.memberId}/1`);
     return res;
   } catch (e) {
     console.error(e);

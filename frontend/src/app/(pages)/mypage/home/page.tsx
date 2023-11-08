@@ -67,9 +67,9 @@ export default function Page() {
       duration: 3000,
       isClosable: true,
     });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    // setTimeout(() => {
+    //   window.location.reload();
+    // }, 1000);
   };
 
   const setAddress = (address: string) => {

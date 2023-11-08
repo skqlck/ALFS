@@ -6,7 +6,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
-import { setCookie, getCookie } from "cookies-next";
 
 type Inputs = {
   identifier: string;
@@ -20,7 +19,6 @@ export default function Page() {
 
   const handleLogin = async (e: any) => {
     const res = await UserLogin(e);
-    console.log(res);
 
     if (res === null) {
       toast({
@@ -30,12 +28,8 @@ export default function Page() {
         isClosable: true,
       });
     } else {
-      setCookie("memberId", res, {
-        path: "/",
-      });
-
       localStorage.setItem("id", res);
-      router.push("/");
+      window.location.replace("/");
     }
   };
 
