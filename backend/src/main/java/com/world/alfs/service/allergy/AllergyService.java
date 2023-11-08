@@ -42,7 +42,7 @@ public class AllergyService {
         List<AddMemberAllergyDto>list = new ArrayList<>();
         for(int i=0; i<NameList.size(); i++){
             Optional<Allergy> allergy = allergyRepository.findByAllergyNameAndAllergyType(NameList.get(i),isAllergy);
-            if(allergy ==null){
+            if(allergy.isEmpty()){
                 Allergy addAllergy = Allergy.builder()
                         .allergyName(NameList.get(i))
                         .allergyType(isAllergy)
@@ -50,11 +50,10 @@ public class AllergyService {
                 allergyRepository.save(addAllergy);
 
             }
-            Allergy savedAllergy = allergyRepository.findByAllergyName(NameList.get(i));
-            Long allergyId = savedAllergy.getId();
-
+            Optional<Allergy> savedAllergy = Optional.ofNullable(allergyRepository.findByAllergyName(NameList.get(i)));
+            Optional<Long> allergyId = Optional.ofNullable(savedAllergy.get().getId());
             AddMemberAllergyDto dto = AddMemberAllergyDto.builder()
-                    .allergy_id(allergyId)
+                    .allergy_id(allergyId.get())
                     .member_id(memberId)
                     .build();
             System.out.println("여기는 AllergyService  (member_id,allergy_id) "+dto.getMember_id() +" "+dto.getAllergy_id());
