@@ -32,9 +32,11 @@ public class BasketService {
 
     // 장바구니 조회
     public List<GetBasketResponse> getBasket(Long member_id) throws Exception{
-        Optional<Member> member = memberRepository.findById(member_id);
-        if (member.isEmpty()) throw new Exception("존재하지 않는 회원입니다.");
-        List<Basket> basketList = basketRepository.findByMemberAndStatus(member.get(), 0);
+        Member member = memberRepository.findById(member_id)
+                .filter(m -> m.getActivate())
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
+
+        List<Basket> basketList = basketRepository.findByMemberAndStatus(member, 0);
         List<GetBasketResponse> responseList = new ArrayList<>();
         for (Basket basket : basketList){
             ProductImg img = productImgRepository.findByProductId(basket.getProduct().getId());
@@ -54,19 +56,20 @@ public class BasketService {
     }
 
     // 장바구니 추가
+    // TODO : 리팩토링 필요
     public GetBasketResponse addBasket(Long member_id, Long product_id, int count) throws Exception {
-        Optional<Member> member = memberRepository.findById(member_id);
-        Optional<Product> product = productRepository.findById(product_id);
-        if (member.isEmpty()) throw new Exception("존재하지 않는 회원입니다.");
-        if (product.isEmpty()) throw new Exception("존재하지 않는 상품입니다.");
-        if (count < 1) throw new Exception("수량은 1개 이상이여야 합니다.");
+        Member member = memberRepository.findById(member_id)
+                .filter(m -> m.getActivate())
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        Product product = productRepository.findById(product_id)
+                .orElseThrow(()-> new  IllegalArgumentException("존재하지 않는 상품입니다."));
 
-        Optional<Basket> existedBasket = basketRepository.findByMemberAndProductAndStatus(member.get(), product.get(), 0);
         ProductImg img = productImgRepository.findByProductId(product_id);
+        Optional<Basket> existedBasket = basketRepository.findByMemberAndProductAndStatus(member, product, 0);
         if (existedBasket.isEmpty()){
             AddBasketDto addBasketDto = AddBasketDto.builder()
-                    .member(member.get())
-                    .product(product.get())
+                    .member(member)
+                    .product(product)
                     .count(count)
                     .status(0)
                     .build();
@@ -77,28 +80,30 @@ public class BasketService {
             if (existedBasket.get().getStatus() != 0) throw new Exception("삭제 혹은 결제된 장바구니입니다.");
             changeCount(member_id, existedBasket.get().getId(), count);
         }
-            return GetBasketResponse.builder()
-                    .basket_id(existedBasket.get().getId())
-                    .count(existedBasket.get().getCount())
-                    .getProductListResponse(product.get().toListResponse(img))
-                    .pack(product.get().getPack())
-                    .isCheck(true)
-                    .build();
+
+        return GetBasketResponse.builder()
+                .basket_id(existedBasket.get().getId())
+                .count(existedBasket.get().getCount())
+                .getProductListResponse(product.toListResponse(img))
+                .pack(product.getPack())
+                .isCheck(true)
+                .build();
     }
 
     public int changeCount(Long member_id, Long basket_id, int diff) throws Exception{
         Optional<Basket> basket = basketRepository.findById(basket_id);
+        memberRepository.findById(member_id).filter(m -> m.getActivate()).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
         if (basket.isEmpty()) throw new Exception("존재하지 않는 장바구니입니다.");
         if (basket.get().getStatus() != 0) throw new Exception("삭제 혹은 결제된 장바구니입니다.");
         if (basket.get().getMember().getId() != member_id) throw  new Exception("권한이 없습니다.");
         if (basket.get().getCount() <= 1 && diff < 0) throw new Exception("0개로 줄일 수 없습니다.");
         basket.get().changeCount(diff);
-        Basket changedBasket = basketRepository.save(basket.get());
-        return basket.get().getCount();
+        return basketRepository.save(basket.get()).getCount();
     }
 
     public Long changeBasketStatus(Long member_id, Long basket_id, int status) throws Exception {
         Optional<Basket> basket = basketRepository.findById(basket_id);
+        memberRepository.findById(member_id).filter(m -> m.getActivate()).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
         if (basket.isEmpty()) throw new Exception("존재하지 않는 장바구니입니다.");
         if (basket.get().getMember().getId() != member_id) throw new Exception("권한이 없습니다.");
         if (basket.get().getStatus() != 0) throw new Exception("삭제 혹은 결제된 장바구니입니다.");
@@ -107,6 +112,7 @@ public class BasketService {
     }
 
     public GetPurchaseResponse purchase(Long member_id, Long basket_id) throws Exception {
+        memberRepository.findById(member_id).filter(m -> m.getActivate()).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
         Optional<Basket> basket = basketRepository.findById(basket_id);
         if (basket.isEmpty()) throw new Exception("존재하지 않는 장바구니입니다.");
         if (basket.get().getStatus() != 0) throw new Exception("삭제 혹은 결제된 장바구니입니다.");
@@ -125,9 +131,10 @@ public class BasketService {
     }
 
     public List<GetPurchaseResponse> getPurchaseList(Long member_id) throws Exception {
-        Optional<Member> member = memberRepository.findById(member_id);
-        if (member.isEmpty()) throw new Exception("존재하지 않는 회원입니다.");
-        List<Basket> purchaseList = basketRepository.findByMemberAndStatus(member.get(), 1);
+        Member member = memberRepository.findById(member_id)
+                .filter(m -> m.getActivate())
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        List<Basket> purchaseList = basketRepository.findByMemberAndStatus(member, 1);
         List<GetPurchaseResponse> responseList = new ArrayList<>();
 
         for (Basket basket : purchaseList){

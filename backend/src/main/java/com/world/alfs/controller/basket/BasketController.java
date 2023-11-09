@@ -28,8 +28,7 @@ public class BasketController{
     @GetMapping("/{member_id}")
     public ApiResponse<List<GetBasketResponse>> getBasket(@PathVariable Long member_id){
         try {
-            List<GetBasketResponse> basketList = basketService.getBasket(member_id);
-            return ApiResponse.ok(basketList);
+            return ApiResponse.ok(basketService.getBasket(member_id));
         }
         catch (Exception e){
             return ApiResponse.badRequest(e.getMessage());
@@ -39,6 +38,9 @@ public class BasketController{
     // 장바구니 추가
     @PostMapping("/add")
     public ApiResponse addBasket(@RequestBody AddBasketRequest addBasketRequest){
+        if (addBasketRequest.getCount() < 1){
+            return ApiResponse.badRequest("개수는 1개 이상이어야 합니다.");
+        }
         try {
             GetBasketResponse getBasketResponse = basketService.addBasket(addBasketRequest.getMember_id(), addBasketRequest.getProduct_id(), addBasketRequest.getCount());
             return ApiResponse.created("장바구니에 담겼습니다.",getBasketResponse);
