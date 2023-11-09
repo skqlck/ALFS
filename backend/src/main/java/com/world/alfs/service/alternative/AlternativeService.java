@@ -7,6 +7,8 @@ import com.world.alfs.domain.alternative.Alternative;
 import com.world.alfs.domain.alternative.repository.AlternativeRepository;
 import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.ingredient.repository.IngredientRepository;
+import com.world.alfs.domain.member_allergy.MemberAllergy;
+import com.world.alfs.domain.member_allergy.repository.MemberAllergyRepository;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.domain.product_img.ProductImg;
@@ -14,7 +16,6 @@ import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
 import com.world.alfs.domain.product_ingredient.ProductIngredient;
 import com.world.alfs.domain.product_ingredient.repostiory.ProductIngredientRepository;
 import com.world.alfs.service.alternative.dto.GetAlternativeProductAllDto;
-import com.world.alfs.service.alternative.dto.GetCategoryListDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -36,10 +37,18 @@ public class AlternativeService {
     private final ProductIngredientRepository productIngredientRepository;
     private final ProductRepository productRepository;
     private final ProductImgRepository productImgRepository;
+    private final MemberAllergyRepository memberAllergyRepository;
 
     // 대체 식품 카테고리 리스트
-    public List<CategoryResponse> getCategoryList(GetCategoryListDto dto) {
-        List<String> list = alternativeRepository.findByParentIdIn(dto.getIdList()).stream()
+    public List<CategoryResponse> getCategoryList(Long memberId) {
+        List<MemberAllergy> memberAllergyList = memberAllergyRepository.findByMemberId(memberId);
+
+        List<String> allergyIdList = new ArrayList<>();
+        for (MemberAllergy memberAllergy : memberAllergyList) {
+            allergyIdList.add(memberAllergy.getAllergy().getId().toString());
+        }
+
+        List<String> list = alternativeRepository.findByParentIdIn(allergyIdList).stream()
                 .map(Alternative::getAlternativeName)
                 .distinct()
                 .collect(Collectors.toList());

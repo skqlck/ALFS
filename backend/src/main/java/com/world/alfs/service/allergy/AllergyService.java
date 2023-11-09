@@ -30,7 +30,7 @@ public class AllergyService {
         List<AllergyResponse> allergyResponseList = new ArrayList<>();
         AllergyResponse allergyResponse = null;
 
-        for(Allergy a : allergyList.get()) {
+        for (Allergy a : allergyList.get()) {
             allergyResponse = a.toResponse();
             allergyResponseList.add(allergyResponse);
         }
@@ -39,25 +39,23 @@ public class AllergyService {
     }
 
     public List<AddMemberAllergyDto> checkAllergyName(Long memberId, List<String> NameList, int isAllergy) {
-        List<AddMemberAllergyDto>list = new ArrayList<>();
-        for(int i=0; i<NameList.size(); i++){
-            Optional<Allergy> allergy = allergyRepository.findByAllergyNameAndAllergyType(NameList.get(i),isAllergy);
-            if(allergy ==null){
+        List<AddMemberAllergyDto> list = new ArrayList<>();
+        for (int i = 0; i < NameList.size(); i++) {
+            Optional<Allergy> allergy = allergyRepository.findByAllergyNameAndAllergyType(NameList.get(i), isAllergy);
+            if (allergy.isEmpty()) {
                 Allergy addAllergy = Allergy.builder()
                         .allergyName(NameList.get(i))
                         .allergyType(isAllergy)
                         .build();
                 allergyRepository.save(addAllergy);
-
             }
-            Allergy savedAllergy = allergyRepository.findByAllergyName(NameList.get(i));
-            Long allergyId = savedAllergy.getId();
-
+            Optional<Allergy> savedAllergy = allergyRepository.findByAllergyNameAndAllergyType(NameList.get(i), isAllergy);
+            Optional<Long> allergyId = Optional.ofNullable(savedAllergy.get().getId());
             AddMemberAllergyDto dto = AddMemberAllergyDto.builder()
-                    .allergy_id(allergyId)
+                    .allergy_id(allergyId.get())
                     .member_id(memberId)
                     .build();
-            System.out.println("여기는 AllergyService  (member_id,allergy_id) "+dto.getMember_id() +" "+dto.getAllergy_id());
+            System.out.println("여기는 AllergyService  (member_id,allergy_id) " + dto.getMember_id() + " " + dto.getAllergy_id());
             list.add(dto);
         }
         return list;
@@ -65,7 +63,7 @@ public class AllergyService {
 
     public List<Integer> getAllergyType(List<Long> memberAllergyList) {
         List<Integer> list = new ArrayList<>();
-        for(Long memberAllergyId : memberAllergyList){
+        for (Long memberAllergyId : memberAllergyList) {
             list.add(allergyRepository.findAllergyTypeById(memberAllergyId));
         }
         //list 에서 중복 값 빼고 반환하기.

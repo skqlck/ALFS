@@ -2,9 +2,12 @@ package com.world.alfs.service.speical;
 
 import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.common.exception.ErrorCode;
+import com.world.alfs.controller.speical.response.GetSpecialListResponse;
 import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
+import com.world.alfs.domain.product_img.ProductImg;
+import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
 import com.world.alfs.domain.special.Special;
 import com.world.alfs.domain.special.repository.SpecialRepository;
 import com.world.alfs.domain.supervisor.Supervisor;
@@ -28,6 +31,7 @@ public class SpecialService {
     private final SpecialRepository specialRepository;
     private final ProductRepository productRepository;
     private final SupervisorRepository supervisorRepository;
+    private final ProductImgRepository productImgRepository;
 
     public Long addSpecial(AddSpecialDto dto) {
         Product product = productRepository.findById(dto.getProductId()).orElseThrow(()->new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
@@ -44,18 +48,22 @@ public class SpecialService {
         return special.getId();
     }
 
-    public List<GetSpecialResponse> getAllSpecial(){
+    public List<GetSpecialListResponse> getAllSpecial(){
 
         List<Special> specialList = specialRepository.findAll();
 
         return specialList.stream()
-                .map(GetSpecialResponse::toGetSpecialListResponse)
+                .map(special -> {
+                    ProductImg img = productImgRepository.findByProductId(special.getProduct().getId());
+                    return special.toGetSpecialListResponse(img);
+                })
                 .collect(Collectors.toList());
     }
 
     public GetSpecialResponse getSpecial(Long id){
         Special special = specialRepository.findById(id).orElseThrow(()->new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
-        return GetSpecialResponse.toGetSpecialListResponse(special);
+        ProductImg img = productImgRepository.findByProductId(special.getProduct().getId());
+        return special.toGetSpecialResponse(img);
     }
 
     public Long setSpecial(Long id, SetSpecialDto dto){

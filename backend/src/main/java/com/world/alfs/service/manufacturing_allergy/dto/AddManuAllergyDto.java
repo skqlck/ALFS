@@ -6,9 +6,8 @@ import lombok.*;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class GetManuAllergyDto {
+public class AddManuAllergyDto {
 
-    private Long memberId;
-    private Long productId;
-    
+    private String allergyName;
+
 }

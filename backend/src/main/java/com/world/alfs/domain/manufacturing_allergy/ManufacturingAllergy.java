@@ -2,15 +2,14 @@ package com.world.alfs.domain.manufacturing_allergy;
 
 import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.product.Product;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class ManufacturingAllergy {
 
@@ -25,12 +24,5 @@ public class ManufacturingAllergy {
     @ManyToOne
     @JoinColumn(name = "allergy_id")
     private Allergy allergy;
-
-    @Builder
-    public ManufacturingAllergy(Long id, Product product, Allergy allergy) {
-        this.id = id;
-        this.product = product;
-        this.allergy = allergy;
-    }
 
 }

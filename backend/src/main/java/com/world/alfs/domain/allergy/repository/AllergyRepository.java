@@ -12,7 +12,7 @@ public interface AllergyRepository extends JpaRepository<Allergy, Long> {
 
     List<Allergy> findTop22ByOrderById();
 
-    Allergy findByAllergyName(String s);
+    Optional<Allergy> findByAllergyName(String s);
 
     Optional<Allergy> findByAllergyNameAndAllergyType(String s, int isAllergy);
 

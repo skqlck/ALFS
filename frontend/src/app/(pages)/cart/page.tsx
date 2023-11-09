@@ -158,6 +158,10 @@ export default function Page({}: Props) {
     setMemberData(updatedMemberData);
   };
 
+  const formattedTotalPrice = new Intl.NumberFormat().format(totalPrice);
+  const formattedDiscount = new Intl.NumberFormat().format(totalDiscount);
+  const formattedFee = new Intl.NumberFormat().format(deliveryFee);
+  const ResultPrice = new Intl.NumberFormat().format(totalPrice - totalDiscount + deliveryFee);
   return (
     <div className="Container mt-[76px] flex flex-col items-center">
       <span className="text-[36px]">장바구니</span>
@@ -317,15 +321,15 @@ export default function Page({}: Props) {
             <div className="OrderBottom w-[272px] p-[20px] text-[16px]">
               <div className="flex justify-between mb-[10px]">
                 <span>상품금액</span>
-                <span>{totalPrice}원</span>
+                <span>{formattedTotalPrice}원</span>
               </div>
               <div className="flex justify-between mb-[10px]">
                 <span>상품할인금액</span>
-                <span>-{totalDiscount}원</span>
+                <span>-{formattedDiscount}원</span>
               </div>
               <div className="flex justify-between">
                 <span>배송비</span>
-                <span>{deliveryFee}원</span>
+                <span>{formattedFee}원</span>
               </div>
             </div>
             <hr />
@@ -333,7 +337,7 @@ export default function Page({}: Props) {
               <div className="flex justify-between">
                 <span>결제예정금액</span>
                 <b>
-                  <span>{totalPrice - totalDiscount + deliveryFee}원</span>
+                  <span>{ResultPrice}원</span>
                 </b>
               </div>
             </div>

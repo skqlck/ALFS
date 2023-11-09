@@ -1,14 +1,11 @@
 package com.world.alfs.controller.alternative;
 
 import com.world.alfs.controller.ApiResponse;
-import com.world.alfs.controller.alternative.request.CategoryListRequest;
 import com.world.alfs.controller.alternative.request.GetAlternativeProductAllRequest;
 import com.world.alfs.controller.alternative.response.CategoryResponse;
 import com.world.alfs.controller.product.response.GetProductListResponse;
-import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.service.alternative.AlternativeService;
 import com.world.alfs.service.alternative.dto.GetAlternativeProductAllDto;
-import com.world.alfs.service.alternative.dto.GetCategoryListDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -23,10 +20,9 @@ public class AlternativeController {
 
     private final AlternativeService alternativeService;
 
-    @PostMapping("/category")
-    public ApiResponse<List<CategoryResponse>> getCategory(@RequestBody CategoryListRequest request) {
-        GetCategoryListDto dto = request.toDto();
-        List<CategoryResponse> categoryResponseList = alternativeService.getCategoryList(dto);
+    @GetMapping("/category/list/{memberId}")
+    public ApiResponse<List<CategoryResponse>> getCategory(@PathVariable Long memberId) {
+        List<CategoryResponse> categoryResponseList = alternativeService.getCategoryList(memberId);
 
         return ApiResponse.ok(categoryResponseList);
     }

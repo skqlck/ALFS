@@ -7,6 +7,7 @@ import { LuShoppingCart } from "react-icons/lu";
 import { BsChatLeftDots } from "react-icons/bs";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import AddToCartFromList from "../modal/AddToCartFromList";
 
 type CardProps = {
   name: string;
@@ -16,9 +17,10 @@ type CardProps = {
   price: number;
   sale: number;
   delivery: string;
+  member_id: string;
 };
 
-export default function Card({ name, image, id, title, price, sale, delivery }: CardProps) {
+export default function Card({ name, image, id, title, price, sale, delivery, member_id }: CardProps) {
   const formattedSale = new Intl.NumberFormat().format(sale);
   const formattedPrice = new Intl.NumberFormat().format(price);
   const discount = Math.round(((price - sale) / price) * 100);
@@ -40,13 +42,9 @@ export default function Card({ name, image, id, title, price, sale, delivery }: 
           }}
         />
       </Link>
-
-      <Link href={{ pathname: `/cart` }}>
-        <Button className="w-[178px] h-[32px] rounded-none mt-[18px] border-2 text-[15px] flex items-center justify-center">
-          <LuShoppingCart className="mr-2" />
-          담기
-        </Button>
-      </Link>
+      <div className="AddToCartFromList">
+        <AddToCartFromList id={id} image={image} name={name} price={price} sale={sale} member_id={member_id} />
+      </div>
 
       <div className="CardFooter w-[178px] h-[80px] mt-[4px]">
         <div className="CardTitle w-[full] text-[13px]">{name}</div>

@@ -1,18 +1,46 @@
 "use client";
 
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Button, useDisclosure } from "@chakra-ui/react";
-import { Modal, ModalOverlay, ModalContent, ModalFooter, ModalBody, ModalCloseButton } from "@chakra-ui/react";
+import {
+  Modal,
+  ModalHeader,
+  ModalOverlay,
+  ModalContent,
+  ModalFooter,
+  ModalBody,
+  ModalCloseButton,
+} from "@chakra-ui/react";
 import { Link } from "@chakra-ui/next-js";
 import { AddProductToCart } from "@/app/api/cart/CartPage";
+import { LuShoppingCart } from "react-icons/lu";
+import Image from "next/image";
 
-type ItemProps = {
-  id: string;
-  cnt: number;
+type CardProps = {
+  id: number;
+  image: string;
+  name: string;
+  price: number;
+  sale: number;
   member_id: string;
 };
-
-export default function AddToCart({ id, cnt, member_id }: ItemProps) {
+export default function AddToCartFromList({ id, image, name, price, sale, member_id }: CardProps) {
+  const [cnt, setCnt] = useState<number>(1);
+  const changeCount = (operator: string) => {
+    if (id) {
+      setCnt((prevCnt) => {
+        if (operator === "+") {
+          return prevCnt + 1;
+        } else if (operator === "-" && prevCnt > 1) {
+          return prevCnt - 1;
+        } else {
+          return prevCnt;
+        }
+      });
+    }
+  };
+  const formattedPrice = new Intl.NumberFormat().format(price * cnt);
+  const formattedSale = new Intl.NumberFormat().format(sale * cnt);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const AddCart = async (id: string, cnt: number, member_id: string) => {
     const response: any = await AddProductToCart(id, cnt, member_id);
@@ -21,35 +49,67 @@ export default function AddToCart({ id, cnt, member_id }: ItemProps) {
   return (
     <div>
       <button
-        type="button"
+        className="w-[178px] h-[32px] rounded-none mt-[18px] border-2 text-[15px] flex items-center justify-center"
         onClick={onOpen}
-        className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white"
       >
-        장바구니에 담기
+        <LuShoppingCart className="mr-2" />
+        담기
       </button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl">
         <ModalOverlay />
         <ModalContent>
-          <ModalCloseButton />
-          <ModalBody>
-            <br />
-            장바구니 페이지로 이동하시겠습니까?
+          <ModalHeader mb={3}>
+            <ModalCloseButton />
+            장바구니에 담기
+          </ModalHeader>
+          <ModalBody mt={3}>
+            <div className="flex justify-start items-center">
+              <Image src={image} width={100} height={100} alt="item image" />
+              <span className="ml-[20px]">{name}</span>
+            </div>
+            <hr className="mt-[10px]" />
+            <div className="flex justify-between mt-[20px]">
+              <div className="flex flex-col">
+                <div>{name}</div>
+                <div>
+                  <span>{formattedSale}원</span>
+                  {price !== sale && <span className="line-through opacity-30 ml-[10px]">{formattedPrice}원</span>}
+                </div>
+              </div>
+              <div className="ButtonBox w-[81px] h-[27px] flex">
+                <button
+                  onClick={() => changeCount("-")}
+                  className="w-[27px] h-[27px] items-center justify-center border-t border-l border-b border-opacity-50"
+                >
+                  -
+                </button>
+                <div className="Count w-[27px] h-[27px] border-t border-b border-opacity-50 flex items-center justify-center">
+                  {cnt}
+                </div>
+                <button
+                  onClick={() => changeCount("+")}
+                  className="w-[27px] h-[27px] items-center justify-center border-t border-b border-r border-opacity-50"
+                >
+                  +
+                </button>
+              </div>
+            </div>
           </ModalBody>
           <ModalFooter>
+            <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
+              취소
+            </Button>
             <Button colorScheme="whatsapp" variant="outline" mr={3}>
               <Link
                 href={{ pathname: `/cart` }}
                 colorScheme="whatsapp"
                 variant="outline"
                 mr={3}
-                onClick={() => AddCart(id, cnt, member_id)}
+                onClick={() => AddCart(String(id), cnt, member_id)}
               >
-                Move
+                장바구니에 담기
               </Link>
-            </Button>
-            <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
-              Close
             </Button>
           </ModalFooter>
         </ModalContent>
