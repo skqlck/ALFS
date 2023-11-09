@@ -4,6 +4,7 @@ import com.world.alfs.domain.member.Member;
 import lombok.Builder;
 import lombok.Data;
 import lombok.RequiredArgsConstructor;
+import org.springframework.security.crypto.password.PasswordEncoder;
 
 
 @Data
@@ -42,11 +43,11 @@ public class AddMemberDto {
         this.activate = activate;
     }
 
-    public Member toEntity() {
+    public Member toEntity(PasswordEncoder passwordEncoder) {
         return Member.builder()
                 .name(name)
                 .identifier(identifier)
-                .password(password)
+                .password(passwordEncoder.encode(password))
                 .birth(birth)
                 .point(0)
                 .email(email)

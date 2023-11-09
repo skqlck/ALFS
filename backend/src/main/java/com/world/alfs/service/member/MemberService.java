@@ -7,11 +7,10 @@ import com.world.alfs.domain.member.repository.MemberRepository;
 import com.world.alfs.service.member.dto.AddMemberDto;
 import com.world.alfs.service.member.dto.LoginMemberDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import java.util.Objects;
-import java.util.Optional;
 import java.util.regex.Pattern;
 
 @RequiredArgsConstructor
@@ -20,6 +19,7 @@ import java.util.regex.Pattern;
 public class MemberService {
 
     private final MemberRepository userRepository;
+    private final PasswordEncoder passwordEncoder;
 
     public ApiResponse getMember(Long member_id) {
         Member member = userRepository.findById(member_id)
@@ -34,13 +34,13 @@ public class MemberService {
         if (checkEmail(addMemberDto.getEmail())) throw new Exception("중복된 이메일 입니다.");
         if (checkPhoneNumber(addMemberDto.getPhoneNumber())) throw new Exception("중복된 전화번호 입니다.");
         if (checkPassword(addMemberDto.getPassword(), addMemberDto.getPasswordCheck())) throw new Exception("비밀번호가 서로 다릅니다.");
-        Member member = userRepository.save(addMemberDto.toEntity());
+        Member member = userRepository.save(addMemberDto.toEntity(passwordEncoder));
         return member.getId();
     }
     // 로그인
     public Long login(LoginMemberDto loginMemberDto) {
         Member member = userRepository.findByIdentifierAndActivate(loginMemberDto.getIdentifier(), true).stream()
-                .filter(m -> m.getPassword().equals(loginMemberDto.getPassword())).findAny()
+                .filter(m -> passwordEncoder.matches(loginMemberDto.getPassword(), m.getPassword())).findAny()
                 .orElseThrow(()->new IllegalArgumentException("아이디 혹은 비밀번호가 틀렸습니다."));
         return member.getId();
     }
@@ -84,10 +84,10 @@ public class MemberService {
         member.setIdentifier(addMemberDto.getIdentifier());
         member.setEmail(addMemberDto.getEmail());
         member.setPhoneNumber(addMemberDto.getPhoneNumber());
-        member.setPassword(addMemberDto.getPassword());
+        member.setPassword(passwordEncoder.encode(addMemberDto.getPassword()));
         member.setBirth(addMemberDto.getBirth());
         member.setName(addMemberDto.getName());
-        return ApiResponse.ok(userRepository.save(member));
+        return ApiResponse.ok(userRepository.save(member).toGetMemberResponse());
     }
 
     // 회원 탈퇴
@@ -96,7 +96,7 @@ public class MemberService {
                 .filter(m -> m.getActivate())
                 .findAny()
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다."));
-        if (! member.getPassword().equals(password)) throw new IllegalArgumentException("비밀번호가 틀렷습니다.");
+        if (! passwordEncoder.matches(password, member.getPassword())) throw new IllegalArgumentException("비밀번호가 틀렷습니다.");
         member.setActivate(false);
         userRepository.save(member);
         return ApiResponse.ok("삭제되었습니다.");
