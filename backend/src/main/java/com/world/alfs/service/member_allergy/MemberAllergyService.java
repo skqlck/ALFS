@@ -31,22 +31,33 @@ public class MemberAllergyService {
     private final AllergyRepository allergyRepository;
     private final MemberRepository memberRepository;
 
-    public Long addMemberAllergy(AddMemberAllergyDto dto) {
-        Member member = memberRepository.findById(dto.getMember_id())
+    public Long addMemberAllergy(List<AddMemberAllergyDto> dtoList) {
+        // 등록하려는 회원 id
+        Long memberId = dtoList.get(0).getMember_id();
+        Member member = memberRepository.findById(memberId)
                 .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+        // 등록하려는 알러지 타입
+        int allergyType = dtoList.get(0).getIsAllergy();
+
+        // 기존 등록된 알러지 정보 삭제
+        List<Allergy> allergyList = allergyRepository.findByAllergyType(allergyType);
+
+        for (Allergy a : allergyList) {
+            memberAllergyRepository.deleteByMemberIdAndAllergyId(memberId, a.getId());
+        }
+
+        // 알러지 등록
+        for (AddMemberAllergyDto dto : dtoList) {
         Allergy allergy = allergyRepository.findById(dto.getAllergy_id())
                 .orElseThrow(() -> new CustomException(ALLERGY_NOT_FOUND));
 
-        boolean exists = memberAllergyRepository.existsByMemberIdAndAllergyId(dto.getMember_id(), dto.getAllergy_id());
-
-        if (!exists) {
             MemberAllergy memberAllergy = dto.toEntity(member,allergy);
             MemberAllergy savedMemberAllergy = memberAllergyRepository.save(memberAllergy);
-
-            return savedMemberAllergy.getId();
-        } else {
-            return -1L;
+            log.debug("등록된 알러지 id: {}", savedMemberAllergy.getId());
         }
+
+        return memberId;
     }
 
     public List<Long> getFilteredAllergyId(Long memberId) {

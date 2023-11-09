@@ -18,6 +18,8 @@ public interface AllergyRepository extends JpaRepository<Allergy, Long> {
 
     Integer findAllergyTypeById(Long memberAllergyId);
 
-    Optional<Allergy> findByIdAndAllergyType(Long id, int isAllergy);
+    Optional<Allergy> findByIdAndAllergyType(Long allergyId, int isAllergy);
+
+    List<Allergy> findByAllergyType(int isAllergy);
 
 }

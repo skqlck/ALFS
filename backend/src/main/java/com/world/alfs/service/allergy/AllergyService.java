@@ -54,6 +54,7 @@ public class AllergyService {
             AddMemberAllergyDto dto = AddMemberAllergyDto.builder()
                     .allergy_id(allergyId.get())
                     .member_id(memberId)
+                    .isAllergy(isAllergy)
                     .build();
             System.out.println("여기는 AllergyService  (member_id,allergy_id) " + dto.getMember_id() + " " + dto.getAllergy_id());
             list.add(dto);

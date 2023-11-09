@@ -12,11 +12,13 @@ import lombok.RequiredArgsConstructor;
 public class AddMemberAllergyDto {
     private Long member_id;
     private Long allergy_id;
+    private int isAllergy;
 
     @Builder
-    public AddMemberAllergyDto(Long member_id, Long allergy_id) {
+    public AddMemberAllergyDto(Long member_id, Long allergy_id, int isAllergy) {
         this.member_id = member_id;
         this.allergy_id = allergy_id;
+        this.isAllergy = isAllergy;
     }
 
     public MemberAllergy toEntity(Member member, Allergy allergy) {

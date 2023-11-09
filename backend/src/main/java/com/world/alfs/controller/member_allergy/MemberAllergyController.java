@@ -20,10 +20,8 @@ public class MemberAllergyController {
     @PostMapping()
     public void addMemberAllergy(@RequestBody List<AddMemberAllergyDto> request){
         System.out.println("redirect 성공하셨습니다: member_allergy");
-        for(AddMemberAllergyDto dto : request){
-            System.out.print(dto.getAllergy_id());
-            memberAllergyService.addMemberAllergy(dto);
-        }
+
+        memberAllergyService.addMemberAllergy(request);
     }
 
     @GetMapping("/{memberId}/{isAllergy}")
