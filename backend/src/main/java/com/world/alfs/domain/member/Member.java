@@ -47,4 +47,34 @@ public class Member {
         this.phoneNumber = phoneNumber;
         this.activate = activate;
     }
+
+    // == 비지니스 로직 == //
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setActivate(boolean activate){
+        this.activate = activate;
+    }
 }

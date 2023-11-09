@@ -30,19 +30,23 @@ public class MemberController {
         catch (Exception e){
             return ApiResponse.badRequest(e.getMessage());
         }
-        if (addressService.addAddress(addressDto, member_id, true).isPresent()){
+        try {
+            addressService.addAddress(addressDto, member_id, true);
             return ApiResponse.created("회원가입이 완료되었습니다. 주소지 설정이 완료되었습니다.", null);
         }
-        return ApiResponse.created("회원가입이 완료되었습니다. 주소지 설정이 실패하였습니다.", null);
+        catch (Exception e) {
+            return ApiResponse.created("회원가입이 완료되었습니다. 주소지 설정에 실패하였습니다.", null);
+        }
     }
 
     @PostMapping("/login")
     public ApiResponse<Long> login(@RequestBody LoginRequest loginRequest){
-        Optional<Long> member_id = memberService.login(loginRequest.toDto());
-        if (member_id.get() == 0){
-            return ApiResponse.badRequest("잘못된 아이디 혹은 비밀번호 입니다.");
+        try {
+            return ApiResponse.ok(memberService.login(loginRequest.toDto()));
         }
-        return ApiResponse.ok(member_id.get());
+        catch (Exception e){
+            return ApiResponse.badRequest(e.getMessage());
+        }
     }
 
     @PostMapping("/logout")
@@ -63,5 +67,25 @@ public class MemberController {
     @GetMapping("/check/phoneNumber/{phoneNumber}")
     public ApiResponse<Boolean> checkPhoneNumber(@PathVariable("phoneNumber") String phoneNumber){
         return ApiResponse.ok(memberService.checkPhoneNumber(phoneNumber));
+    }
+
+    @PutMapping("/update")
+    public ApiResponse updateMember(@RequestBody UpdateMemberRequest updateMemberRequest){
+        try {
+            return ApiResponse.ok(memberService.updateMember(updateMemberRequest.getMember_id(), updateMemberRequest.getMember()));
+        }
+        catch (Exception e){
+            return ApiResponse.badRequest(e.getMessage());
+        }
+    }
+
+    @PutMapping("/delete")
+    public ApiResponse deactivateMember(@RequestBody DeactivateRequest deactivateRequest){
+        try {
+            return memberService.deactivateMember(deactivateRequest.getMember_id(), deactivateRequest.getPassword());
+        }
+        catch (Exception e){
+            return ApiResponse.badRequest(e.getMessage());
+        }
     }
 }
