@@ -1,9 +1,10 @@
+import axios from "axios";
 import { baseAxios } from "../Api";
 
 export async function CheckId(props: String) {
   try {
     const res = await baseAxios.get(`api/member/check/identifier/${props}`);
-    console.log(res.data.data);
+
     return res.data.data;
   } catch (e) {
     console.error(e);
@@ -13,7 +14,7 @@ export async function CheckId(props: String) {
 export async function CheckEmail(props: String) {
   try {
     const res = await baseAxios.get(`api/member/check/email/${props}`);
-    console.log(res.data.data);
+
     return res.data.data;
   } catch (e) {
     console.error(e);
@@ -23,7 +24,7 @@ export async function CheckEmail(props: String) {
 export async function CheckPhone(props: String) {
   try {
     const res = await baseAxios.get(`api/member/check/phoneNumber/${props}`);
-    console.log(res.data.data);
+
     return res.data.data;
   } catch (e) {
     console.error(e);
@@ -31,7 +32,6 @@ export async function CheckPhone(props: String) {
 }
 
 export async function UserSignup(props: any) {
-  console.log(props);
   try {
     const res = await baseAxios.post("/api/member/signup", {
       member: {
@@ -49,7 +49,7 @@ export async function UserSignup(props: any) {
         alias: props.alias,
       },
     });
-    console.log(res);
+
     return res.data.data;
   } catch (error) {
     console.error(error);
@@ -101,7 +101,6 @@ export async function ChangeStatus(props: any) {
 }
 
 export async function PlusAddress(props: any) {
-  console.log(props);
   try {
     const res = await baseAxios.post(`api/address/`, {
       member_id: props.member_id,
@@ -118,14 +117,20 @@ export async function PlusAddress(props: any) {
 }
 
 export async function DeleteAddress(props: any) {
-  console.log(props);
   try {
-    const res = await baseAxios.delete(`api/address/`, {
-      data: {
-        member_id: props[0],
-        address_id: props[1],
-      },
+    const res = await baseAxios.post(`api/address/delete`, {
+      member_id: props[0],
+      address_id: props[1],
     });
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function UpdateAddress(props: any) {
+  try {
+    const res = await baseAxios.put(`api/address/update`, props);
     return res;
   } catch (e) {
     console.error(e);
@@ -135,7 +140,7 @@ export async function DeleteAddress(props: any) {
 export async function RegisterAllergy(props: any) {
   try {
     const res = await baseAxios.post(`api/allergy/check/${props.memberId}/1`, props.allergy);
-    console.log(res);
+
     return res;
   } catch (e) {
     console.error(e);
@@ -144,8 +149,44 @@ export async function RegisterAllergy(props: any) {
 export async function RegisterHate(props: any) {
   try {
     const res = await baseAxios.post(`api/allergy/check/${props.memberId}/0`, props.hate);
-    console.log(res);
+
     return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function MyAllergy(props: any) {
+  try {
+    const res = await baseAxios.get(`api/member_allergy/${props}/1`);
+
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function MyHate(props: any) {
+  try {
+    const res = await baseAxios.get(`api/member_allergy/${props}/0`);
+
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function NaverImage(e: any) {
+  try {
+    const res = await axios.get(
+      `	https://dapi.kakao.com/v2/search/web?query=${e} 나무위키&sort=accuracy&size=1&page=1`,
+      {
+        headers: {
+          Authorization: `KakaoAK fc854580a3982d3c7489ae94709707aa`,
+        },
+      }
+    );
+    return res.data.documents[0].url;
   } catch (e) {
     console.error(e);
   }

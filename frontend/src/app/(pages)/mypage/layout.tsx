@@ -1,6 +1,6 @@
 "use client";
 
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -9,11 +9,13 @@ import LoginModal from "@/app/_components/needLogin/LoginModal";
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
-  const [memberId, setMemberId] = useState<any>();
+  const [show, setShow] = useState(false);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
-    setMemberId(id);
+    if (!id) {
+      setShow(true);
+    }
   }, []);
 
   return (
@@ -71,6 +73,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
               </Button>
             </Link>
           </div>
+          {show && <LoginModal />}
         </div>
 
         <div className="w-[750px]">{children}</div>

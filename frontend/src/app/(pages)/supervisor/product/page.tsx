@@ -15,6 +15,7 @@ const Card = dynamic(() => import("../../../_components/card/Card"), {
 export default function Page() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [memberId, setMemberId] = useState<any>("");
 
   const getData = async () => {
     const res = await AllProduct();
@@ -38,6 +39,8 @@ export default function Page() {
   };
 
   useEffect(() => {
+    const id = localStorage.getItem("id");
+    setMemberId(id);
     getData();
   }, []);
   return (
@@ -81,6 +84,7 @@ export default function Page() {
                   price={item.price}
                   sale={item.sale}
                   delivery={item.delivery}
+                  member_id={memberId}
                 />
               </div>
             </>

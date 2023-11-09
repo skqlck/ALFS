@@ -22,6 +22,9 @@
   font-weight: normal;
   font-style: normal;
 }
+html {
+  font-family: "GmarketSansMedium";
+}
 
 body {
   /* color: rgb(var(--foreground-rgb));

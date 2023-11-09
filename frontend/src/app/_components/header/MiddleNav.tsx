@@ -1,24 +1,10 @@
 import React from "react";
 import Logo from "../../_asset/img/Logo.jpg";
 import Image from "next/image";
-import { FaRegHeart } from "react-icons/fa";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineSearch } from "react-icons/ai";
-import { AiOutlineEnvironment } from "react-icons/ai";
-import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
+import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import Link from "next/link";
 
-import {
-  Popover,
-  PopoverTrigger,
-  PopoverContent,
-  PopoverHeader,
-  PopoverBody,
-  PopoverFooter,
-  PopoverArrow,
-  PopoverCloseButton,
-  PopoverAnchor,
-} from "@chakra-ui/react";
 import MiddleIcon from "./MiddleIcon";
 
 export default function MiddleNav() {

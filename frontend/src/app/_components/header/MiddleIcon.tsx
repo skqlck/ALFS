@@ -21,17 +21,19 @@ import { AddressAll } from "@/app/api/user/user";
 
 export default function MiddleIcon() {
   const [address, setAddress] = useState<any>({});
+  const [memberId, setMemberId] = useState<any>("");
   const myAddress = async (id: any) => {
     const res = await AddressAll(id);
     const original = res?.data.data.filter((item: any) => item.status === true);
-    console.log(original);
     setAddress(original);
   };
-  console.log(address);
 
   useEffect(() => {
     const id = localStorage.getItem("id");
-    myAddress(id);
+    setMemberId(id);
+    if (id) {
+      myAddress(id);
+    }
   }, []);
   return (
     <div className="flex gap-[20px]">
@@ -44,21 +46,42 @@ export default function MiddleIcon() {
         <PopoverContent>
           <PopoverArrow />
           <PopoverCloseButton />
-          <PopoverHeader>
-            <b className="text-[20px]">현재배송지</b>
-          </PopoverHeader>
-          <PopoverBody>
-            {address[0]?.address_1}
-            <br />
-            {address[0]?.address_2}
-          </PopoverBody>
-          <PopoverFooter justifyContent="end" display="flex">
-            <Link href="/mypage/home">
-              <Button variant="outline" colorScheme="whatsapp">
-                배송지 추가하러 가기
-              </Button>
-            </Link>
-          </PopoverFooter>
+          {memberId ? (
+            <>
+              <PopoverHeader>
+                <b className="text-[20px]">현재배송지</b>
+              </PopoverHeader>
+              <PopoverBody>
+                {address[0]?.address_1}
+                <br />
+                {address[0]?.address_2}
+              </PopoverBody>
+              <PopoverFooter justifyContent="end" display="flex">
+                <Link href="/mypage/home">
+                  <Button variant="outline" colorScheme="whatsapp">
+                    배송지 추가하러 가기
+                  </Button>
+                </Link>
+              </PopoverFooter>
+            </>
+          ) : (
+            <>
+              <PopoverHeader>
+                <b className="text-[20px]">현재배송지</b>
+              </PopoverHeader>
+              <PopoverBody>
+                배송지 정보가 없습니다.
+                <br />
+              </PopoverBody>
+              <PopoverFooter justifyContent="end" display="flex">
+                <Link href="/login">
+                  <Button variant="outline" colorScheme="whatsapp">
+                    로그인
+                  </Button>
+                </Link>
+              </PopoverFooter>
+            </>
+          )}
         </PopoverContent>
       </Popover>
       <FaRegHeart className="min-w-[40px] h-[40px]" />

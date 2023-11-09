@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Checkbox, Button, useToast } from "@chakra-ui/react";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import { AddressAll, ChangeStatus, DeleteAddress, PlusAddress } from "@/app/api/user/user";
 import {
   Modal,
@@ -20,6 +20,7 @@ import { useForm } from "react-hook-form";
 import DaumPost from "@/app/_components/location/Daumpost";
 import PropsModal from "@/app/_components/modal/PropsModal";
 import Loading from "@/app/_components/loading/loading";
+import ChangeAddress from "./_components/UpdateAddress";
 
 type Inputs = {
   id: string;
@@ -67,9 +68,9 @@ export default function Page() {
       duration: 3000,
       isClosable: true,
     });
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 1000);
+    setTimeout(() => {
+      window.location.reload();
+    }, 1000);
   };
 
   const setAddress = (address: string) => {
@@ -168,6 +169,7 @@ export default function Page() {
                 <Th width={100}>선택</Th>
                 <Th width={200}>명칭</Th>
                 <Th width={400}>주소</Th>
+                <Th width={100}>수정</Th>
                 <Th width={100}>삭제</Th>
               </Tr>
             </Thead>
@@ -183,16 +185,20 @@ export default function Page() {
                       )}
                     </Td>
                     <Td>{data.alias}</Td>
+
                     <Td>
                       {data.address_1} <br />
                       {data.address_2}
+                    </Td>
+                    <Td>
+                      <ChangeAddress props={[data, userId]} />
                     </Td>
                     <Td
                       onClick={() => {
                         deleteMyAddress(data.id);
                       }}
                     >
-                      <AiOutlineClose className="text-[20px]"></AiOutlineClose>
+                      <AiOutlineClose className="text-[20px] cursor-pointer"></AiOutlineClose>
                     </Td>
                   </Tr>
                 </Tbody>
