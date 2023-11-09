@@ -7,16 +7,13 @@ import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.product_ingredient.ProductIngredient;
 import com.world.alfs.service.product.dto.AddProductDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 
 @Entity
-@Getter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
     @Id

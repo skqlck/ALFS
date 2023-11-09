@@ -6,16 +6,13 @@ import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.supervisor.Supervisor;
 import com.world.alfs.service.speical.dto.SetSpecialDto;
-import lombok.AccessLevel;
-import lombok.Builder;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
 
 @Entity
-@Getter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Special {
 
