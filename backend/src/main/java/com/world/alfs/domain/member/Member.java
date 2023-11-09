@@ -1,5 +1,6 @@
 package com.world.alfs.domain.member;
 
+import com.world.alfs.controller.member.response.GetMemberResponse;
 import lombok.*;
 import javax.persistence.*;
 
@@ -45,6 +46,47 @@ public class Member {
         this.point = point;
         this.email = email;
         this.phoneNumber = phoneNumber;
+        this.activate = activate;
+    }
+
+    public GetMemberResponse toGetMemberResponse(){
+        return GetMemberResponse.builder()
+                .member_id(id)
+                .identifier(identifier)
+                .email(email)
+                .name(name)
+                .birth(birth)
+                .phoneNumber(phoneNumber)
+                .build();
+    }
+
+    // == 비지니스 로직 == //
+
+    public void setName(String name) {
+        this.name = name;
+    }
+
+    public void setIdentifier(String identifier) {
+        this.identifier = identifier;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public void setBirth(String birth) {
+        this.birth = birth;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public void setPhoneNumber(String phoneNumber) {
+        this.phoneNumber = phoneNumber;
+    }
+
+    public void setActivate(boolean activate){
         this.activate = activate;
     }
 }
