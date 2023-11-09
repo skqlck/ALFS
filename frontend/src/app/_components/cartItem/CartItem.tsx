@@ -2,6 +2,7 @@
 
 import React, { useState } from "react";
 import Image from "next/image";
+import Link from "next/link";
 import { BsCheckCircle, BsCheckCircleFill } from "react-icons/bs";
 import { AiOutlineClose } from "react-icons/ai";
 import { AddCount, RemoveBasket, RemoveCount } from "@/app/api/cart/CartPage";
@@ -64,36 +65,41 @@ export default function CartItem({
     <div>
       {isProductVisible && (
         <div className="mt-[10px]">
-          <div className="ProductMain h-[112px] flex items-center ml-[10px]">
-            {isCheck ? (
-              <BsCheckCircleFill className="w-[30px] h-[30px]" style={{ color: "#21A71E" }} onClick={toggleCheck} />
-            ) : (
-              <BsCheckCircle className="w-[30px] h-[30px]" onClick={toggleCheck} />
-            )}
-
-            <Image src={product.img} width={84} height={112} alt="Test Image" className="ml-[36px]" />
-            <span className="ml-[25px]">{product.name}</span>
-            <div className="ButtonBox w-[114px] h-[38px] flex items-center ml-[36px]">
-              <button
-                onClick={decreaseCount}
-                className="w-[27px] h-[27px] items-center justify-center border-t border-l border-b border-opacity-50"
-              >
-                -
-              </button>
-              <div className="Count w-[27px] h-[27px] border-t border-b border-opacity-50 flex items-center justify-center">
-                {cnt}
-              </div>
-              <button
-                onClick={increaseCount}
-                className="w-[27px] h-[27px] items-center justify-center border-t border-b border-r border-opacity-50"
-              >
-                +
-              </button>
+          <div className="ProductMain h-[112px] flex items-center ml-[10px] justify-between">
+            <div className="flex items-center">
+              {isCheck ? (
+                <BsCheckCircleFill className="w-[30px] h-[30px]" style={{ color: "#21A71E" }} onClick={toggleCheck} />
+              ) : (
+                <BsCheckCircle className="w-[30px] h-[30px]" onClick={toggleCheck} />
+              )}
+              <Link href={{ pathname: `/detail/${product.id}` }}>
+                <Image src={product.img} width={84} height={112} alt="Test Image" className="ml-[36px]" />
+              </Link>
+              <span className="ml-[25px]">{product.name}</span>
             </div>
-            <div className="Price">{formattedPrice}원</div>
-            <span onClick={() => onDeleteItem(basket_id)}>
-              <AiOutlineClose className="ml-auto w-[30px] h-[30px]" />
-            </span>
+            <div className="flex items-center">
+              <div className="ButtonBox w-[114px] h-[38px] flex items-center ml-[36px]">
+                <button
+                  onClick={decreaseCount}
+                  className="w-[27px] h-[27px] items-center justify-center border-t border-l border-b border-opacity-50"
+                >
+                  -
+                </button>
+                <div className="Count w-[27px] h-[27px] border-t border-b border-opacity-50 flex items-center justify-center">
+                  {cnt}
+                </div>
+                <button
+                  onClick={increaseCount}
+                  className="w-[27px] h-[27px] items-center justify-center border-t border-b border-r border-opacity-50"
+                >
+                  +
+                </button>
+              </div>
+              <div className="Price">{formattedPrice}원</div>
+              <span className="ml-[10px]" onClick={() => onDeleteItem(basket_id)}>
+                <AiOutlineClose className="ml-auto w-[30px] h-[30px]" />
+              </span>
+            </div>
           </div>
 
           <hr className="opacity-50 mt-[20px]" />

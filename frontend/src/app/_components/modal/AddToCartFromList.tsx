@@ -100,17 +100,17 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
             <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
               취소
             </Button>
-            <Button colorScheme="whatsapp" variant="outline" mr={3}>
-              <Link
-                href={{ pathname: `/cart` }}
-                colorScheme="whatsapp"
-                variant="outline"
-                mr={3}
-                onClick={() => AddCart(String(id), cnt, member_id)}
-              >
+            <Link
+              href={{ pathname: `/cart` }}
+              colorScheme="whatsapp"
+              variant="outline"
+              mr={3}
+              onClick={() => AddCart(String(id), cnt, member_id)}
+            >
+              <Button colorScheme="whatsapp" variant="outline" mr={3}>
                 장바구니에 담기
-              </Link>
-            </Button>
+              </Button>
+            </Link>
           </ModalFooter>
         </ModalContent>
       </Modal>

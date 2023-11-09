@@ -1,7 +1,6 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import Link from "next/link";
 import { GetList } from "../../api/list/ListPage";
 import Loading from "@/app/_components/loading/loading";
 import dynamic from "next/dynamic";
@@ -46,6 +45,7 @@ function GetListData() {
                   sale={item.sale}
                   delivery={item.delivery}
                   member_id={memberId}
+                  filterCode={item.filterCode}
                 />
               </div>
             ))}

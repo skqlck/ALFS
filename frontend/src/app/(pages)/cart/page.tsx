@@ -12,6 +12,7 @@ import WaterDropImage from "../../_asset/img/WaterDropImage.svg";
 import SunImage from "../../_asset/img/SunImage.svg";
 import { IoIosArrowUp, IoIosArrowDown } from "react-icons/io";
 import { RemoveBasket } from "@/app/api/cart/CartPage";
+import { AddressAll } from "@/app/api/user/user";
 
 type Props = {};
 
@@ -32,6 +33,7 @@ type CartData = {
 
 export default function Page({}: Props) {
   const [memberId, setMemberId] = useState<string>("");
+  const [userAddress, setUserAddress] = useState<any>([]);
   const [memberData, setMemberData] = useState<CartData[]>([]);
   const [isFrozenVisible, setFrozenVisible] = useState<boolean>(false);
   const [isRefrigeratedVisible, setRefrigeratedVisible] = useState<boolean>(false);
@@ -56,7 +58,6 @@ export default function Page({}: Props) {
         const member_id: string = localStorage.getItem("id")!;
         setMemberId(member_id);
         const response: CartData[] = await CartList(member_id);
-        console.log("리스폰스", response);
         setMemberData(response);
         response.forEach((item) => {
           if (item.pack === "냉동") {
@@ -70,6 +71,12 @@ export default function Page({}: Props) {
         const selectedProducts = response.filter((item) => item.isCheck).length;
         const selectedProductsCount = selectedProducts > 0 ? selectedProducts : 0;
         setSelectedCount(selectedProductsCount);
+
+        const addres: any = await AddressAll(member_id);
+        console.log("주소", addres);
+        const mainAddress = addres.data.data.find((item: any) => item.status === true);
+        console.log("메인주소", mainAddress.address1);
+        setUserAddress(mainAddress);
       } catch (error) {
         console.log(error);
       }
@@ -103,7 +110,6 @@ export default function Page({}: Props) {
   };
   const deleteItem = async (basketId: number) => {
     try {
-      console.log("상품삭제", basketId, memberId);
       await RemoveBasket([basketId], memberId);
       const updatedMemberData = memberData.filter((item) => item.basket_id !== basketId);
       const selectedProducts = updatedMemberData ? updatedMemberData.filter((item) => item.isCheck).length : 0;
@@ -306,10 +312,13 @@ export default function Page({}: Props) {
                 <GrLocation />
                 <span className="ml-[5px]">배송지</span>
               </div>
-              <div className="text-[20px]">
-                광주 광산구 하남산단 <br />
-                6번로 107
-              </div>
+              {userAddress ? (
+                <span className="text-[20px]">
+                  {userAddress.address_1} <br /> {userAddress.address_2}
+                </span>
+              ) : (
+                <span className="text-[20px]">배송지가 없습니다. 배송지를 추가해주세요.</span>
+              )}
               <Link
                 href={{ pathname: `/mypage/home` }}
                 className="SubmitBtn w-[225px] h-[42px] mt-[11px] mb-[11px] flex items-center justify-center text-[#33C130] text-[12px] border border-[#33C130]"
