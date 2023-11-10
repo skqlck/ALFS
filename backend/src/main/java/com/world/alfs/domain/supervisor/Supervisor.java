@@ -1,15 +1,11 @@
 package com.world.alfs.domain.supervisor;
 
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
-import lombok.Setter;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
-@Getter
-@Setter
+@Data
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Supervisor {
     @Id
@@ -25,4 +21,12 @@ public class Supervisor {
     @Column(nullable = false)
     private String password;
 
+
+    @Builder
+    public Supervisor(Long id, String name, String identifier, String password) {
+        this.id = id;
+        this.name = name;
+        this.identifier = identifier;
+        this.password = password;
+    }
 }

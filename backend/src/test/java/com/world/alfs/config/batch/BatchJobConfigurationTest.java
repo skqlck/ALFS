@@ -1,5 +1,6 @@
 package com.world.alfs.config.batch;
 
+import com.world.alfs.config.batch.special.BatchJobConfiguration;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
