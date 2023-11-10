@@ -16,8 +16,8 @@ export default function Page() {
   };
 
   const handleKakao = async (e: any) => {
-    const res = await NaverImage(e);
-    window.open(res);
+    // const res = await NaverImage(e);
+    // window.open(`https://namu.wiki/w/${e}`);
   };
 
   useEffect(() => {

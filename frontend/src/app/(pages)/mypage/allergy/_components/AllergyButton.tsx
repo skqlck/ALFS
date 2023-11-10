@@ -1,7 +1,7 @@
 "use client";
 
 import ChoiceAllergy from "@/app/_components/choiceAllergy/ChoiceAllergy";
-import { Button } from "@chakra-ui/react";
+import { Button, useToast } from "@chakra-ui/react";
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 
@@ -20,6 +20,7 @@ import {
   TagCloseButton,
 } from "@chakra-ui/react";
 import { RegisterAllergy, RegisterHate } from "@/app/api/user/user";
+import PropsModal from "@/app/_components/modal/PropsModal";
 
 type Props = {};
 
@@ -31,6 +32,7 @@ export default function AllergyButton({}: Props) {
   const [selectedHate, setSelectedHate] = useState<string[]>([]);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [memberId, setMemberId] = useState<any>();
+  const [show, setShow] = useState(false);
 
   //22가지 알러지 선택
   const setAllergy = (allergy: string[]) => {
@@ -70,10 +72,11 @@ export default function AllergyButton({}: Props) {
   const submitAllergy = async (e: any) => {
     e.preventDefault();
     const allergy_data = { memberId: memberId, allergy: [...allergy_1, ...selectedAllergy2] };
-    console.log(allergy_data);
     await RegisterAllergy(allergy_data);
     const hate_data = { memberId: memberId, hate: selectedHate };
     await RegisterHate(hate_data);
+    onClose();
+    setShow(true);
   };
 
   useEffect(() => {
@@ -207,6 +210,7 @@ export default function AllergyButton({}: Props) {
             </ModalContent>
           </Modal>
         </div>
+        {show && <PropsModal props="알러지가 변경되었습니다." />}
       </div>
     </>
   );

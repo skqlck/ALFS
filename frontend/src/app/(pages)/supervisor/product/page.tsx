@@ -76,7 +76,7 @@ export default function Page() {
                   </Button>
                 </div>
 
-                <Card
+                {/* <Card
                   name={item.name}
                   image={item.img}
                   id={item.id}
@@ -85,7 +85,7 @@ export default function Page() {
                   sale={item.sale}
                   delivery={item.delivery}
                   member_id={memberId}
-                />
+                /> */}
               </div>
             </>
           ))}

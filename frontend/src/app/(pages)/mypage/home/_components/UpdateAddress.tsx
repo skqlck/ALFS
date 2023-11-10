@@ -13,10 +13,11 @@ import {
   useDisclosure,
   useToast,
 } from "@chakra-ui/react";
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import { AiOutlineEdit } from "react-icons/ai";
 import { useForm } from "react-hook-form";
 import { UpdateAddress } from "@/app/api/user/user";
+import PropsModal from "@/app/_components/modal/PropsModal";
 
 type Inputs = {
   id: string;
@@ -29,9 +30,9 @@ export default function ChangeAddress(props: any) {
   const data = props.props[0];
   const userId = props.props[1];
   const address_id = props.props[0].id;
-  const toast = useToast();
   const { isOpen, onOpen, onClose } = useDisclosure();
   const { register, handleSubmit, watch, setValue } = useForm<Inputs>();
+  const [show, setShow] = useState(false);
 
   const setAddress = (address: string) => {
     setValue("address_1", address);
@@ -48,16 +49,8 @@ export default function ChangeAddress(props: any) {
       },
     };
     await UpdateAddress(sendData);
-    toast({
-      title: "주소가 변경되었습니다.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
     onClose();
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    setShow(true);
   };
 
   useEffect(() => {
@@ -127,6 +120,7 @@ export default function ChangeAddress(props: any) {
           </form>
         </ModalContent>
       </Modal>
+      {show && <PropsModal props="주소지가 변경되었습니다." />}
     </>
   );
 }
