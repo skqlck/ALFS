@@ -66,17 +66,17 @@ public class MemberController {
 
     @GetMapping("/check/identifier/{identifier}")
     public ApiResponse<Boolean> checkIdentifier(@PathVariable("identifier") String identifier){
-        return ApiResponse.ok(memberService.checkIdentifier(identifier));
+        return ApiResponse.ok(memberService.isIdentifierExist(identifier));
     }
 
     @GetMapping("/check/email/{email}")
     public ApiResponse<Boolean> checkEmail(@PathVariable("email") String email){
-        return ApiResponse.ok(memberService.checkEmail(email));
+        return ApiResponse.ok(memberService.isEmailExist(email));
     }
 
     @GetMapping("/check/phoneNumber/{phoneNumber}")
     public ApiResponse<Boolean> checkPhoneNumber(@PathVariable("phoneNumber") String phoneNumber){
-        return ApiResponse.ok(memberService.checkPhoneNumber(phoneNumber));
+        return ApiResponse.ok(memberService.isPhoneNumberExist(phoneNumber));
     }
 
     @PutMapping("/update")

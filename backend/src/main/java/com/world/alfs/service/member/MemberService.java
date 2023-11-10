@@ -21,6 +21,13 @@ public class MemberService {
     private final MemberRepository userRepository;
     private final PasswordEncoder passwordEncoder;
 
+    private String EMAIL_REGEXP = "^[a-zA-Z0-9+-.]+@[a-zA-Z0-9-]+\\.[a-zA-Z0-9-.]+$";
+    private String IDENTIFIER_REGEXP = "^[a-zA-Z0-9]{6,16}$";
+    private String PHONENUMBER_REGEXP = "^010\\d{3,4}\\d{4}$";
+    private String BIRTH_REGEXP = "^\\d{4}-(0[1-9]|1[012])-(0[1-9]|[12][0-9]|3[01])$";
+    private String NAME_REGEXP = "^[가-힣]{2,6}$";
+    private String PASSWORD_REGEXP = "^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,15}$";
+
     public ApiResponse getMember(Long member_id) {
         Member member = userRepository.findById(member_id)
                 .filter(m -> m.getActivate())
@@ -30,13 +37,12 @@ public class MemberService {
 
     // 회원가입
     public Long addMember(AddMemberDto addMemberDto) throws Exception{
-        if (checkIdentifier(addMemberDto.getIdentifier())) throw new Exception("중복된 아이디 입니다.");
-        if (checkEmail(addMemberDto.getEmail())) throw new Exception("중복된 이메일 입니다.");
-        if (checkPhoneNumber(addMemberDto.getPhoneNumber())) throw new Exception("중복된 전화번호 입니다.");
-        if (checkPassword(addMemberDto.getPassword(), addMemberDto.getPasswordCheck())) throw new Exception("비밀번호가 서로 다릅니다.");
+        validateAll(addMemberDto);
+        isExistAll(addMemberDto);
         Member member = userRepository.save(addMemberDto.toEntity(passwordEncoder));
         return member.getId();
     }
+
     // 로그인
     public Long login(LoginMemberDto loginMemberDto) {
         Member member = userRepository.findByIdentifierAndActivate(loginMemberDto.getIdentifier(), true).stream()
@@ -45,19 +51,19 @@ public class MemberService {
         return member.getId();
     }
 
-    // 로그아웃
+    // TODO : 로그아웃
 
     // Identifier 중복 확인
-    public boolean checkIdentifier(String identifier){
+    public boolean isIdentifierExist(String identifier){
         return userRepository.findByIdentifierAndActivate(identifier, true).isPresent();
     }
-    // Email 확인
-    public boolean checkEmail(String email){
+    // Email 중복 확인
+    public boolean isEmailExist(String email){
         return userRepository.findByEmailAndActivate(email, true).isPresent();
     }
 
-    // Phone Number 확인
-    public boolean checkPhoneNumber(String phoneNumber){
+    // Phone Number 중복 확인
+    public boolean isPhoneNumberExist(String phoneNumber){
         return userRepository.findByPhoneNumberAndActivate(phoneNumber, true).isPresent();
     }
 
@@ -66,20 +72,21 @@ public class MemberService {
         return !Objects.equals(password, passwordCheck);
     }
 
-    // 패턴 일치 확인
-    private boolean checkPattern(String target, String pattern){
-        return Pattern.matches(pattern, target);
+    // 정규표현식 검사
+    public boolean checkPattern(String regexp,String string){
+        return Pattern.matches(regexp, string);
     }
 
     // 회원정보 수정
-    public ApiResponse updateMember(Long member_id, AddMemberDto addMemberDto){
+    public ApiResponse updateMember(Long member_id, AddMemberDto addMemberDto) throws Exception{
         Member member = userRepository.findById(member_id).stream()
                 .filter(m -> m.getActivate()).findAny()
                 .orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다."));
-        if (!member.getIdentifier().equals(addMemberDto.getIdentifier()) && checkIdentifier(addMemberDto.getIdentifier())) throw new IllegalArgumentException("이미 존재하는 아이디 입니다.");
-        if (!member.getEmail().equals(addMemberDto.getEmail()) && checkEmail(addMemberDto.getEmail())) throw new IllegalArgumentException("이미 존재하는 이메일 입니다.");
-        if (!member.getPhoneNumber().equals(addMemberDto.getPhoneNumber()) && checkPhoneNumber(addMemberDto.getPhoneNumber())) throw new IllegalArgumentException("이미 존재하는 전화번호 입니다.");
-        if (checkPassword(addMemberDto.getPassword(), addMemberDto.getPasswordCheck())) throw new IllegalArgumentException(("비밀번호가 서로 다릅니다."));
+
+        validateAll(addMemberDto);
+        if (!member.getIdentifier().equals(addMemberDto.getIdentifier()) && isIdentifierExist(addMemberDto.getIdentifier())) throw new Exception("이미 존재하는 아이디 입니다.");
+        if (!member.getEmail().equals(addMemberDto.getEmail()) && isEmailExist(addMemberDto.getEmail())) throw new Exception("이미 존재하는 이메일 입니다.");
+        if (!member.getPhoneNumber().equals(addMemberDto.getPhoneNumber()) &&isPhoneNumberExist(addMemberDto.getPhoneNumber())) throw new Exception("이미 존재하는 전화번호 입니다.");
 
         member.setIdentifier(addMemberDto.getIdentifier());
         member.setEmail(addMemberDto.getEmail());
@@ -88,6 +95,23 @@ public class MemberService {
         member.setBirth(addMemberDto.getBirth());
         member.setName(addMemberDto.getName());
         return ApiResponse.ok(userRepository.save(member).toGetMemberResponse());
+    }
+
+    public boolean isExistAll(AddMemberDto addMemberDto) throws Exception{
+        if (isIdentifierExist(addMemberDto.getIdentifier())) throw new Exception("이미 존재하는 아이디 입니다.");
+        if (isEmailExist(addMemberDto.getEmail())) throw new Exception("이미 존재하는 이메일 입니다.");
+        if (isPhoneNumberExist(addMemberDto.getPhoneNumber())) throw  new Exception("이미 존재하는 전화번호 입니다.");
+        return false;
+    }
+    public boolean validateAll(AddMemberDto addMemberDto) throws Exception {
+        if (!checkPattern(IDENTIFIER_REGEXP, addMemberDto.getIdentifier())) throw new Exception("아이디 형식에 맞지 않습니다.");
+        if (!checkPattern(EMAIL_REGEXP, addMemberDto.getEmail())) throw new Exception("이메일 형식에 맞지 않습니다.");
+        if (!checkPattern(PHONENUMBER_REGEXP, addMemberDto.getPhoneNumber())) throw new Exception("전화번호 형식에 맞지 않습니다.");
+        if (!checkPattern(BIRTH_REGEXP, addMemberDto.getBirth())) throw new Exception("생년월일 형식에 맞지 않습니다.");
+        if (!checkPattern(NAME_REGEXP, addMemberDto.getName())) throw new Exception("아이디 형식에 맞지 않습니다.");
+        if (!checkPattern(PASSWORD_REGEXP, addMemberDto.getPassword())) throw new Exception("비밀번호 형식에 맞지 않습니다.");
+        if (checkPassword(addMemberDto.getPassword(), addMemberDto.getPasswordCheck())) throw new Exception("비밀번호가 서로 다릅니다.");
+        return false;
     }
 
     // 회원 탈퇴
