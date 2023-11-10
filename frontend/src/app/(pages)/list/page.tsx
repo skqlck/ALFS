@@ -17,8 +17,7 @@ function GetListData() {
     const ListData = async () => {
       const member_id: string = localStorage.getItem("id")!;
       setMemberId(member_id);
-      const res: any = await GetList(memberId);
-      console.log("리스트 불러오기", response);
+      const res: any = await GetList(member_id);
       setResponse(res);
     };
     ListData();

@@ -6,6 +6,7 @@ import { useParams } from "next/navigation";
 import { GetProductDetail } from "@/app/api/detail/DetailPage";
 import AllergyNotice from "@/app/_components/modal/AllergyNotice";
 import AddToCart from "@/app/_components/modal/AddToCart";
+import { BsShieldFillCheck, BsShieldFillExclamation, BsShieldFillMinus, BsShieldFillX } from "react-icons/bs";
 
 type ProductData = {
   id: number;
@@ -33,6 +34,7 @@ type ProductData = {
 export default function Page() {
   const numId = Number(useParams().data);
   const [productData, setProductData] = useState<any>(null);
+
   useEffect(() => {
     // 페이지가 로드될 때마다 스크롤을 맨 위로 이동시킴
     window.scrollTo(0, 0);

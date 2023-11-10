@@ -53,17 +53,17 @@ export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) 
             </div>
           </ModalBody>
           <ModalFooter>
-            <Link
-              href={{ pathname: `/cart` }}
-              colorScheme="whatsapp"
-              variant="outline"
-              mr={3}
-              onClick={() => AddCart(id, cnt, member_id)}
-            >
-              <Button colorScheme="whatsapp" variant="outline" mr={3}>
+            <Button colorScheme="whatsapp" variant="outline" mr={3}>
+              <Link
+                href={{ pathname: `/cart` }}
+                colorScheme="whatsapp"
+                variant="outline"
+                mr={3}
+                onClick={() => AddCart(id, cnt, member_id)}
+              >
                 Add
-              </Button>
-            </Link>
+              </Link>
+            </Button>
             <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
               Close
             </Button>
