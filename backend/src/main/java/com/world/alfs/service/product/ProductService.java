@@ -50,6 +50,10 @@ public class ProductService {
         return product.get().getId();
     }
 
+    public List<Product> findAll() {
+        return productRepository.findAll();
+    }
+
     public List<Product> getAllProductId(Long pageCnt, int page) {
         Long start = (long) ((page-1)*15+1);
         Long end = start+14;

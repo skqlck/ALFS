@@ -7,9 +7,7 @@ import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.product.Product;
-import com.world.alfs.service.Ingredient_allergy.IngredientAllergyService;
 import com.world.alfs.service.allergy.AllergyService;
-import com.world.alfs.service.ingredient.IngredientService;
 import com.world.alfs.service.manufacturing_allergy.ManufacturingAllergyService;
 import com.world.alfs.service.member_allergy.MemberAllergyService;
 import com.world.alfs.service.product.ProductService;
@@ -18,7 +16,6 @@ import com.world.alfs.service.product_img.ProductImgService;
 import com.world.alfs.service.product_ingredient.ProductIngredientService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.security.core.parameters.P;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
@@ -49,21 +46,22 @@ public class ProductController {
     }
 
     @GetMapping("/cnt")
-    public ApiResponse<Long> getProductCnt(){
+    public ApiResponse<Long> getProductCnt() {
         Long productCnt = productService.countProduct();
         return ApiResponse.ok(productCnt);
     }
 
     @GetMapping("/all")
     public ApiResponse<List<GetProductListResponse>> getAllProduct() {
-        List<GetProductListResponse> response = productService.getAllProduct(null);
+        List<Product> productList = productService.findAll();
+        List<GetProductListResponse> response = productService.getAllProduct(productList);
         return ApiResponse.ok(response);
     }
 
     @GetMapping("category/{memberId}/{category}")
-    public ApiResponse<List<GetProductListResponse>> getCategoryProduct(@PathVariable Long memberId, @PathVariable int category){
+    public ApiResponse<List<GetProductListResponse>> getCategoryProduct(@PathVariable Long memberId, @PathVariable int category) {
         List<Product> product_list = productService.getCategoryProduct(category); //카데고리에 해당하는 상품 객체 가져오기
-        List<GetProductListResponse>response = productService.getAllProduct(product_list);
+        List<GetProductListResponse> response = productService.getAllProduct(product_list);
 
         for (int i = 0; i < product_list.size(); i++) {
             List<String> compare_ingredient = new ArrayList<>();
@@ -83,8 +81,7 @@ public class ProductController {
                     }
                 }
             }
-            //FilterCode 중복 제거
-            if(FilterCode.isEmpty()){
+            if (FilterCode.isEmpty()) {
                 FilterCode.add(3);
             }
             response.get(i).setCode(FilterCode);
@@ -123,7 +120,7 @@ public class ProductController {
             }
 
             //FilterCode 중복 제거
-            if(FilterCode.isEmpty()) {
+            if (FilterCode.isEmpty()) {
                 FilterCode.add(3);
             }
             response.get(i).setCode(FilterCode);
@@ -131,36 +128,11 @@ public class ProductController {
         return ApiResponse.ok(response);
     }
 
-
-//    @GetMapping("/all/{memberId}")
-//    public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Long memberId) {
-//        List<GetProductListResponse> response = productService.getAllProduct();
-//
-//        response.forEach(productResponse -> {
-//            List<String> compareIngredient = productIngredientService.getAllIngredientId(productResponse.getId())
-//                    .stream()
-//                    .map(Ingredient::getName)
-//                    .collect(Collectors.toList());
-//
-//            List<Long> memberAllergyAllergyIdList = memberAllergyService.getFilteredAllergyId(memberId);
-//            Set<Integer> filterCode = memberAllergyAllergyIdList.stream()
-//                    .map(allergyService::getAllergy)
-//                    .filter(allergy -> compareIngredient.contains(allergy.getAllergyName()))
-//                    .map(Allergy::getAllergyType)
-//                    .collect(Collectors.toSet());
-//
-//            productResponse.setCode(filterCode);
-//        });
-//
-//        return ApiResponse.ok(response);
-//    }
-
     @PatchMapping()
     public ApiResponse<Long> setProduct(@RequestBody AddProductRequest request) {
         AddProductDto dto = request.toDto();
         Long savedId = productService.setProduct(dto);
         return ApiResponse.ok(savedId);
-
     }
 
     @DeleteMapping("/{id}")
