@@ -61,6 +61,11 @@ public class ProductService {
         return productList;
     }
 
+    public List<Product> getCategoryProduct(int category) {
+        List<Product> productList = productRepository.findByCategory(category);
+        return productList;
+    }
+
     public List<GetProductListResponse> getAllProduct(List<Product> productList) {
         List<GetProductListResponse> productResponseList = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
@@ -87,4 +92,5 @@ public class ProductService {
     public Long countProduct(){
         return productRepository.count();
     }
+
 }
