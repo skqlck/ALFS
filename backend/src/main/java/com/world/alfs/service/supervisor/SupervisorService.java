@@ -146,7 +146,6 @@ public class SupervisorService {
         json.put("requestId", UUID.randomUUID().toString());
         json.put("timestamp", System.currentTimeMillis());
         json.put("lang", "ko");
-        json.put("enableTableDetection", true);
 
         JSONObject image = new JSONObject();
         image.put("format", dto.getFormat());

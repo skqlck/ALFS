@@ -1,5 +1,6 @@
 package com.world.alfs.service.address;
 
+import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.address.response.GetAddressResponse;
 import com.world.alfs.domain.address.Address;
 import com.world.alfs.domain.address.repository.AddressRepository;
@@ -24,21 +25,26 @@ public class AddressService {
     private final MemberRepository memberRepository;
 
     // 주소지 추가
-    public Optional<GetAddressResponse> addAddress(AddressDto addressDto, Long member_id, Boolean status){
+    public ApiResponse addAddress(AddressDto addressDto, Long member_id, Boolean status){
         // TODO : 주소지 확인 로직
-        Optional<Member> member = memberRepository.findById(member_id);
-        if (member.isPresent()){
-            if (addressRepository.findByMember(member.get()).size() > 4) return Optional.empty();
-            addressDto.setMember(member.get());
-            Address address = addressRepository.save(addressDto.toEntity(status));
-            return Optional.of(address.toGetAddressResponse());
-        }
-        return Optional.empty();
+
+        Member member = memberRepository.findById(member_id).stream()
+                .filter(m -> m.getActivate()).findAny()
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        List<Address> addressList = addressRepository.findByMember(member);
+        if (addressList.size() > 4) throw new IllegalArgumentException("주소지는 최대 5개까지 추가할 수 있습니다.");
+
+        addressDto.setMember(member);
+        Address address = addressRepository.save(addressDto.toEntity(status));
+        return ApiResponse.created("주소지 추가에 성공했습니다.", address.toGetAddressResponse());
     }
 
     // 주소지 조회
     public List<GetAddressResponse> getAddress(Long id){
-        List<Address> addressList = addressRepository.findByMember(memberRepository.findById(id).get());
+        Member member = memberRepository.findById(id)
+                .filter(m -> m.getActivate())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        List<Address> addressList = addressRepository.findByMember(member);
         List<GetAddressResponse> addressResponseList = new ArrayList<>();
         for (Address address : addressList){
             addressResponseList.add(address.toGetAddressResponse());
@@ -47,18 +53,48 @@ public class AddressService {
     }
 
     // 기본 주소지로 설정
-    public Optional<GetAddressResponse> setAsDefaultAddress(Long member_id, Long address_id){
-        List<Address> defaultAddress = addressRepository.findByMember(memberRepository.findById(member_id).get());
-        Optional<Address> target = defaultAddress.stream().filter(address -> address.getId() == address_id).findAny();
-        if (target.isEmpty()) return Optional.empty();
-        for (Address address1 : defaultAddress){
+    public ApiResponse setAsDefaultAddress(Long member_id, Long address_id){
+        Member member = memberRepository.findById(member_id)
+                .filter(m -> m.getActivate())
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 회원입니다."));
+        List<Address> registeredAddress = addressRepository.findByMember(member);
+        Address target = registeredAddress.stream()
+                .filter(address -> address.getId() == address_id).findAny()
+                .orElseThrow(() -> new IllegalArgumentException("존재하지 않는 주소지입니다."));
+        for (Address address1 : registeredAddress){
             if (address1.getStatus()){
                 address1.setStatus(false);
                 addressRepository.save(address1);
             }
         }
-        target.get().setStatus(true);
-        return Optional.of(addressRepository.save(target.get()).toGetAddressResponse());
+        target.setStatus(true);
+
+        return ApiResponse.ok(addressRepository.save(target).toGetAddressResponse());
+    }
+
+    // 주소지 삭제
+    public ApiResponse deleteAddress(Long member_id, Long address_id){
+        List<Address> addressList = addressRepository.findByMember(
+                memberRepository.findById(member_id)
+                        .orElseThrow(()->new IllegalArgumentException("존재하지 않는 회원입니다."))
+        );
+        if (addressList.size() < 2) throw new IllegalArgumentException("주소지는 최소 1개 이상 존재해야합니다.");
+        addressRepository.delete(addressList.stream()
+                .filter(address -> address.getId() == address_id)
+                .findAny()
+                .orElseThrow(()-> new IllegalArgumentException("존재하지 않는 주소지 입니다.")));
+        return ApiResponse.ok("성공적으로 삭제되었습니다.");
+    }
+
+    // 주소지 수정
+    public ApiResponse updateAddress(Long member_id, Long address_id, AddressDto addressDto){
+        Address address = addressRepository.findById(address_id)
+                .stream().filter(e -> e.getMember().getId() == member_id).findAny()
+                .orElseThrow(()->new IllegalArgumentException("존재하지 않은 주소입니다."));
+        address.setAddress_1(addressDto.getAddress_1());
+        address.setAddress_2(addressDto.getAddress_2());
+        address.setAlias(addressDto.getAlias());
+        return ApiResponse.ok(addressRepository.save(address).toGetAddressResponse());
     }
 
 }

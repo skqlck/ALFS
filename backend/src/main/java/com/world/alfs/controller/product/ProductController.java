@@ -21,6 +21,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @RestController
 @RequiredArgsConstructor
@@ -55,36 +56,80 @@ public class ProductController {
 
     @GetMapping("/all/{memberId}")
     public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Long memberId) {
-        List<Long> product_list = productService.getAllProductId();
+//        List<Long> product_list = productService.getAllProductId();
         List<GetProductListResponse> response = productService.getAllProduct();
-        for (int i = 0; i < product_list.size(); i++) {
-            List<String> compare_ingredient = new ArrayList<>();
-            List<Ingredient> product_ingredient_list = productIngredientService.getAllIngredientId(product_list.get(i));
-            for (int a = 0; a < product_ingredient_list.size(); a++) {
-                compare_ingredient.add(product_ingredient_list.get(a).getName());
-            }
-            List<Long> memberAllergy_allergy_id_list = memberAllergyService.getFilteredAllergyId(memberId);
-            Set<Integer> FilterCode = new HashSet<>();
-            for (int a = 0; a < memberAllergy_allergy_id_list.size(); a++) {
-                Allergy allergy = allergyService.getAllergy(memberAllergy_allergy_id_list.get(a));
-                for (int b = 0; b < compare_ingredient.size(); b++) {
-                    if (compare_ingredient.get(b).equals(allergy.getAllergyName())) {
-                        FilterCode.add(allergy.getAllergyType());
-                    }
-                }
-            }
 
-            // 제조시설 알러지 필터 체크
-            boolean isManuAllergy = manufacturingAllergyService.getManuAllergy(product_list.get(i), memberId);
-            if (isManuAllergy) {
-                FilterCode.add(2);
-            }
+        response.forEach(productResponse -> {
+            List<String> compareIngredient = productIngredientService.getAllIngredientId(productResponse.getId())
+                    .stream()
+                    .map(Ingredient::getName)
+                    .collect(Collectors.toList());
 
-            //FilterCode 중복 제거
-            response.get(i).setCode(FilterCode);
-        }
+            List<Long> memberAllergyAllergyIdList = memberAllergyService.getFilteredAllergyId(memberId);
+            Set<Integer> filterCode = memberAllergyAllergyIdList.stream()
+                    .map(allergyService::getAllergy)
+                    .filter(allergy -> compareIngredient.contains(allergy.getAllergyName()))
+                    .map(Allergy::getAllergyType)
+                    .collect(Collectors.toSet());
+
+            productResponse.setCode(filterCode);
+        });
+
+//        for (int i = 0; i < product_list.size(); i++) {
+//            List<String> compare_ingredient = new ArrayList<>();
+//            List<Ingredient> product_ingredient_list = productIngredientService.getAllIngredientId(product_list.get(i));
+//            for (int a = 0; a < product_ingredient_list.size(); a++) {
+//                compare_ingredient.add(product_ingredient_list.get(a).getName());
+//            }
+//            List<Long> memberAllergy_allergy_id_list = memberAllergyService.getFilteredAllergyId(memberId);
+//            Set<Integer> FilterCode = new HashSet<>();
+//            for (int a = 0; a < memberAllergy_allergy_id_list.size(); a++) {
+//                Allergy allergy = allergyService.getAllergy(memberAllergy_allergy_id_list.get(a));
+//                for (int b = 0; b < compare_ingredient.size(); b++) {
+//                    if (compare_ingredient.get(b).equals(allergy.getAllergyName())) {
+//                        FilterCode.add(allergy.getAllergyType());
+//                    }
+//                }
+//            }
+//
+//            // 제조시설 알러지 필터 체크
+//            boolean isManuAllergy = manufacturingAllergyService.getManuAllergy(product_list.get(i), memberId);
+//            if (isManuAllergy) {
+//                FilterCode.add(2);
+//            }
+//
+//            //FilterCode 중복 제거
+//            response.get(i).setCode(FilterCode);
+//        }
         return ApiResponse.ok(response);
     }
+
+
+//    @GetMapping("/all/{memberId}")
+//    public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Long memberId) {
+//        List<Long> product_list = productService.getAllProductId();
+//        List<GetProductListResponse> response = productService.getAllProduct();
+//        for (int i = 0; i < product_list.size(); i++) {
+//            List<String> compare_ingredient = new ArrayList<>();
+//            List<Ingredient> product_ingredient_list = productIngredientService.getAllIngredientId(product_list.get(i));
+//            for (int a = 0; a < product_ingredient_list.size(); a++) {
+//                compare_ingredient.add(product_ingredient_list.get(a).getName());
+//            }
+//            List<Long> memberAllergy_allergy_id_list = memberAllergyService.getFilteredAllergyId(memberId);
+//            Set<Integer> FilterCode = new HashSet<>();
+//            for (int a = 0; a < memberAllergy_allergy_id_list.size(); a++) {
+//                Allergy allergy = allergyService.getAllergy(memberAllergy_allergy_id_list.get(a));
+//                for (int b = 0; b < compare_ingredient.size(); b++) {
+//                    if (compare_ingredient.get(b).equals(allergy.getAllergyName())) {
+//                        FilterCode.add(allergy.getAllergyType());
+//                    }
+//                }
+//            }
+//            //FilterCode 중복 제거
+//            response.get(i).setCode(FilterCode);
+//        }
+//        return ApiResponse.ok(response);
+//    }
 
     @PatchMapping()
     public ApiResponse<Long> setProduct(@RequestBody AddProductRequest request) {

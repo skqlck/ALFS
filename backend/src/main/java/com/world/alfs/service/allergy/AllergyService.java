@@ -54,6 +54,7 @@ public class AllergyService {
             AddMemberAllergyDto dto = AddMemberAllergyDto.builder()
                     .allergy_id(allergyId.get())
                     .member_id(memberId)
+                    .isAllergy(isAllergy)
                     .build();
             System.out.println("여기는 AllergyService  (member_id,allergy_id) " + dto.getMember_id() + " " + dto.getAllergy_id());
             list.add(dto);
@@ -66,8 +67,6 @@ public class AllergyService {
         for (Long memberAllergyId : memberAllergyList) {
             list.add(allergyRepository.findAllergyTypeById(memberAllergyId));
         }
-        //list 에서 중복 값 빼고 반환하기.
-
         return list;
     }
 

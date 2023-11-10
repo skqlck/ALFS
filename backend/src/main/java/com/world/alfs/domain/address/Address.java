@@ -55,8 +55,10 @@ public class Address {
     public void setMember(Member member){
         this.member = member;
     }
-
-    public void setStatus(Boolean status) {
+    public void setStatus(boolean status) {
         this.status = status;
     }
+    public void setAddress_1(String address_1) { this.address_1 = address_1; }
+    public void setAddress_2(String address_2) { this.address_2 = address_2; }
+    public void setAlias(String alias) { this.alias = alias; }
 }

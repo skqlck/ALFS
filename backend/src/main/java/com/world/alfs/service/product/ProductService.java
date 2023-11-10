@@ -2,7 +2,6 @@ package com.world.alfs.service.product;
 
 
 import com.world.alfs.common.exception.CustomException;
-import com.world.alfs.common.exception.ErrorCode;
 import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.product.Product;
@@ -11,9 +10,6 @@ import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
 import com.world.alfs.service.product.dto.AddProductDto;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpEntity;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -39,10 +35,9 @@ public class ProductService {
         return savedProduct.getId();
     }
 
-    public Optional<ProductResponse> getProduct(Long id){
+    public Optional<ProductResponse> getProduct(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
-
         ProductImg img = productImgRepository.findByProductId(product.getId());
         ProductResponse response = product.toResponse(img);
 
@@ -58,7 +53,7 @@ public class ProductService {
     public List<Long> getAllProductId() {
         List<Product> productList = productRepository.findAll();
         List<Long> productResponseList = new ArrayList<>();
-        for(int i=0; i<productList.size(); i++){
+        for (int i = 0; i < productList.size(); i++) {
             productResponseList.add(productList.get(i).getId());
         }
         return productResponseList;
@@ -67,7 +62,7 @@ public class ProductService {
     public List<GetProductListResponse> getAllProduct() {
         List<Product> productList = productRepository.findAll();
         List<GetProductListResponse> productResponseList = new ArrayList<>();
-        for(int i=0; i<productList.size(); i++){
+        for (int i = 0; i < productList.size(); i++) {
             ProductImg img = productImgRepository.findByProductId(productList.get(i).getId());
             productResponseList.add(productList.get(i).toListResponse(img));
         }

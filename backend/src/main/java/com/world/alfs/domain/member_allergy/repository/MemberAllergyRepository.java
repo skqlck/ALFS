@@ -11,4 +11,6 @@ import java.util.List;
 public interface MemberAllergyRepository extends JpaRepository<MemberAllergy, Long> {
 
     List<MemberAllergy> findByMemberId(Long memberId);
+    void deleteByMemberIdAndAllergyId(Long memberId, Long allergyId);
+
 }
