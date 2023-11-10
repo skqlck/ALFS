@@ -3,7 +3,7 @@
 import { GetBigSaleList } from '@/app/api/bigsalelist/BigSaleList'
 import React, { useEffect, useState } from 'react'
 import NoContent from '@/app/_components/common/NoContent';
-import BigSaleList from '@/app/_components/bigsalecard/BigSaleList';
+import BigSaleList from '@/app/_components/bigsale/BigSaleList';
 
 type BigSaleItem = {
   productId : number
