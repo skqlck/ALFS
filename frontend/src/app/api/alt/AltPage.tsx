@@ -1,10 +1,8 @@
 import { baseAxios } from "../Api";
 
-export async function AlterList(idList: Array<string>) {
+export async function AlterList(member_id: string) {
   try {
-    const res = await baseAxios.post(`api/alternative/category`, {
-      idList: idList,
-    });
+    const res = await baseAxios.get(`api/alternative/category/list/${member_id}`);
     return res.data.data;
   } catch (e) {
     console.error(e);
