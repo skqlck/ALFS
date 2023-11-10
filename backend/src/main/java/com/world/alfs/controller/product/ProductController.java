@@ -81,6 +81,9 @@ public class ProductController {
                 }
             }
             //FilterCode 중복 제거
+            if(FilterCode.isEmpty()){
+                FilterCode.add(3);
+            }
             response.get(i).setCode(FilterCode);
         }
         return ApiResponse.ok(response);
