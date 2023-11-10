@@ -71,6 +71,9 @@ public class ProductController {
                     .filter(allergy -> compareIngredient.contains(allergy.getAllergyName()))
                     .map(Allergy::getAllergyType)
                     .collect(Collectors.toSet());
+            if(filterCode.isEmpty()){
+                filterCode.add(3);
+            }
 
             productResponse.setCode(filterCode);
         });
