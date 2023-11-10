@@ -28,6 +28,7 @@ type BigSaleItem = {
 }
 
 export default function BigSaleList(itemList: BigSaleItem[]){
+    const member_id: string = localStorage.getItem("id")!;
   return (
     <div>
         <div className='grid grid-cols-3'>
@@ -45,6 +46,7 @@ export default function BigSaleList(itemList: BigSaleItem[]){
                         delivery={item.productDelivery}
                         start={item.start}
                         end={item.end}
+                        member_id={member_id}
                     />
                     )
                 }

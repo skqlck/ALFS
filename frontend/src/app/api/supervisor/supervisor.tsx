@@ -14,6 +14,15 @@ export async function SupervisorLogin(props: any) {
   }
 }
 
+export async function AllProduct() {
+  try {
+    const res = await baseAxios.get(`api/product/all`);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
 export async function DeleteProduct(props: number) {
   const data = String(props);
   try {

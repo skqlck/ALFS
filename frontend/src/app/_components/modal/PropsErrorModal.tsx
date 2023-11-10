@@ -12,7 +12,7 @@ import {
   Button,
 } from "@chakra-ui/react";
 
-function PropsModal(props: any) {
+function PropsErrorModal(props: any) {
   const [show, setShow] = useState(true);
 
   const handleShow = () => {
@@ -29,7 +29,7 @@ function PropsModal(props: any) {
           <ModalBody>{props.props}</ModalBody>
 
           <ModalFooter>
-            <Button colorScheme="whatsapp" variant="outline" onClick={handleShow}>
+            <Button colorScheme="red" variant="outline" onClick={handleShow}>
               Close
             </Button>
           </ModalFooter>
@@ -39,4 +39,4 @@ function PropsModal(props: any) {
   );
 }
 
-export default PropsModal;
+export default PropsErrorModal;

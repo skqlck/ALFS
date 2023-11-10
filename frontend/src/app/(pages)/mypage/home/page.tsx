@@ -3,7 +3,7 @@
 import React, { useEffect, useState } from "react";
 import { AiOutlinePlus } from "react-icons/ai";
 import { Table, Thead, Tbody, Tr, Th, Td, TableContainer, Checkbox, Button, useToast } from "@chakra-ui/react";
-import { AiOutlineClose } from "react-icons/ai";
+import { AiOutlineClose, AiOutlineEdit } from "react-icons/ai";
 import { AddressAll, ChangeStatus, DeleteAddress, PlusAddress } from "@/app/api/user/user";
 import {
   Modal,
@@ -18,8 +18,9 @@ import {
 } from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
 import DaumPost from "@/app/_components/location/Daumpost";
-import { useSession } from "next-auth/react";
 import PropsModal from "@/app/_components/modal/PropsModal";
+import ChangeAddress from "./_components/UpdateAddress";
+import PropsErrorModal from "@/app/_components/modal/PropsErrorModal";
 
 type Inputs = {
   id: string;
@@ -33,43 +34,28 @@ export default function Page() {
   const [myAddress, setMyAddress] = useState([]);
   const [userId, setUserId] = useState<any>("null");
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const { register, handleSubmit, watch, setValue } = useForm<Inputs>();
+  const { register, handleSubmit, setValue } = useForm<Inputs>();
+  const [showChange, setShowChange] = useState(false);
+  const [showDelete, setShowDelete] = useState(false);
+  const [showError, setShowError] = useState(false);
 
   const GetAddress = async (id: any) => {
     const res = await AddressAll(id);
     if (res) {
       setMyAddress(res.data.data);
-      console.log(res);
     }
   };
+
   const changeStatus = async (id: any) => {
     const data = [Number(userId), id];
     const res = await ChangeStatus(data);
-    GetAddress(userId);
-    toast({
-      title: "기본배송지가 설정되었습니다.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-    setTimeout(() => {
-      window.location.reload();
-    }, 1000);
+    setShowChange(true);
   };
 
   const deleteMyAddress = async (id: any) => {
     const data = [Number(userId), id];
     const res = await DeleteAddress(data);
-    console.log(res);
-    toast({
-      title: "주소가 삭제되었습니다.",
-      status: "success",
-      duration: 3000,
-      isClosable: true,
-    });
-    // setTimeout(() => {
-    //   window.location.reload();
-    // }, 1000);
+    setShowDelete(true);
   };
 
   const setAddress = (address: string) => {
@@ -77,14 +63,18 @@ export default function Page() {
   };
 
   const handleAddress = async (e: any) => {
-    const data = {
-      member_id: userId,
-      address_1: e.address_1,
-      address_2: e.address_2,
-      alias: e.alias,
-    };
-    const res = await PlusAddress(data);
-    GetAddress(userId);
+    if (myAddress.length === 5) {
+      setShowError(true);
+    } else {
+      const data = {
+        member_id: userId,
+        address_1: e.address_1,
+        address_2: e.address_2,
+        alias: e.alias,
+      };
+      const res = await PlusAddress(data);
+      GetAddress(userId);
+    }
   };
 
   useEffect(() => {
@@ -129,7 +119,6 @@ export default function Page() {
                         focusBorderColor="green.500"
                         placeholder="상세주소를 입력해주세요"
                         {...register("address_2")}
-                        required
                       ></Input>
                     </div>
                     <div className="w-[100px]"></div>
@@ -143,7 +132,6 @@ export default function Page() {
                         focusBorderColor="green.500"
                         placeholder="주소명칭을 입력해주세요"
                         {...register("alias")}
-                        required
                       ></Input>
                     </div>
                     <div className="w-[100px]"></div>
@@ -168,6 +156,7 @@ export default function Page() {
                 <Th width={100}>선택</Th>
                 <Th width={200}>명칭</Th>
                 <Th width={400}>주소</Th>
+                <Th width={100}>수정</Th>
                 <Th width={100}>삭제</Th>
               </Tr>
             </Thead>
@@ -183,16 +172,20 @@ export default function Page() {
                       )}
                     </Td>
                     <Td>{data.alias}</Td>
+
                     <Td>
                       {data.address_1} <br />
                       {data.address_2}
+                    </Td>
+                    <Td>
+                      <ChangeAddress props={[data, userId]} />
                     </Td>
                     <Td
                       onClick={() => {
                         deleteMyAddress(data.id);
                       }}
                     >
-                      <AiOutlineClose className="text-[20px]"></AiOutlineClose>
+                      <AiOutlineClose className="text-[20px] cursor-pointer"></AiOutlineClose>
                     </Td>
                   </Tr>
                 </Tbody>
@@ -201,6 +194,9 @@ export default function Page() {
           </Table>
         </TableContainer>
       </div>
+      {showChange && <PropsModal props="기본주소지가 변경되었습니다." />}
+      {showDelete && <PropsModal props="주소지가 삭제되었습니다." />}
+      {showError && <PropsErrorModal props="주소지는 5개까지 입력가능합니다. 주소지를 삭제해주세요." />}
     </div>
   );
 }

@@ -14,7 +14,7 @@ type Inputs = {
 
 export default function Page() {
   const { register, handleSubmit } = useForm<Inputs>();
-  const toast = useToast();
+  const toast = useToast({ position: "top" });
   const router = useRouter();
 
   const handleLogin = async (e: any) => {

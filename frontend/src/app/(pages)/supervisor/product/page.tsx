@@ -1,24 +1,27 @@
 "use client";
-import React, { useEffect, useState } from "react";
-import Card from "@/app/_components/card/Card";
-import Link from "next/link";
-import { GetList } from "../../../api/list/ListPage";
+import React, { Suspense, useEffect, useState } from "react";
+// import Card from "@/app/_components/card/Card";
 import { Button, Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import { AiOutlineSearch } from "react-icons/ai";
-import { DeleteProduct } from "@/app/api/supervisor/supervisor";
-import PropsModal from "@/app/_components/modal/PropsModal";
-import { useSession } from "next-auth/react";
+import { AllProduct, DeleteProduct } from "@/app/api/supervisor/supervisor";
+import Loading from "@/app/_components/loading/loading";
+import dynamic from "next/dynamic";
 
-type Props = {};
+const Card = dynamic(() => import("../../../_components/card/Card"), {
+  loading: () => <Loading />,
+  ssr: false,
+});
 
-export default function Page({}: Props) {
+export default function Page() {
   const [data, setData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [memberId, setMemberId] = useState<any>("");
 
   const getData = async () => {
-    // const res = await GetList(session?.user?.name);
-    // setData(res);
-    // setFilteredData(res); // Set initial data and filtered data to be the same
+    const res = await AllProduct();
+    console.log(res);
+    setData(res?.data.data);
+    setFilteredData(res?.data.data); // Set initial data and filtered data to be the same
   };
 
   const handleSearch = (e: any) => {
@@ -35,12 +38,11 @@ export default function Page({}: Props) {
     getData();
   };
 
-  // useEffect(() => {
-  //   if (session?.user) {
-  //     getData();
-  //   }
-  // }, []);
-
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    setMemberId(id);
+    getData();
+  }, []);
   return (
     <div>
       <div className=" border-black border-b-[4px]">
@@ -54,7 +56,7 @@ export default function Page({}: Props) {
           </InputRightElement>
         </InputGroup>
       </div>
-      <div className=" w-[750px] h-auto mt-[50px]">
+      <div className="w-[750px] h-auto mt-[50px]">
         <div className="grid grid-cols-3 mx-auto mt-[10px]">
           {filteredData.map((item: any) => (
             <>
@@ -74,7 +76,7 @@ export default function Page({}: Props) {
                   </Button>
                 </div>
 
-                <Card
+                {/* <Card
                   name={item.name}
                   image={item.img}
                   id={item.id}
@@ -82,7 +84,8 @@ export default function Page({}: Props) {
                   price={item.price}
                   sale={item.sale}
                   delivery={item.delivery}
-                />
+                  member_id={memberId}
+                /> */}
               </div>
             </>
           ))}

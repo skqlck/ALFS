@@ -1,11 +1,11 @@
 import React from "react";
 import Logo from "../../_asset/img/Logo.jpg";
 import Image from "next/image";
-import { FaRegHeart } from "react-icons/fa";
-import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineSearch } from "react-icons/ai";
 import { Input, InputGroup, InputRightElement } from "@chakra-ui/react";
 import Link from "next/link";
+
+import MiddleIcon from "./MiddleIcon";
 
 export default function MiddleNav() {
   return (
@@ -22,19 +22,14 @@ export default function MiddleNav() {
 
         <div>
           <InputGroup size="lg" width={400}>
-            <Input type="text" placeholder="검색어를 입력하세요" focusBorderColor="none" />
+            <Input type="text" placeholder="검색어를 입력하세요" focusBorderColor="green.500" />
             <InputRightElement display="flex" justifyContent="center" alignItems="center">
               <AiOutlineSearch className="w-[40px] h-[40px]" />
             </InputRightElement>
           </InputGroup>
         </div>
 
-        <div className="flex gap-[20px]">
-          <FaRegHeart className="min-w-[40px] h-[40px]" />
-          <Link href={{ pathname: `/cart` }}>
-            <AiOutlineShoppingCart className="min-w-[40px] h-[40px]" />
-          </Link>
-        </div>
+        <MiddleIcon></MiddleIcon>
       </div>
     </div>
   );

@@ -16,6 +16,7 @@ type Props = {
     status : number;
     start : string;
     end : string;
+    member_id : string;
 }
 
 function parseLeftTime(mills : number) {
@@ -27,11 +28,12 @@ function parseLeftTime(mills : number) {
   return  (hours > 0 ? hours + "h " : "") + (minutes > 0 ? minutes + "m " : "") + (seconds > 0 ? seconds + "s" : "")
 }
 
-export default function BigSaleCard({ name, image, id, title, price, delivery, status, start, end, sale }: Props){
+export default function BigSaleCard({ name, image, id, title, price, delivery, status, start, end, sale, member_id }: Props){
   const [leftTime, setLeftTime] = useState(0);
 
   useEffect(()=>{
     if (status == 0 && Date.now() < Date.parse(start)) {
+      setLeftTime(Date.parse(start) - Date.now())
       setInterval(()=>{
         setLeftTime(Date.parse(start) - Date.now())}
       , 1000)
@@ -53,6 +55,7 @@ export default function BigSaleCard({ name, image, id, title, price, delivery, s
           </span>
         : null}
         <Card
+          member_id={member_id}
           name={name}
           image={image}
           id={id}
@@ -60,6 +63,7 @@ export default function BigSaleCard({ name, image, id, title, price, delivery, s
           price={price}
           sale={sale}
           delivery={delivery}
+          filterCode={[]}
         />
       </Link>
     </div>
