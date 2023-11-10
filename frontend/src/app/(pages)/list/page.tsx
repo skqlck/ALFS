@@ -1,7 +1,7 @@
 "use client";
 
 import React, { useState, useEffect } from "react";
-import { GetList } from "../../api/list/ListPage";
+import { GetList, ProductCnt } from "../../api/list/ListPage";
 import Loading from "@/app/_components/loading/loading";
 import dynamic from "next/dynamic";
 
@@ -13,12 +13,15 @@ const Card = dynamic(() => import("../../_components/card/Card"), {
 function GetListData() {
   const [memberId, setMemberId] = useState<string>("");
   const [response, setResponse] = useState<any>([]);
+  const [totalCnt, setTotalCnt] = useState<number>(0);
   useEffect(() => {
     const ListData = async () => {
       const member_id: string = localStorage.getItem("id")!;
       setMemberId(member_id);
       const res: any = await GetList(member_id);
+      const resCnt: any = await ProductCnt();
       setResponse(res);
+      setTotalCnt(resCnt);
     };
     ListData();
   }, []);
