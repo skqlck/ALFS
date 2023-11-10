@@ -30,12 +30,12 @@ export default function Card({ name, image, id, title, price, sale, delivery, me
   };
   useEffect(() => {
     console.log(filterCode);
+    const updatedFilter = [...filter];
     filterCode.forEach((index) => {
-      const updatedFilter = [...filter];
       updatedFilter[index] = 1;
-      setFilter(updatedFilter);
-      setFiltered(true);
     });
+    setFilter(updatedFilter);
+    setFiltered(true);
   }, []);
   return (
     <div className="w-[178px] h-[450px]">
