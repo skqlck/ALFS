@@ -46,7 +46,7 @@ public class BasketService {
             GetBasketResponse response = GetBasketResponse.builder()
                     .basket_id(basket.getId())
                     .count(basket.getCount())
-                    .getProductListResponse(product.get().toListResponse(img))
+                    .getProductListResponse(product.get().toListResponse(img,null))
                     .pack(product.get().getPack())
                     .isCheck(true)
                     .build();
@@ -84,7 +84,7 @@ public class BasketService {
         return GetBasketResponse.builder()
                 .basket_id(existedBasket.get().getId())
                 .count(existedBasket.get().getCount())
-                .getProductListResponse(product.toListResponse(img))
+                .getProductListResponse(product.toListResponse(img,null))
                 .pack(product.getPack())
                 .isCheck(true)
                 .build();
@@ -126,7 +126,7 @@ public class BasketService {
                 .basket_id(purchasedBasket.getId())
                 .count(purchasedBasket.getCount())
                 .totalPrice(purchasedBasket.getPurchase())
-                .getProductListResponse(product.toListResponse(img))
+                .getProductListResponse(product.toListResponse(img,null))
                 .build();
     }
 
@@ -144,7 +144,7 @@ public class BasketService {
                     .basket_id(basket.getId())
                     .count(basket.getCount())
                     .totalPrice(basket.getPurchase())
-                    .getProductListResponse(basket.getProduct().toListResponse(img))
+                    .getProductListResponse(basket.getProduct().toListResponse(img,null))
                     .build();
             responseList.add(response);
         }

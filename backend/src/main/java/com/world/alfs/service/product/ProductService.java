@@ -50,21 +50,22 @@ public class ProductService {
         return product.get().getId();
     }
 
-    public List<Long> getAllProductId() {
-        List<Product> productList = productRepository.findAll();
-        List<Long> productResponseList = new ArrayList<>();
-        for (int i = 0; i < productList.size(); i++) {
-            productResponseList.add(productList.get(i).getId());
+    public List<Product> getAllProductId(Long pageCnt, int page) {
+        Long start = (long) ((page-1)*15+1);
+        Long end = start+14;
+        if(pageCnt==page){
+            //마지막 페이지 예외 처리
+            end = countProduct();
         }
-        return productResponseList;
+        List<Product> productList = productRepository.findByIdBetween(start, end);
+        return productList;
     }
 
-    public List<GetProductListResponse> getAllProduct() {
-        List<Product> productList = productRepository.findAll();
+    public List<GetProductListResponse> getAllProduct(List<Product> productList) {
         List<GetProductListResponse> productResponseList = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
             ProductImg img = productImgRepository.findByProductId(productList.get(i).getId());
-            productResponseList.add(productList.get(i).toListResponse(img));
+            productResponseList.add(productList.get(i).toListResponse(img,countPage()));
         }
         return productResponseList;
     }
@@ -74,4 +75,16 @@ public class ProductService {
         return id;
     }
 
+    public Long countPage() {
+        Long cntProduct = productRepository.count();
+        if(cntProduct%15==0){
+            return cntProduct/15;
+        }else{
+            return cntProduct/15+1;
+        }
+    }
+
+    public Long countProduct(){
+        return productRepository.count();
+    }
 }

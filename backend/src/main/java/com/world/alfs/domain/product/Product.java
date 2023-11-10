@@ -1,6 +1,5 @@
 package com.world.alfs.domain.product;
 
-
 import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.ingredient.Ingredient;
@@ -11,9 +10,14 @@ import lombok.*;
 
 import javax.persistence.*;
 
-
 @Entity
 @Data
+@Table(
+        name = "product",
+        indexes = {
+                @Index(name = "idx_product_name", columnList = "name")
+        }
+)
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Product {
     @Id
@@ -115,7 +119,7 @@ public class Product {
                 .build();
     }
 
-    public GetProductListResponse toListResponse(ProductImg img) {
+    public GetProductListResponse toListResponse(ProductImg img, Long pageCnt) {
         return GetProductListResponse.builder()
                 .id(id)
                 .title(title)
@@ -123,12 +127,13 @@ public class Product {
                 .price(price)
                 .sale(sale)
                 .category(category)
+                .pageCnt(pageCnt)
                 .img(img.getImg_1())
                 .build();
     }
 
-//    - - - - - - - - - 비즈니스 로직 - - - - - - - - - - - - -
-    public void setProduct(AddProductDto dto){
+    //    - - - - - - - - - 비즈니스 로직 - - - - - - - - - - - - -
+    public void setProduct(AddProductDto dto) {
         name = dto.getName();
         title = dto.getTitle();
         price = dto.getPrice();

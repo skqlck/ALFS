@@ -80,7 +80,7 @@ public class AlternativeService {
         for (ProductIngredient productIngredient : productIngredientList) {
             // 이미지 가져오기
             ProductImg img = productImgRepository.findByProductId(productIngredient.getProduct().getId());
-            GetProductListResponse response = productRepository.findById(productIngredient.getProduct().getId()).get().toListResponse(img);
+            GetProductListResponse response = productRepository.findById(productIngredient.getProduct().getId()).get().toListResponse(img,null);
             productListResponse.add(response);
         }
 
@@ -107,7 +107,7 @@ public class AlternativeService {
             ProductImg img = productImgRepository.findByProductId(id);
             Product product = productRepository.findById(id)
                     .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
-            GetProductListResponse response = product.toListResponse(img);
+            GetProductListResponse response = product.toListResponse(img,null);
             productListResponse.add(response);
         }
 
