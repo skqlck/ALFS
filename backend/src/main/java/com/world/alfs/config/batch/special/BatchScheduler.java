@@ -2,6 +2,7 @@ package com.world.alfs.config.batch.special;
 
 import com.world.alfs.domain.special.Special;
 import com.world.alfs.domain.special.repository.SpecialRepository;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.batch.core.BatchStatus;
 import org.springframework.batch.core.JobExecution;
@@ -19,6 +20,7 @@ import java.util.List;
 
 @Slf4j
 @Component
+@RequiredArgsConstructor
 public class BatchScheduler {
 
     @Autowired
@@ -27,20 +29,18 @@ public class BatchScheduler {
     @Autowired
     private BatchJobConfiguration batchJobConfiguration;
 
-    private SpecialRepository specialRepository;
+    private final SpecialRepository specialRepository;
 
 
     @Scheduled(fixedRate = 1000) // 1초마다
     public void runSpecialStartJob() {
         LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         String parsedTime = currentDateTime.format(DateTimeFormatter.ofPattern( "yyyy-MM-dd HH:mm:ss"));
-        log.debug("현시간:"+parsedTime);
-        List<Special> specials = specialRepository.findByStartGreaterThanEqual(parsedTime);
+//        log.debug("현시간:"+parsedTime);
 
-        for (Special special : specials) {
-            System.out.println(special);
-        }
-
+        LocalDateTime parsedDateTime = LocalDateTime.parse(parsedTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
+        List<Special> specials = specialRepository.findByStart(parsedDateTime);
+        log.info("specials = {}", specials.toString());
 
         for (Special special : specials) {
             try {

@@ -28,11 +28,12 @@ public class JobCompletionNotificationListener {
             log.debug("============================================");
 
             List<Special> specials = specialRepository.findAll();
-            specials.forEach(special -> {
-                Hibernate.initialize(special.getProduct());
-                log.debug(">>> Found " + special.toString());
-            });
-            log.debug("============================================");
+//            specials.forEach(special -> {
+//                Hibernate.initialize(special.getProduct());
+//                log.debug(">>> Found " + special.toString());
+//            });
+//            log.debug(specials.toString());
+//            log.debug("============================================");
         }
     }
 
@@ -44,11 +45,12 @@ public class JobCompletionNotificationListener {
             log.debug("============================================");
 
             List<Special> specials = specialRepository.findAll();
-            specials.forEach(special -> {
-                Hibernate.initialize(special.getProduct());
-                log.debug(">>> Found " + special.toString());
-            });
-            log.debug("============================================");
+//            specials.forEach(special -> {
+//                Hibernate.initialize(special.getProduct());
+//                log.debug(">>> Found " + special.toString());
+//            });
+//            log.debug(specials.toString());
+//            log.debug("============================================");
         }
     }
 }
