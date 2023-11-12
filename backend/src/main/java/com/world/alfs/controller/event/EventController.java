@@ -21,8 +21,6 @@ public class EventController {
         return ApiResponse.ok(eventService.getValue(id));
     }
 
-    //사용자가 event를 눌렀을 떄, 해당 이벤트의 결과를 반환해줘야 한다.
-    //이벤트 결과를 redis에 저장하고 있기. 그 값을 다시 DB에 저장
     @PostMapping()
     ApiResponse<Long> choose(EventChooseRequest request){
         EventDto dto = request.toDto();
