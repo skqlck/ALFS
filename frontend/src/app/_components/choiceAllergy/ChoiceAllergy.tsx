@@ -44,7 +44,7 @@ const allergy = [
 export default function ChoiceAllergy(props: any) {
   const { isOpen, onOpen, onClose } = useDisclosure();
 
-  const [selectedAllergies, setSelectedAllergies] = useState([]);
+  const [selectedAllergies, setSelectedAllergies] = useState(props.props);
 
   const handleToggleAllergy = (data: any) => {
     setSelectedAllergies((prevSelected: any) => {
@@ -58,7 +58,6 @@ export default function ChoiceAllergy(props: any) {
   };
   const sendAllergy = () => {
     onClose();
-    console.log(selectedAllergies);
     props.data(selectedAllergies);
   };
   return (
@@ -72,7 +71,7 @@ export default function ChoiceAllergy(props: any) {
         알러지 선택하기
       </button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="6xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="6xl" preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>나의 알러지 선택하기</ModalHeader>

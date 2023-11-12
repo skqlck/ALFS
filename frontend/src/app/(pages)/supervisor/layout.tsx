@@ -42,7 +42,12 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           </div>
         </div>
 
-        <div className="w-[750px]">{children}</div>
+        <div className="w-[750px]">
+          <div className=" border-black border-b-[4px] mb-[50px]">
+            <p className="text-[30px] mb-[50px]">{pathname === "/supervisor/product" ? "상품관리" : "상품등록"}</p>
+          </div>
+          <div>{children}</div>
+        </div>
       </div>
     </div>
   );

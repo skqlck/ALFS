@@ -22,9 +22,7 @@ import {
 import { RegisterAllergy, RegisterHate } from "@/app/api/user/user";
 import PropsModal from "@/app/_components/modal/PropsModal";
 
-type Props = {};
-
-export default function AllergyButton({}: Props) {
+export default function AllergyButton(props: any) {
   const [allergy_1, setAllergy_1] = useState<string[]>([]);
   const [allergy_2, setAllergy_2] = useState("");
   const [selectedAllergy2, setSelectedAllergy2] = useState<string[]>([]);
@@ -82,7 +80,25 @@ export default function AllergyButton({}: Props) {
   useEffect(() => {
     const prevId = localStorage.getItem("id");
     setMemberId(prevId);
-  }, []);
+    if (prevId) {
+      const allergyArray = [];
+      for (const item of props.props[0]) {
+        if (item && item.allergyName) {
+          allergyArray.push(item.allergyName);
+        }
+      }
+      setAllergy_1(allergyArray);
+
+      const hateArray = [];
+      for (const item of props.props[1]) {
+        if (item && item.allergyName) {
+          hateArray.push(item.allergyName);
+        }
+      }
+      setSelectedHate(hateArray);
+    }
+  }, [props]);
+
   return (
     <>
       <div className="border-black border-b-[4px] mb-[23px]">
@@ -93,7 +109,7 @@ export default function AllergyButton({}: Props) {
             알러지 수정하기
           </Button>
 
-          <Modal isOpen={isOpen} onClose={onClose} size="2xl">
+          <Modal isOpen={isOpen} onClose={onClose} size="2xl" preserveScrollBarGap={true}>
             <ModalOverlay />
             <ModalContent>
               <form onSubmit={submitAllergy}>
@@ -103,7 +119,7 @@ export default function AllergyButton({}: Props) {
                   <div className="flex justify-evenly mb-[20px]">
                     <div className="w-[100px] h-[40px]  flex items-center">알러지</div>
                     <div className="w-[300px]">
-                      <ChoiceAllergy data={setAllergy} />
+                      <ChoiceAllergy data={setAllergy} props={allergy_1} />
                       <div className="mt-[10px]">
                         {allergy_1.map((data, idx) => (
                           <Tag
