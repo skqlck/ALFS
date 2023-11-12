@@ -2,23 +2,28 @@ package com.world.alfs.service.basket;
 
 import com.world.alfs.controller.basket.response.GetBasketResponse;
 import com.world.alfs.controller.basket.response.GetPurchaseResponse;
+import com.world.alfs.controller.product.response.GetProductListResponse;
+import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.basket.Basket;
 import com.world.alfs.domain.basket.repository.BasketRepository;
+import com.world.alfs.domain.ingredient.Ingredient;
+import com.world.alfs.domain.ingredient.repository.IngredientRepository;
+import com.world.alfs.domain.manufacturing_allergy.repository.ManufacturingAllergyRepository;
 import com.world.alfs.domain.member.Member;
 import com.world.alfs.domain.member.repository.MemberRepository;
+import com.world.alfs.domain.member_allergy.repository.MemberAllergyRepository;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
+import com.world.alfs.domain.product_ingredient.repostiory.ProductIngredientRepository;
 import com.world.alfs.service.basket.dto.AddBasketDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.swing.text.html.Option;
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
+import java.util.*;
+import java.util.stream.Collectors;
 
 
 @RequiredArgsConstructor
@@ -29,7 +34,9 @@ public class BasketService {
     private final MemberRepository memberRepository;
     private final ProductImgRepository productImgRepository;
     private final ProductRepository productRepository;
-
+    private final ProductIngredientRepository productIngredientRepository;
+    private final MemberAllergyRepository memberAllergyRepository;
+    private final ManufacturingAllergyRepository manufacturingAllergyRepository;
     // 장바구니 조회
     public List<GetBasketResponse> getBasket(Long member_id) throws Exception{
         Member member = memberRepository.findById(member_id)
@@ -38,18 +45,51 @@ public class BasketService {
 
         List<Basket> basketList = basketRepository.findByMemberAndStatus(member, 0);
         List<GetBasketResponse> responseList = new ArrayList<>();
+
         for (Basket basket : basketList){
-            ProductImg img = productImgRepository.findByProductId(basket.getProduct().getId());
-            Optional<Product> product = productRepository.findById(basket.getProduct().getId());
-            if (product.isEmpty()) continue;
+            Product product = basket.getProduct();
+            ProductImg img = productImgRepository.findByProductId(product.getId());
+
+            GetProductListResponse getProductListResponse = product.toListResponse(img,null);
+
+            // 알러지 및 기피 필터링
+            Set<Integer> filterCode = new HashSet<>();
+
+            List<Ingredient> productIngredientList = productIngredientRepository.findAllByProduct(product)
+                    .stream().map(i -> i.getIngredient()).collect(Collectors.toList());
+
+            List<Allergy> memberAllergyList = memberAllergyRepository.findByMemberId(member_id)
+                    .stream().map(memberAllergy -> memberAllergy.getAllergy())
+                    .collect(Collectors.toList());
+
+            for (Ingredient ingredient : productIngredientList) {
+                for (Allergy allergy : memberAllergyList) {
+                    if (ingredient.getName().equals(allergy.getAllergyName())) {
+                        filterCode.add(allergy.getAllergyType());
+                    }
+                }
+            }
+
+            // 제조시설 알러지 필터링
+            if (manufacturingAllergyRepository.findCountByProductAndAllergy(product.getId(), memberAllergyList.stream().map(memberAllergy -> memberAllergy.getId()).collect(Collectors.toList())) > 0){
+                filterCode.add(2);
+            };
+
+            // 필터링된 게 없으면 안전
+            if (filterCode.isEmpty()){
+                filterCode.add(3);
+            }
+
+            getProductListResponse.setFilterCode(filterCode);
 
             GetBasketResponse response = GetBasketResponse.builder()
                     .basket_id(basket.getId())
                     .count(basket.getCount())
-                    .getProductListResponse(product.get().toListResponse(img,null))
-                    .pack(product.get().getPack())
+                    .getProductListResponse(getProductListResponse)
+                    .pack(product.getPack())
                     .isCheck(true)
                     .build();
+
             responseList.add(response);
         }
         return responseList;
@@ -140,11 +180,44 @@ public class BasketService {
         for (Basket basket : purchaseList){
             Product product = basket.getProduct();
             ProductImg img = productImgRepository.findByProductId(product.getId());
+
+            GetProductListResponse getProductListResponse = product.toListResponse(img,null);
+
+            // 알러지 및 기피 필터링
+            Set<Integer> filterCode = new HashSet<>();
+
+            List<Ingredient> productIngredientList = productIngredientRepository.findAllByProduct(product)
+                    .stream().map(i -> i.getIngredient()).collect(Collectors.toList());
+
+            List<Allergy> memberAllergyList = memberAllergyRepository.findByMemberId(member_id)
+                    .stream().map(memberAllergy -> memberAllergy.getAllergy())
+                    .collect(Collectors.toList());
+
+            for (Ingredient ingredient : productIngredientList) {
+                for (Allergy allergy : memberAllergyList) {
+                    if (ingredient.getName().equals(allergy.getAllergyName())) {
+                        filterCode.add(allergy.getAllergyType());
+                    }
+                }
+            }
+
+            // 제조시설 알러지 필터링
+            if (manufacturingAllergyRepository.findCountByProductAndAllergy(product.getId(), memberAllergyList.stream().map(memberAllergy -> memberAllergy.getId()).collect(Collectors.toList())) > 0){
+                filterCode.add(2);
+            };
+
+            // 필터링된 게 없으면 안전
+            if (filterCode.isEmpty()){
+                filterCode.add(3);
+            }
+
+            getProductListResponse.setFilterCode(filterCode);
+
             GetPurchaseResponse response = GetPurchaseResponse.builder()
                     .basket_id(basket.getId())
                     .count(basket.getCount())
                     .totalPrice(basket.getPurchase())
-                    .getProductListResponse(basket.getProduct().toListResponse(img,null))
+                    .getProductListResponse(getProductListResponse)
                     .build();
             responseList.add(response);
         }
