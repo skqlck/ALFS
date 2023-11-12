@@ -25,6 +25,12 @@ public class Event extends TimeBaseEntity {
     @Column(nullable = false)
     private String case2;
 
+    @Column(nullable = false)
+    private int case1_cnt;
+
+    @Column(nullable = false)
+    private int case2_cnt;
+
     @ManyToOne
     @JoinColumn(name = "supervisor_id")
     private Supervisor supervisor;
