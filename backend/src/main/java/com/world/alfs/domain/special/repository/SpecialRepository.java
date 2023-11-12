@@ -11,4 +11,6 @@ import java.util.List;
 public interface SpecialRepository extends JpaRepository<Special, Long> {
 
         List<Special> findByStart(LocalDateTime time);
+
+        List<Special> findByEnd(LocalDateTime time);
 }

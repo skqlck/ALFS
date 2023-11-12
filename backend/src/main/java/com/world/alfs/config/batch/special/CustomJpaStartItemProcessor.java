@@ -8,11 +8,11 @@ import javax.persistence.EntityManagerFactory;
 
 
 @Slf4j
-public class CustomJpaItemProcessor implements ItemProcessor<Special, Special> {
+public class CustomJpaStartItemProcessor implements ItemProcessor<Special, Special> {
 
     private final EntityManagerFactory entityManagerFactory;
 
-    public CustomJpaItemProcessor(EntityManagerFactory entityManagerFactory) {
+    public CustomJpaStartItemProcessor(EntityManagerFactory entityManagerFactory) {
         this.entityManagerFactory = entityManagerFactory;
     }
 
