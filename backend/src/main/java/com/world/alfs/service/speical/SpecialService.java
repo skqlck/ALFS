@@ -138,6 +138,49 @@ public class SpecialService {
         return special.toGetSpecialResponse(img);
     }
 
+    public GetSpecialResponse getMemberSpecial(Long memberId, Long id) {
+        memberRepository.findById(memberId).filter(Member::getActivate)
+                .orElseThrow(()->new CustomException(ErrorCode.MEMBER_NOT_FOUND));
+
+        Special special = specialRepository.findById(id).orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
+        ProductImg img = productImgRepository.findByProductId(special.getProduct().getId());
+
+        GetSpecialResponse response = special.toGetSpecialResponse(img);
+        Product product = special.getProduct();
+
+        // 알러지 및 기피 필터링
+        Set<Integer> filterCode = new HashSet<>();
+
+        List<Ingredient> productIngredientList = productIngredientRepository.findAllByProduct(product)
+                .stream().map(ProductIngredient::getIngredient).collect(Collectors.toList());
+
+        List<Allergy> memberAllergyList = memberAllergyRepository.findByMemberId(memberId)
+                .stream().map(MemberAllergy::getAllergy)
+                .collect(Collectors.toList());
+
+        for (Ingredient ingredient : productIngredientList) {
+            for (Allergy allergy : memberAllergyList) {
+                if (ingredient.getName().equals(allergy.getAllergyName())) {
+                    filterCode.add(allergy.getAllergyType());
+                }
+            }
+        }
+
+        // 제조시설 알러지 필터링
+        if (manufacturingAllergyRepository.findCountByProductAndAllergy(product.getId(), memberAllergyList.stream().map(memberAllergy -> memberAllergy.getId()).collect(Collectors.toList())) > 0){
+            filterCode.add(2);
+        }
+
+        // 필터링된 게 없으면 안전
+        if (filterCode.isEmpty()){
+            filterCode.add(3);
+        }
+
+        response.setCode(filterCode);
+
+        return response;
+    }
+
     public Long setSpecial(Long id, SetSpecialDto dto) {
 
         // 이벤트 특가상품이 존재하는지 확인

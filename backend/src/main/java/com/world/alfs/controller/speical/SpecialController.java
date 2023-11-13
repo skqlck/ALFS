@@ -52,6 +52,12 @@ public class SpecialController {
         return ApiResponse.ok(saveSpecial);
     }
 
+    @GetMapping("/{memberId}/{id}")
+    public ApiResponse<GetSpecialResponse> getSpecial(@PathVariable Long memberId, @PathVariable Long id){
+        GetSpecialResponse saveSpecial =  specialService.getMemberSpecial(memberId, id);
+        return ApiResponse.ok(saveSpecial);
+    }
+
     @PatchMapping("/{id}")
     public ApiResponse<Long> setSpecial(@PathVariable Long id, @RequestBody SetSpecialReqeust request){
         SetSpecialDto dto = request.toDto();
