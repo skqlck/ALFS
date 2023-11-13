@@ -39,6 +39,12 @@ public class SpecialController {
         return ApiResponse.ok(specialList);
     }
 
+    @GetMapping("/all/{memberId}")
+    public ApiResponse<List<GetSpecialListResponse>> getAllSpecial(@PathVariable Long memberId){
+        List<GetSpecialListResponse> specialMemberList = specialService.getAllSpecial(memberId);
+        return ApiResponse.ok(specialMemberList);
+    }
+
 
     @GetMapping("/{id}")
     public ApiResponse<GetSpecialResponse> getSpecial(@PathVariable Long id){
