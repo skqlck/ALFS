@@ -59,7 +59,6 @@ public class ProductService {
         Long start = (long) ((page-1)*15+1);
         Long end = start+14;
         if(pageCnt==page){
-            //마지막 페이지 예외 처리
             end = countProduct();
         }
         List<Product> productList = productRepository.findByIdBetween(start, end);
