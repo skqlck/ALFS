@@ -1,6 +1,6 @@
 'use client'
 
-import { GetBigSaleList } from '@/app/api/bigsalelist/BigSaleList'
+import { GetBigSaleFilteredList, GetBigSaleList } from '@/app/api/bigsalelist/BigSaleList'
 import React, { useEffect, useState } from 'react'
 import NoContent from '@/app/_components/common/NoContent';
 import BigSaleList from '@/app/_components/bigsale/BigSaleList';
@@ -29,6 +29,7 @@ type BigSaleItem = {
   salePrice : number
   start : string
   end : string
+  filterCode : number[]
 }
 
 export default function Page() {
@@ -37,6 +38,7 @@ export default function Page() {
   const [EndedList, setEndedList] = useState<BigSaleItem[]>([]);
   const [idx, setIdx] = useState(1);
   const SaleList = [UpComingList, OnSaleList, EndedList]
+  const [memberId, setMemberId] = useState<string>("");
   const messages = [
     "✖ 예정된 특가 상품이 없습니다. ✖",
     "✖ 특가 상품이 없습니다. ✖",
@@ -45,28 +47,27 @@ export default function Page() {
 
   useEffect(()=>{
     const initial = async () => {
-      try {
-        const response:any = await GetBigSaleList();
-        let onsale : BigSaleItem[] = [];
-        let upcoming : BigSaleItem[] = [];
-        let ended : BigSaleItem[] = [];
-        response.forEach((item : BigSaleItem)=>{
-          if (item.status == 0){ // 대기
-            upcoming.push(item)
-          }
-          else if (item.status == 1){ // 진행
-            onsale.push(item)
-          }
-          else if (item.status == 2){ // 종료
-            ended.push(item)
-          }
-        })
-        setUpComingList(upcoming)
-        setOnSaleList(onsale)
-        setEndedList(ended)
-      } catch (error) {
-        console.log(error)
-      }
+      const member_id = localStorage.getItem("id")!;
+      setMemberId(member_id)
+      const response = !member_id ? await GetBigSaleList() : await GetBigSaleFilteredList(member_id);
+      console.log(response)
+      let onsale : BigSaleItem[] = [];
+      let upcoming : BigSaleItem[] = [];
+      let ended : BigSaleItem[] = [];
+      response.forEach((item : BigSaleItem)=>{
+        if (item.status == 0){ // 대기
+          upcoming.push(item)
+        }
+        else if (item.status == 1){ // 진행
+          onsale.push(item)
+        }
+        else if (item.status == 2){ // 종료
+          ended.push(item)
+        }
+      })
+      setUpComingList(upcoming)
+      setOnSaleList(onsale)
+      setEndedList(ended)
     }
     initial();
   }, []);
