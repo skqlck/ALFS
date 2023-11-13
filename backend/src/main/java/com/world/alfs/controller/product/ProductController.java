@@ -47,10 +47,11 @@ public class ProductController {
         return productService.addProduct(dto);
     }
 
-    @GetMapping("/{id}")
-    public ApiResponse<Optional<ProductResponse>> getProduct(@PathVariable Long id) {
-        Optional<ProductResponse> savedProduct = productService.getProduct(id);
-        return ApiResponse.ok(savedProduct);
+    @GetMapping("/{memberId}/{id}")
+    public ApiResponse<List<GetProductListResponse>>  getProduct(@PathVariable Long memberId, @PathVariable Long id) {
+        List<Product> product = productService.getProduct(id);
+        List<GetProductListResponse> response = productService.getAllProduct(product);
+        return ApiResponse.ok(response);
     }
 
     @GetMapping("/cnt")
@@ -66,9 +67,16 @@ public class ProductController {
         return ApiResponse.ok(response);
     }
 
-    @GetMapping("category/{memberId}/{category}")
+    @GetMapping("/category/{category}")
+    public ApiResponse<List<GetProductListResponse>> getCategoryProduct(@PathVariable int category) {
+        List<Product> product_list = productService.getCategoryProduct(category);
+        List<GetProductListResponse> response = productService.getAllProduct(product_list);
+        return ApiResponse.ok(response);
+    }
+
+    @GetMapping("/category/{memberId}/{category}")
     public ApiResponse<List<GetProductListResponse>> getCategoryProduct(@PathVariable Long memberId, @PathVariable int category) {
-        List<Product> product_list = productService.getCategoryProduct(category); //카데고리에 해당하는 상품 객체 가져오기
+        List<Product> product_list = productService.getCategoryProduct(category);
         List<GetProductListResponse> response = productService.getAllProduct(product_list);
         allergy_filter(product_list,response,memberId);
         return ApiResponse.ok(response);

@@ -39,7 +39,15 @@ public class ProductService {
         return savedProduct.getId();
     }
 
-    public Optional<ProductResponse> getProduct(Long id) {
+    public List<Product> getProduct(Long id) {
+        List<Product> productList = new ArrayList<>();
+        Optional<Product> product = productRepository.findById(id);
+        productList.add(product.get());
+        return productList;
+    }
+
+
+    public Optional<ProductResponse> getProductResponse(Long id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
         ProductImg img = productImgRepository.findByProductId(product.getId());
