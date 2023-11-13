@@ -3,7 +3,7 @@ package com.world.alfs.controller.product;
 import com.world.alfs.ControllerTestSupport;
 import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.service.product.ProductService;
-import com.world.alfs.service.product.dto.AddProductDto;
+import com.world.alfs.service.product.dto.RegisterProductDto;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,9 +29,9 @@ class ProductControllerTest extends ControllerTestSupport {
     @Test
     void addProduct() throws Exception {
         // given
-        AddProductDto productDto = new AddProductDto(); // 적절한 AddProductDto 생성
+        RegisterProductDto productDto = new RegisterProductDto(); // 적절한 AddProductDto 생성
 
-        given(productService.addProduct(any(AddProductDto.class))).willReturn(1L);
+        given(productService.addProduct(any(RegisterProductDto.class))).willReturn(1L);
     }
 
     @DisplayName("상품을 조회할 수 있다.")

@@ -9,6 +9,7 @@ import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
 import com.world.alfs.service.product.dto.AddProductDto;
+import com.world.alfs.service.product.dto.RegisterProductDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -27,7 +28,7 @@ public class ProductService {
     private final ProductRepository productRepository;
     private final ProductImgRepository productImgRepository;
 
-    public Long addProduct(AddProductDto dto) {
+    public Long addProduct(RegisterProductDto dto) {
         Product product = dto.toEntity();
         ProductImg productImg = dto.toImgEntity(product);
         Product savedProduct = productRepository.save(product);

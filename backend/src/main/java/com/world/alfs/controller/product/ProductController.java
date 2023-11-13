@@ -2,6 +2,7 @@ package com.world.alfs.controller.product;
 
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.product.request.AddProductRequest;
+import com.world.alfs.controller.product.request.RegisterProductRequest;
 import com.world.alfs.controller.product.response.GetProductListResponse;
 import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.allergy.Allergy;
@@ -12,6 +13,7 @@ import com.world.alfs.service.manufacturing_allergy.ManufacturingAllergyService;
 import com.world.alfs.service.member_allergy.MemberAllergyService;
 import com.world.alfs.service.product.ProductService;
 import com.world.alfs.service.product.dto.AddProductDto;
+import com.world.alfs.service.product.dto.RegisterProductDto;
 import com.world.alfs.service.product_img.ProductImgService;
 import com.world.alfs.service.product_ingredient.ProductIngredientService;
 import lombok.RequiredArgsConstructor;
@@ -34,8 +36,8 @@ public class ProductController {
     private final ManufacturingAllergyService manufacturingAllergyService;
 
     @PostMapping()
-    public Long addProduct(@RequestBody AddProductRequest request) {
-        AddProductDto dto = request.toDto();
+    public Long addProduct(@RequestBody RegisterProductRequest request) {
+        RegisterProductDto dto = request.toDto();
         return productService.addProduct(dto);
     }
 
