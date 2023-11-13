@@ -54,4 +54,8 @@ public class GetProductListResponse {
     public void setCode(Set<Integer> filterCode) {
         this.filterCode = filterCode;
     }
+
+    public void setSpecialPrice(int salePrice) {
+        this.sale = salePrice;
+    }
 }

@@ -76,4 +76,8 @@ public class ProductResponse {
         this.category = category;
     }
 
+    public void setSpecialPrice(int salePrice) {
+        this.sale = salePrice;
+    }
+
 }
