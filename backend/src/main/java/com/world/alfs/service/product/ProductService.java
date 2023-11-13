@@ -20,8 +20,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static com.world.alfs.common.exception.ErrorCode.PRODUCT_NOT_FOUND;
-
 @RequiredArgsConstructor
 @Service
 @Transactional
@@ -44,24 +42,6 @@ public class ProductService {
         Optional<Product> product = productRepository.findById(id);
         productList.add(product.get());
         return productList;
-    }
-
-
-    public Optional<ProductResponse> getProductResponse(Long id) {
-        Product product = productRepository.findById(id)
-                .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
-        ProductImg img = productImgRepository.findByProductId(product.getId());
-        ProductResponse response = product.toResponse(img);
-
-        Optional<Special> special = specialRepository.findById(product.getId());
-        if (special.isPresent()) {
-            int status = specialRepository.findByStatus(product.getId());
-            if (status == 1) {
-                response.setSpecialPrice(special.get().getSalePrice());
-            }
-        }
-
-        return Optional.ofNullable(response);
     }
 
     public Long setProduct(AddProductDto dto) {

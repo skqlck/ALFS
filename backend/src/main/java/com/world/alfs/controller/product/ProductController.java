@@ -4,7 +4,6 @@ import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.product.request.AddProductRequest;
 import com.world.alfs.controller.product.request.RegisterProductRequest;
 import com.world.alfs.controller.product.response.GetProductListResponse;
-import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.product.Product;
@@ -48,7 +47,7 @@ public class ProductController {
     }
 
     @GetMapping("/{memberId}/{id}")
-    public ApiResponse<List<GetProductListResponse>>  getProduct(@PathVariable Long memberId, @PathVariable Long id) {
+    public ApiResponse<List<GetProductListResponse>> getProduct(@PathVariable Long memberId, @PathVariable Long id) {
         List<Product> product = productService.getProduct(id);
         List<GetProductListResponse> response = productService.getAllProduct(product);
         return ApiResponse.ok(response);
@@ -78,7 +77,7 @@ public class ProductController {
     public ApiResponse<List<GetProductListResponse>> getCategoryProduct(@PathVariable Long memberId, @PathVariable int category) {
         List<Product> product_list = productService.getCategoryProduct(category);
         List<GetProductListResponse> response = productService.getAllProduct(product_list);
-        allergy_filter(product_list,response,memberId);
+        allergy_filter(product_list, response, memberId);
         return ApiResponse.ok(response);
     }
 
@@ -86,7 +85,7 @@ public class ProductController {
     public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Long memberId, @PathVariable Integer page) {
         List<Product> product_list = productService.getAllProductId(productService.countPage(), page);
         List<GetProductListResponse> response = productService.getAllProduct(product_list);
-        allergy_filter(product_list,response,memberId);
+        allergy_filter(product_list, response, memberId);
         return ApiResponse.ok(response);
     }
 
