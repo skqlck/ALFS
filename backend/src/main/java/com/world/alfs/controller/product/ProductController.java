@@ -50,6 +50,14 @@ public class ProductController {
     public ApiResponse<List<GetProductListResponse>> getProduct(@PathVariable Long memberId, @PathVariable Long id) {
         List<Product> product = productService.getProduct(id);
         List<GetProductListResponse> response = productService.getAllProduct(product);
+        allergy_filter(product,response,memberId);
+        return ApiResponse.ok(response);
+    }
+
+    @GetMapping("{id}")
+    public ApiResponse<List<GetProductListResponse>> getProduct(@PathVariable Long id) {
+        List<Product> product = productService.getProduct(id);
+        List<GetProductListResponse> response = productService.getAllProduct(product);
         return ApiResponse.ok(response);
     }
 
