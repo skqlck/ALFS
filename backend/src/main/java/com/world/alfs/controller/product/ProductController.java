@@ -9,6 +9,7 @@ import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.product.Product;
 import com.world.alfs.service.allergy.AllergyService;
+import com.world.alfs.service.basket.BasketService;
 import com.world.alfs.service.manufacturing_allergy.ManufacturingAllergyService;
 import com.world.alfs.service.member_allergy.MemberAllergyService;
 import com.world.alfs.service.product.ProductService;
@@ -16,6 +17,8 @@ import com.world.alfs.service.product.dto.AddProductDto;
 import com.world.alfs.service.product.dto.RegisterProductDto;
 import com.world.alfs.service.product_img.ProductImgService;
 import com.world.alfs.service.product_ingredient.ProductIngredientService;
+import com.world.alfs.service.speical.SpecialService;
+import com.world.alfs.service.wining.WiningService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
@@ -28,6 +31,9 @@ import java.util.*;
 @Slf4j
 public class ProductController {
 
+    private final BasketService basketService;
+    private final SpecialService specialService;
+    private final WiningService winingService;
     private final ProductService productService;
     private final ProductImgService productImgService;
     private final ProductIngredientService productIngredientService;
@@ -85,13 +91,25 @@ public class ProductController {
 
     @DeleteMapping("/{id}")
     public ApiResponse<Long> deleteProduct(@PathVariable Long id) {
-        productImgService.deleteProductImg(id);
+        deleteAllRelatedProduct(id);
         Long savedProductId = productService.deleteProduct(id);
         return ApiResponse.ok(savedProductId);
     }
 
 
-//    - - - - - - - - - - 비즈니스 로직 - - - - - - - - - -- - -
+    //    - - - - - - - - - - 비즈니스 로직 - - - - - - - - - - - - -
+
+
+    private void deleteAllRelatedProduct(Long id) {
+        productIngredientService.deleteProductIngredient(id);
+        manufacturingAllergyService.deleteManufactoring(id);
+        basketService.deleteBasket(id);
+        winingService.deleteWining(id);
+        specialService.deleteSpecial2(id);
+        productImgService.deleteProductImg(id);
+    }
+
+
     public void allergy_filter(List<Product> product_list, List<GetProductListResponse> response, Long memberId) {
 
         for (int i = 0; i < product_list.size(); i++) {

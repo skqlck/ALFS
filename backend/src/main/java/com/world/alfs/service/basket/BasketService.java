@@ -224,4 +224,8 @@ public class BasketService {
 
         return responseList;
     }
+
+    public void deleteBasket(Long id) {
+        basketRepository.deleteByProductId(id);
+    }
 }

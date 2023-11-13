@@ -18,4 +18,6 @@ public interface ProductIngredientRepository extends JpaRepository<ProductIngred
     boolean existsByProductIdAndIngredientId(Long productId, Long ingredientId);
 
     List<ProductIngredient> findAllByProduct(Product product);
+
+    void deleteByProductId(Long id);
 }

@@ -44,4 +44,8 @@ public class ProductIngredientService {
         }
         return response;
     }
+
+    public void deleteProductIngredient(Long id) {
+        productIngredientRepository.deleteByProductId(id);
+    }
 }
