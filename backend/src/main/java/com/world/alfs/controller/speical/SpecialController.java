@@ -59,7 +59,7 @@ public class SpecialController {
         return ApiResponse.ok(saveId);
     }
 
-    @DeleteMapping("/{id}")
+    @PostMapping("/{id}")
     public ApiResponse<Long> deleteSpecial(@PathVariable Long id, @RequestBody DeleteSpecialReqeust request){
         DeleteSpecialDto dto = request.toDto();
         Long deleteId = specialService.deleteSpecial(id, dto);
