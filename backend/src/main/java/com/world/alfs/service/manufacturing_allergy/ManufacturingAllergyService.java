@@ -78,4 +78,7 @@ public class ManufacturingAllergyService {
         return productId;
     }
 
+    public void deleteManufactoring(Long id) {
+        manufacturingAllergyRepository.deleteByProductId(id);
+    }
 }

@@ -17,4 +17,5 @@ public interface ManufacturingAllergyRepository extends JpaRepository<Manufactur
 
     boolean existsByProductAndAllergy(Product product, Allergy allergy);
 
+    void deleteByProductId(Long id);
 }

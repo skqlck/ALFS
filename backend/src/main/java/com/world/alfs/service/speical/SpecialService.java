@@ -154,6 +154,10 @@ public class SpecialService {
         return special.getId();
     }
 
+    public void deleteSpecial2(Long id){
+        specialRepository.deleteByProductId(id);
+    }
+
     public Long deleteSpecial(Long id, DeleteSpecialDto dto) {
 
         // 이벤트 특가상품이 존재하는지 확인

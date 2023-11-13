@@ -11,4 +11,6 @@ import java.util.Optional;
 public interface BasketRepository extends JpaRepository<Basket, Long> {
     List<Basket> findByMemberAndStatus(Member member, int status);
     Optional<Basket> findByMemberAndProductAndStatus(Member member, Product product, int status);
+
+    void deleteByProductId(Long id);
 }
