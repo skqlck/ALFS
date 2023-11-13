@@ -2,14 +2,14 @@ package com.world.alfs.domain.wining;
 
 import com.world.alfs.domain.member.Member;
 import com.world.alfs.domain.special.Special;
-import lombok.AccessLevel;
-import lombok.Getter;
-import lombok.NoArgsConstructor;
+import lombok.*;
 
 import javax.persistence.*;
 
 @Entity
 @Getter
+@Builder
+@AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Wining {
     @Id

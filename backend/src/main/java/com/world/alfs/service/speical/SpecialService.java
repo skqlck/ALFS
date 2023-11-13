@@ -2,6 +2,7 @@ package com.world.alfs.service.speical;
 
 import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.common.exception.ErrorCode;
+import com.world.alfs.controller.speical.request.AddSpecialQueueRequest;
 import com.world.alfs.controller.speical.response.GetSpecialListResponse;
 import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.domain.product.Product;
@@ -13,25 +14,32 @@ import com.world.alfs.domain.special.repository.SpecialRepository;
 import com.world.alfs.domain.supervisor.Supervisor;
 import com.world.alfs.domain.supervisor.repository.SupervisorRepository;
 import com.world.alfs.service.speical.dto.AddSpecialDto;
+import com.world.alfs.service.speical.dto.AddSpecialQueueDto;
 import com.world.alfs.service.speical.dto.DeleteSpecialDto;
 import com.world.alfs.service.speical.dto.SetSpecialDto;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.Optional;
+import java.util.Set;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
 @Service
 @Transactional
+@Slf4j
 public class SpecialService {
 
     private final SpecialRepository specialRepository;
     private final ProductRepository productRepository;
     private final SupervisorRepository supervisorRepository;
     private final ProductImgRepository productImgRepository;
+
+    private final RedisTemplate<String, Object> redisTemplate;
 
     public Long addSpecial(AddSpecialDto dto) {
         Product product = productRepository.findById(dto.getProductId()).orElseThrow(()->new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
@@ -96,5 +104,22 @@ public class SpecialService {
         return id;
     }
 
+    // 선착순 대기열에 추가
+    public void addQueue(AddSpecialQueueDto dto) {
+        double now = System.currentTimeMillis();
+
+        // redisTemplate.opsForZSet().addIfAbsent(dto.getProductId().toString(), dto.getMemberId(), now);
+        redisTemplate.opsForZSet().add(dto.getProductId().toString(), dto.getMemberId(), now);
+        log.debug("key: {} value: {} score: ({}초)", dto.getProductId(), dto.getMemberId(), now);
+    }
+
+    // 랭킹 가져오기
+    public Long getWaitingOrder(Long productId, Object value) {
+        return redisTemplate.opsForZSet().rank(productId.toString(), value);
+    }
+
+    public long geSize(Long productId) {
+        return redisTemplate.opsForZSet().size(productId.toString());
+    }
 
 }

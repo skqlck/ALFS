@@ -1,6 +1,7 @@
 package com.world.alfs.controller.speical;
 
 import com.world.alfs.controller.ApiResponse;
+import com.world.alfs.controller.speical.request.AddSpecialQueueRequest;
 import com.world.alfs.controller.speical.request.AddSpecialReqeust;
 import com.world.alfs.controller.speical.request.DeleteSpecialReqeust;
 import com.world.alfs.controller.speical.request.SetSpecialReqeust;
@@ -8,6 +9,7 @@ import com.world.alfs.controller.speical.response.GetSpecialListResponse;
 import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.service.speical.SpecialService;
 import com.world.alfs.service.speical.dto.AddSpecialDto;
+import com.world.alfs.service.speical.dto.AddSpecialQueueDto;
 import com.world.alfs.service.speical.dto.DeleteSpecialDto;
 import com.world.alfs.service.speical.dto.SetSpecialDto;
 import lombok.RequiredArgsConstructor;
@@ -58,5 +60,17 @@ public class SpecialController {
         return ApiResponse.ok(deleteId);
     }
 
+    @PostMapping("/queue")
+    public ApiResponse<Long> addQueue(@RequestBody AddSpecialQueueRequest request) {
+        AddSpecialQueueDto dto = request.toDto();
+        specialService.addQueue(dto);
+        return ApiResponse.ok(request.getMemberId());
+    }
+
+    @GetMapping("/queue/{productId}/{memberId}")
+    public ApiResponse<Long> getWaitingOrder(@PathVariable Long productId, @PathVariable Long memberId) {
+        specialService.getWaitingOrder(productId, memberId);
+        return ApiResponse.ok(memberId);
+    }
 
 }
