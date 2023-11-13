@@ -22,6 +22,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -153,13 +154,13 @@ public class BasketService {
 
     public GetPurchaseResponse purchase(Long member_id, Long basket_id) throws Exception {
         memberRepository.findById(member_id).filter(m -> m.getActivate()).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 회원입니다."));
-        Optional<Basket> basket = basketRepository.findById(basket_id);
-        if (basket.isEmpty()) throw new Exception("존재하지 않는 장바구니입니다.");
-        if (basket.get().getStatus() != 0) throw new Exception("삭제 혹은 결제된 장바구니입니다.");
-        if (basket.get().getMember().getId() != member_id) throw new Exception("권한이 없습니다.");
-        basket.get().setPurchase(basket.get().getProduct().getSale());
-        basket.get().setStatus(1);
-        Basket purchasedBasket = basketRepository.save(basket.get());
+        Basket basket = basketRepository.findById(basket_id).orElseThrow(()-> new IllegalArgumentException("존재하지 않는 장바구니 입니다."));
+        if (basket.getStatus() != 0) throw new Exception("삭제 혹은 결제된 장바구니입니다.");
+        if (basket.getMember().getId() != member_id) throw new Exception("권한이 없습니다.");
+        basket.setPurchase(basket.getProduct().getSale());
+        basket.setStatus(1);
+        basket.setPurchaseDate(LocalDate.now().toString());
+        Basket purchasedBasket = basketRepository.save(basket);
         Product product = purchasedBasket.getProduct();
         ProductImg img = productImgRepository.findByProductId(product.getId());
         return GetPurchaseResponse.builder()
@@ -167,6 +168,7 @@ public class BasketService {
                 .count(purchasedBasket.getCount())
                 .totalPrice(purchasedBasket.getPurchase())
                 .getProductListResponse(product.toListResponse(img,null))
+                .date(purchasedBasket.getPurchaseDate())
                 .build();
     }
 
@@ -218,6 +220,7 @@ public class BasketService {
                     .count(basket.getCount())
                     .totalPrice(basket.getPurchase())
                     .getProductListResponse(getProductListResponse)
+                    .date(basket.getPurchaseDate())
                     .build();
             responseList.add(response);
         }

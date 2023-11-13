@@ -36,14 +36,18 @@ public class Basket {
     // 구매 시점에 데이터 삽입
     private Integer purchase;
 
+    @Column(name = "purchase_date")
+    private String purchaseDate;
+
     @Builder
-    public Basket(Long id, Member member, Product product, int count, int status, Integer purchase) {
+    public Basket(Long id, Member member, Product product, int count, int status, Integer purchase, String purchaseDate) {
         this.id = id;
         this.member = member;
         this.product = product;
         this.count = count;
         this.status = status;
         this.purchase = purchase;
+        this.purchaseDate = purchaseDate;
     }
 
     // == 비지니스 로직 == //
@@ -65,5 +69,9 @@ public class Basket {
 
     public void setPurchase(int price){
         this.purchase = price * count;
+    }
+
+    public void setPurchaseDate(String purchaseDate) {
+        this.purchaseDate = purchaseDate;
     }
 }

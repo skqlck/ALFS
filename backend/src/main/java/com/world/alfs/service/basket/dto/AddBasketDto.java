@@ -30,6 +30,7 @@ public class AddBasketDto {
                 .status(status)
                 .count(count)
                 .purchase(null)
+                .purchaseDate(null)
                 .build();
     }
 }

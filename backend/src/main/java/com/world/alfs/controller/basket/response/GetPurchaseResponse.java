@@ -13,13 +13,15 @@ public class GetPurchaseResponse {
     private Long basket_id;
     private int count;
     private int purchase;
+    private String date;
     private GetProductListResponse product;
 
     @Builder
-    public GetPurchaseResponse(Long basket_id, int count, int totalPrice, GetProductListResponse getProductListResponse) {
+    public GetPurchaseResponse(Long basket_id, int count, int totalPrice, String date, GetProductListResponse getProductListResponse) {
         this.basket_id = basket_id;
         this.count = count;
         this.purchase = totalPrice;
+        this.date = date;
         this.product = getProductListResponse;
     }
 }
