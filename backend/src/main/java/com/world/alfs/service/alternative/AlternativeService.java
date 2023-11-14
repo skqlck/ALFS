@@ -22,6 +22,7 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 import static com.world.alfs.common.exception.ErrorCode.INGREDIENT_NOT_FOUND;
@@ -55,6 +56,17 @@ public class AlternativeService {
 
         List<CategoryResponse> categoryResponseList = new ArrayList<>();
         for (String s : list) {
+            Optional<Ingredient> ingredient = ingredientRepository.findByName(s);
+            if (ingredient.isEmpty()) {
+                continue;
+            }
+
+            List<ProductIngredient> productIngredient = productIngredientRepository.findByIngredientId(ingredient.get().getId());
+
+            if (productIngredient.size() == 0) {
+                continue;
+            }
+
             CategoryResponse response = CategoryResponse.builder()
                     .alternativeName(s)
                     .build();
