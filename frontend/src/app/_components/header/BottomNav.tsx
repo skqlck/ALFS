@@ -73,7 +73,7 @@ export default function BottomNav({}: Props) {
             >
               <div className="border-x-[2px]">
                 {category.map((item) => (
-                  <Link href={`/category/${item.idx}`}>
+                  <Link href={`/category/${item.idx}`} key={item.idx}>
                     <p key={item.idx} className="hover:text-green-500 ml-[10px] my-[10px]">
                       {item.title}
                     </p>
