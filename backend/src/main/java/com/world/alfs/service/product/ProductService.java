@@ -121,4 +121,9 @@ public class ProductService {
         return productRepository.count();
     }
 
+    public List<Product> getSearchResultProduct(String word) {
+        List<Product> productList = productRepository.findByNameContains(word);
+        return productList;
+    }
+
 }
