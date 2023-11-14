@@ -73,7 +73,7 @@ export default function BottomNav({}: Props) {
             >
               <div className="border-x-[2px]">
                 {category.map((item) => (
-                  <Link href={`/category/${item.idx}`}>
+                  <Link href={`/category/${item.idx}`} key={item.idx}>
                     <p key={item.idx} className="hover:text-green-500 ml-[10px] my-[10px]">
                       {item.title}
                     </p>
@@ -89,7 +89,9 @@ export default function BottomNav({}: Props) {
           </Link>
           <p className=" hover:text-green-500">신상품</p>
           <p className=" hover:text-green-500">베스트</p>
-          <p className=" hover:text-green-500">대체상품</p>
+          <Link href="/alt">
+            <p className=" hover:text-green-500">대체상품</p>
+          </Link>
           <Link href="/bigsale">
             <p className=" hover:text-green-500">특가할인</p>
           </Link>

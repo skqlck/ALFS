@@ -13,12 +13,10 @@ type CardProps = {
   title: string;
   price: number;
   sale: number;
-  delivery: string;
-  member_id: string;
   filterCode: Array<number>;
 };
 
-export default function Card({ name, image, id, title, price, sale, delivery, member_id, filterCode }: CardProps) {
+export default function Card({ name, image, id, title, price, sale, filterCode }: CardProps) {
   const formattedSale = new Intl.NumberFormat().format(sale);
   const formattedPrice = new Intl.NumberFormat().format(price);
   const discount = Math.round(((price - sale) / price) * 100);
@@ -52,7 +50,7 @@ export default function Card({ name, image, id, title, price, sale, delivery, me
         />
       </Link>
       <div className="AddToCartFromList">
-        <AddToCartFromList id={id} image={image} name={name} price={price} sale={sale} member_id={member_id} />
+        <AddToCartFromList id={id} image={image} name={name} price={price} sale={sale} />
       </div>
 
       <Link href={{ pathname: `/detail/${id}` }}>

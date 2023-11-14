@@ -23,9 +23,8 @@ type CardProps = {
   name: string;
   price: number;
   sale: number;
-  member_id: string;
 };
-export default function AddToCartFromList({ id, image, name, price, sale, member_id }: CardProps) {
+export default function AddToCartFromList({ id, image, name, price, sale }: CardProps) {
   const [cnt, setCnt] = useState<number>(1);
   const changeCount = (operator: string) => {
     if (id) {
@@ -44,8 +43,8 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
   const formattedSale = new Intl.NumberFormat().format(sale * cnt);
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [show, setShow] = useState(false);
-  const AddCart = async (id: string, cnt: number, member_id: string) => {
-    const response: any = await AddProductToCart(id, cnt, member_id);
+  const AddCart = async (id: string, cnt: number) => {
+    const response: any = await AddProductToCart(id, cnt);
     onClose();
     setShow(true);
     setTimeout(() => {
@@ -113,7 +112,7 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
               variant="outline"
               onClick={() => AddCart(String(id), cnt, member_id)}
             > */}
-            <Button colorScheme="whatsapp" variant="outline" onClick={() => AddCart(String(id), cnt, member_id)}>
+            <Button colorScheme="whatsapp" variant="outline" onClick={() => AddCart(String(id), cnt)}>
               장바구니에 담기
             </Button>
             {/* </Link> */}
