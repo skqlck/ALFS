@@ -62,7 +62,7 @@ export default function Page({}: Props) {
       try {
         const member_id: string = localStorage.getItem("id")!;
         setMemberId(member_id);
-        const response: CartData[] = await CartList(member_id);
+        const response: CartData[] = await CartList();
         setMemberData(response);
         response.forEach((item) => {
           if (item.pack === "냉동") {
@@ -106,7 +106,7 @@ export default function Page({}: Props) {
   //장바구니 상품 삭제
   const deleteItems = async () => {
     const checkedMember: Array<number> = memberData.filter((item) => item.isCheck).map((item) => item.basket_id);
-    const res: any = await RemoveBasket(checkedMember, memberId);
+    const res: any = await RemoveBasket(checkedMember);
     const filteredMemberData = memberData.filter((item) => !checkedMember.includes(item.basket_id));
     const selectedProducts = filteredMemberData ? filteredMemberData.filter((item) => item.isCheck).length : 0;
     const selectedProductsCount = selectedProducts > 0 ? selectedProducts : 0;
@@ -115,7 +115,7 @@ export default function Page({}: Props) {
   };
   const deleteItem = async (basketId: number) => {
     try {
-      await RemoveBasket([basketId], memberId);
+      await RemoveBasket([basketId]);
       const updatedMemberData = memberData.filter((item) => item.basket_id !== basketId);
       const selectedProducts = updatedMemberData ? updatedMemberData.filter((item) => item.isCheck).length : 0;
       const selectedProductsCount = selectedProducts > 0 ? selectedProducts : 0;

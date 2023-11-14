@@ -42,7 +42,7 @@ export default function CartItem({
   };
   const increaseCount = async () => {
     try {
-      const res: number = await AddCount(basket_id, member_id);
+      const res: number = await AddCount(basket_id);
       onCountChange(res);
       setCnt(res);
     } catch (error) {
@@ -52,7 +52,7 @@ export default function CartItem({
 
   const decreaseCount = async () => {
     try {
-      const res: number = await RemoveCount(basket_id, member_id);
+      const res: number = await RemoveCount(basket_id);
       onCountChange(Math.max(res, 1));
       setCnt((prevCnt) => Math.max(res, 1));
     } catch (error) {

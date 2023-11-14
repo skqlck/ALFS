@@ -37,6 +37,7 @@ function GetListData() {
       const res: any = await GetList(memberId, newPage);
       setResponse(res);
       setPage(newPage);
+      window.scrollTo(0, 0);
     }
   };
   return (
@@ -58,8 +59,6 @@ function GetListData() {
                   title={item.title}
                   price={item.price}
                   sale={item.sale}
-                  delivery={item.delivery}
-                  member_id={memberId}
                   filterCode={item.filterCode}
                 />
               </div>
