@@ -36,7 +36,8 @@
     "react-slick": "^0.29.0",
     "react-use": "^17.4.0",
     "sharp": "^0.32.6",
-    "slick-carousel": "^1.8.1"
+    "slick-carousel": "^1.8.1",
+    "tailwind-scrollbar-hide": "^1.1.7"
   },
   "devDependencies": {
     "@types/aos": "^3.0.6",

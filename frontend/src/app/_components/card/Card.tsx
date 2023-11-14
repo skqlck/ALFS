@@ -23,7 +23,12 @@ export default function Card({ name, image, id, title, price, sale, filterCode }
   const router = useRouter();
   const [filter, setFilter] = useState<Array<number>>([0, 0, 0, 0]);
   const [filtered, setFiltered] = useState<boolean>(false);
-  const moveDetail = (id: number) => {
+  const moveDetail = (id: number, image: string) => {
+    const existingDataString = sessionStorage.getItem("productId") || "[]";
+    const existingData = JSON.parse(existingDataString);
+    existingData.push({ id, image });
+    sessionStorage.setItem("productId", JSON.stringify(existingData));
+
     router.push(`/detail/${id}`);
   };
   useEffect(() => {
@@ -45,7 +50,7 @@ export default function Card({ name, image, id, title, price, sale, filterCode }
           className={`${id}`}
           alt="product image"
           onClick={() => {
-            moveDetail(id);
+            moveDetail(id, image);
           }}
         />
       </Link>
