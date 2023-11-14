@@ -86,6 +86,23 @@ public class ProductService {
         return productResponseList;
     }
 
+    public List<ProductResponse> getAllProductResponse(List<Product> productList) {
+        List<ProductResponse> productResponseList = new ArrayList<>();
+        for (int i = 0; i < productList.size(); i++) {
+            ProductImg img = productImgRepository.findByProductId(productList.get(i).getId());
+            productResponseList.add(productList.get(i).toListProductResponse(img));
+
+            Optional<Special> special = specialRepository.findById(productList.get(i).getId());
+            if (special.isPresent()) {
+                int status = specialRepository.findByStatus(productList.get(i).getId());
+                if (status == 1) {
+                    productResponseList.get(i).setSpecialPrice(special.get().getSalePrice());
+                }
+            }
+        }
+        return productResponseList;
+    }
+
     public Long deleteProduct(Long id) {
         productRepository.deleteById(id);
         return id;

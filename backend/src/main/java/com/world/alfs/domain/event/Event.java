@@ -35,5 +35,15 @@ public class Event extends TimeBaseEntity {
     @JoinColumn(name = "supervisor_id")
     private Supervisor supervisor;
 
+    // - - - - - - - - - - - 비즈니스 로직 - - - - - - - -- - -
+    public void choose(int chooseCase){
+        if(chooseCase==1){
+            case1_cnt+=1;
+        }else{
+            case2_cnt+=1;
+        }
+
+    }
+
 
 }

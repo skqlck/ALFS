@@ -4,6 +4,7 @@ import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.product.request.AddProductRequest;
 import com.world.alfs.controller.product.request.RegisterProductRequest;
 import com.world.alfs.controller.product.response.GetProductListResponse;
+import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.product.Product;
@@ -47,10 +48,10 @@ public class ProductController {
     }
 
     @GetMapping("/{memberId}/{id}")
-    public ApiResponse<List<GetProductListResponse>> getProduct(@PathVariable Long memberId, @PathVariable Long id) {
+    public ApiResponse<List<ProductResponse>> getProduct(@PathVariable Long memberId, @PathVariable Long id) {
         List<Product> product = productService.getProduct(id);
-        List<GetProductListResponse> response = productService.getAllProduct(product);
-        allergy_filter(product,response,memberId);
+        List<ProductResponse> response = productService.getAllProductResponse(product);
+        allergy_filter2(product, response, memberId);
         return ApiResponse.ok(response);
     }
 
@@ -67,10 +68,10 @@ public class ProductController {
         return ApiResponse.ok(productCnt);
     }
 
-    @GetMapping("/all")
-    public ApiResponse<List<GetProductListResponse>> getAllProduct() {
-        List<Product> productList = productService.findAll();
-        List<GetProductListResponse> response = productService.getAllProduct(productList);
+    @GetMapping("/all/{page}")
+    public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Integer page) {
+        List<Product> product_list = productService.getAllProductId(productService.countPage(), page);
+        List<GetProductListResponse> response = productService.getAllProduct(product_list);
         return ApiResponse.ok(response);
     }
 
@@ -126,6 +127,42 @@ public class ProductController {
 
 
     public void allergy_filter(List<Product> product_list, List<GetProductListResponse> response, Long memberId) {
+
+        for (int i = 0; i < product_list.size(); i++) {
+            List<String> compare_ingredient = new ArrayList<>();
+            List<Ingredient> product_ingredient_list = productIngredientService.getAllIngredientId(product_list.get(i).getId());
+            for (int a = 0; a < product_ingredient_list.size(); a++) {
+                compare_ingredient.add(product_ingredient_list.get(a).getName());
+            }
+            List<Long> memberAllergy_allergy_id_list = memberAllergyService.getFilteredAllergyId(memberId);
+            Set<Integer> FilterCode = new HashSet<>();
+
+            for (int a = 0; a < memberAllergy_allergy_id_list.size(); a++) {
+                Allergy allergy = allergyService.getAllergy(memberAllergy_allergy_id_list.get(a));
+                for (int b = 0; b < compare_ingredient.size(); b++) {
+                    if (compare_ingredient.get(b).equals(allergy.getAllergyName())) {
+                        FilterCode.add(allergy.getAllergyType());
+                    }
+                }
+            }
+
+            // 제조시설 필터 코드 추가
+            boolean isManuAllergy = manufacturingAllergyService.getManuAllergy(product_list.get(i).getId(), memberId);
+            if (isManuAllergy) {
+                FilterCode.add(2);
+            }
+
+            if (FilterCode.isEmpty()) {
+                FilterCode.add(3);
+            }
+            response.get(i).setCode(FilterCode);
+        }
+
+    }
+
+
+
+    public void allergy_filter2(List<Product> product_list, List<ProductResponse> response, Long memberId) {
 
         for (int i = 0; i < product_list.size(); i++) {
             List<String> compare_ingredient = new ArrayList<>();

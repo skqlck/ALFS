@@ -22,9 +22,8 @@ public class EventController {
     }
 
     @PostMapping()
-    ApiResponse<Long> choose(EventChooseRequest request){
+    ApiResponse<Long> choose(@RequestBody EventChooseRequest request){
         EventDto dto = request.toDto();
-        //eventService.choose(dto)
-        return ApiResponse.ok(1L);
+        return ApiResponse.ok(eventService.choose(dto));
     }
 }
