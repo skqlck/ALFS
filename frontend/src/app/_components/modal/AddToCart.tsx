@@ -25,7 +25,7 @@ type ItemProps = {
 export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const AddCart = async (id: string, cnt: number, member_id: string) => {
-    const response: any = await AddProductToCart(id, cnt, member_id);
+    const response: any = await AddProductToCart(id, cnt);
     console.log("장바구니 추가요청", response);
   };
   return (
