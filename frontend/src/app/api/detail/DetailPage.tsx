@@ -2,8 +2,9 @@ import { baseAxios } from "../Api";
 
 export async function GetProductDetail(id: number) {
   try {
-    const res = await baseAxios.get(`api/product/${id}`);
-    return res.data.data;
+    const member_id = localStorage.getItem("id");
+    const res = await baseAxios.get(`api/product/${member_id}/${id}`);
+    return res.data.data[0];
   } catch (e) {
     console.error(e);
   }
