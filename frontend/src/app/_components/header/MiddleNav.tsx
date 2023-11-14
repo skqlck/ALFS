@@ -13,9 +13,9 @@ export default function MiddleNav() {
       <div className="min-w-[1000px] flex items-center justify-between">
         <Link href="/">
           <div className="flex justify-center items-center">
-            <Image src={Logo} width={50} height={50} alt="" priority />
+            <Image src={Logo} width={50} height={50} alt="" />
             <p className="text-[30px] ml-[10px]">
-              <b>ALFS</b>
+              <b style={{ fontFamily: "omyu_pretty" }}>ALFS</b>
             </p>
           </div>
         </Link>

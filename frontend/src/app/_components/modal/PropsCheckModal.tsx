@@ -45,7 +45,7 @@ function PropsCheckModal(props: any) {
 
   return (
     <div>
-      <Modal isOpen={show} onClose={handleShow}>
+      <Modal isOpen={show} onClose={handleShow} preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>알림</ModalHeader>

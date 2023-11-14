@@ -13,7 +13,7 @@ export default function Example() {
       animationData={lottieJson}
       play
       // style 은 선택
-      style={{ width: 150, height: 150 }}
+      style={{ width: 300, height: 300 }}
     />
   );
 }

@@ -17,7 +17,7 @@ export default function AllergyNotice(props: any) {
         장바구니에 담기
       </button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="3xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="3xl" preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalCloseButton />

@@ -15,11 +15,6 @@ export default function Page() {
     setHate(res2?.data.data);
   };
 
-  const handleKakao = async (e: any) => {
-    // const res = await NaverImage(e);
-    // window.open(`https://namu.wiki/w/${e}`);
-  };
-
   useEffect(() => {
     const id = localStorage.getItem("id");
     response(id);
@@ -27,20 +22,13 @@ export default function Page() {
 
   return (
     <div>
-      <AllergyButton />
+      <AllergyButton props={[allergy, hate]} />
       <div className="mt-[20px] border-b-[1px]">
         <div className=" justify-between items-center">
           <p className="text-[20px] mb-[20px]">선택된 알러지</p>
           <div className="flex gap-[20px] mb-[20px]">
             {allergy?.map((item: any, idx) => (
-              <Button
-                variant="outline"
-                colorScheme="whatsapp"
-                key={idx}
-                onClick={() => {
-                  handleKakao(item.allergyName);
-                }}
-              >
+              <Button variant="outline" colorScheme="whatsapp" key={idx}>
                 {item.allergyName}
               </Button>
             ))}
@@ -49,17 +37,10 @@ export default function Page() {
       </div>
       <div className="mt-[20px] border-b-[1px]">
         <div className=" justify-between items-center">
-          <p className="text-[20px] mb-[20px]">선탠된 기피식품</p>
+          <p className="text-[20px] mb-[20px]">선택된 기피식품</p>
           <div className="flex gap-[20px] mb-[20px]">
             {hate?.map((item: any, idx) => (
-              <Button
-                variant="outline"
-                colorScheme="whatsapp"
-                key={idx}
-                onClick={() => {
-                  handleKakao(item.allergyName);
-                }}
-              >
+              <Button variant="outline" colorScheme="whatsapp" key={idx}>
                 {item.allergyName}
               </Button>
             ))}

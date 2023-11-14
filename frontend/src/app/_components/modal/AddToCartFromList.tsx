@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import {
   Modal,
@@ -15,6 +15,7 @@ import { Link } from "@chakra-ui/next-js";
 import { AddProductToCart } from "@/app/api/cart/CartPage";
 import { LuShoppingCart } from "react-icons/lu";
 import Image from "next/image";
+import CartAlert from "./CartAlert";
 
 type CardProps = {
   id: number;
@@ -42,10 +43,16 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
   const formattedPrice = new Intl.NumberFormat().format(price * cnt);
   const formattedSale = new Intl.NumberFormat().format(sale * cnt);
   const { isOpen, onOpen, onClose } = useDisclosure();
+  const [show, setShow] = useState(false);
   const AddCart = async (id: string, cnt: number, member_id: string) => {
     const response: any = await AddProductToCart(id, cnt, member_id);
-    console.log("장바구니 추가요청", response);
+    onClose();
+    setShow(true);
+    setTimeout(() => {
+      setShow(false);
+    }, 2000);
   };
+
   return (
     <div>
       <button
@@ -56,7 +63,7 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
         담기
       </button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader mb={3}>
@@ -100,20 +107,20 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
             <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
               취소
             </Button>
-            <Link
+            {/* <Link
               href={{ pathname: `/cart` }}
               colorScheme="whatsapp"
               variant="outline"
-              mr={3}
               onClick={() => AddCart(String(id), cnt, member_id)}
-            >
-              <Button colorScheme="whatsapp" variant="outline" mr={3}>
-                장바구니에 담기
-              </Button>
-            </Link>
+            > */}
+            <Button colorScheme="whatsapp" variant="outline" onClick={() => AddCart(String(id), cnt, member_id)}>
+              장바구니에 담기
+            </Button>
+            {/* </Link> */}
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {show && <CartAlert props={[image, name]} />}
     </div>
   );
 }

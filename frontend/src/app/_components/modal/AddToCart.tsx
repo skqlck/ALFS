@@ -38,7 +38,7 @@ export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) 
         장바구니에 담기
       </button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>

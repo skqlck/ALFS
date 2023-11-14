@@ -19,7 +19,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
   }, []);
 
   return (
-    <div className="flex justify-center mt-[50px]">
+    <div className="min-w-[1000px] flex justify-center mt-[50px]">
       <div className="w-[1000px] flex">
         <div className="w-[200px] mr-[50px]">
           <p className="text-[30px] mb-[50px]">MY</p>

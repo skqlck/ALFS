@@ -85,7 +85,7 @@ export default function MiddleIcon() {
         </PopoverContent>
       </Popover>
       <FaRegHeart className="min-w-[40px] h-[40px]" />
-      <Link href={{ pathname: `/cart` }}>
+      <Link href={{ pathname: `/cart` }} id="cart">
         <AiOutlineShoppingCart className="min-w-[40px] h-[40px]" />
       </Link>
     </div>

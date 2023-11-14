@@ -153,7 +153,7 @@ export default function Page() {
           <Table variant="simple">
             <Thead>
               <Tr>
-                <Th width={100}>선택</Th>
+                <Th width={100}>기본</Th>
                 <Th width={200}>명칭</Th>
                 <Th width={400}>주소</Th>
                 <Th width={100}>수정</Th>

@@ -24,7 +24,7 @@ function LoginModal() {
   });
   return (
     <div>
-      <Modal isOpen={show} onClose={() => setShow(false)}>
+      <Modal isOpen={show} onClose={() => setShow(false)} preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>ERROR</ModalHeader>
