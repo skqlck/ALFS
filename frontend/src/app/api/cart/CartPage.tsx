@@ -58,11 +58,12 @@ export async function RemoveBasket(ids: Array<number>, member_id: string) {
   }
 }
 
-export async function PurchaseItem(id: string, member_id: string) {
+export async function PurchaseItem(props: any) {
+  const member_id = localStorage.getItem("id");
   try {
     const res = await baseAxios.put(`api/basket/purchase`, {
-      member_id: Number(member_id),
-      product_id: id,
+      member_id: member_id,
+      basket_ids: props,
     });
     return res.data.data;
   } catch (e) {

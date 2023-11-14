@@ -222,3 +222,13 @@ export async function UserDelete(props: any) {
     console.error(e);
   }
 }
+
+export async function UserOrder() {
+  const id = localStorage.getItem("id");
+  try {
+    const res = await baseAxios.get(`api/basket/purchase/${id}`);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}

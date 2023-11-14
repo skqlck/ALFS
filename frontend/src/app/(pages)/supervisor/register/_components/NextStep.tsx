@@ -1,9 +1,22 @@
 "use client";
-import React from "react";
-import { Button, FormControl, FormLabel, Input, Textarea, Select } from "@chakra-ui/react";
+import React, { useState } from "react";
+import {
+  Button,
+  FormControl,
+  FormLabel,
+  Input,
+  Textarea,
+  Select,
+  Accordion,
+  AccordionItem,
+  AccordionButton,
+  AccordionPanel,
+  AccordionIcon,
+  Box,
+} from "@chakra-ui/react";
 import { useForm } from "react-hook-form";
-import { RegisterProduct } from "@/app/api/supervisor/supervisor";
-
+import { RegisterIngredient, RegisterManufacturing, RegisterProduct } from "@/app/api/supervisor/supervisor";
+import { useRouter } from "next/navigation";
 type Inputs = {
   name: string;
   title: string;
@@ -24,6 +37,8 @@ type Inputs = {
   stock: number;
   content: string;
   category: number;
+  allergyList: string;
+  manufacture: string;
 };
 
 const category = [
@@ -40,20 +55,54 @@ const category = [
 ];
 
 export default function NextStep(props: any) {
-  console.log(props);
   const { register, handleSubmit, watch, setValue } = useForm<Inputs>();
+  const [show, setShow] = useState(false);
+  const router = useRouter();
 
   const registerProduct = async (e: any) => {
-    console.log(e);
     const data = e;
-    data["img_1"] = 1;
-    data["img_2"] = 2;
-    data["img_2"] = 3;
-    console.log(data);
+    console.log(e);
+    data["img_1"] = props.props.imgUrls[0];
+    data["img_2"] = props.props.imgUrls[1];
+    data["img_3"] = props.props.imgUrls[2];
     const res = await RegisterProduct(data);
+    if (res?.data) {
+      const data_1 = e.allergyList.replace(/\s+/g, " ").split(" ");
+      const res1 = await RegisterIngredient(data_1, res?.data);
+
+      const allergyNameList = e.manufacture.replace(/\s+/g, " ").split(" ");
+      const data_2 = {
+        productId: res?.data,
+        allergyNameList,
+      };
+
+      const res2 = await RegisterManufacturing(data_2);
+      router.push(`/detail/${res?.data}`);
+    }
   };
   return (
     <div>
+      <div className="mb-[20px]">
+        <Accordion allowToggle>
+          <AccordionItem>
+            <h2>
+              <AccordionButton>
+                <Box as="span" flex="1" textAlign="left">
+                  원재료 추출내역
+                </Box>
+                <AccordionIcon />
+              </AccordionButton>
+            </h2>
+            <AccordionPanel pb={4}>
+              {props.props.ingredients.map((item: any, idx: number) => (
+                <p className="inline-block whitespace-pre-line" key={idx}>
+                  {item} &nbsp;
+                </p>
+              ))}
+            </AccordionPanel>
+          </AccordionItem>
+        </Accordion>
+      </div>
       <form onSubmit={handleSubmit(registerProduct)} className="grid grid-cols-2 gap-5  justify-items-center">
         <FormControl width={300}>
           <FormLabel>제품명</FormLabel>
@@ -159,39 +208,6 @@ export default function NextStep(props: any) {
         </FormControl>
 
         <FormControl width={300}>
-          <FormLabel>알레르기정보</FormLabel>
-          <Input
-            width={300}
-            focusBorderColor="green.500"
-            borderColor="gray.300"
-            placeholder="알레르기정보를 입력해주세요."
-            {...register("allergy")}
-          ></Input>
-        </FormControl>
-
-        <FormControl width={300}>
-          <FormLabel>유통기한정보</FormLabel>
-          <Input
-            width={300}
-            focusBorderColor="green.500"
-            borderColor="gray.300"
-            placeholder="유통기한정보를 입력해주세요."
-            {...register("expireDate")}
-          ></Input>
-        </FormControl>
-
-        <FormControl width={300}>
-          <FormLabel>추가정보</FormLabel>
-          <Input
-            width={300}
-            focusBorderColor="green.500"
-            borderColor="gray.300"
-            placeholder="추가정보를 입력해주세요."
-            {...register("information")}
-          ></Input>
-        </FormControl>
-
-        <FormControl width={300}>
           <FormLabel>구매유형</FormLabel>
           <Input
             width={300}
@@ -230,13 +246,74 @@ export default function NextStep(props: any) {
         </FormControl>
 
         <FormControl width={300}>
+          <FormLabel>알레르기정보</FormLabel>
+          <Textarea
+            width={300}
+            height={200}
+            focusBorderColor="green.500"
+            borderColor="gray.300"
+            placeholder="알레르기정보를 입력해주세요."
+            {...register("allergy")}
+          ></Textarea>
+        </FormControl>
+
+        <FormControl width={300}>
+          <FormLabel>유통기한정보</FormLabel>
+          <Textarea
+            width={300}
+            height={200}
+            focusBorderColor="green.500"
+            borderColor="gray.300"
+            placeholder="유통기한정보를 입력해주세요."
+            {...register("expireDate")}
+          ></Textarea>
+        </FormControl>
+
+        <FormControl width={300}>
+          <FormLabel>추가정보</FormLabel>
+          <Textarea
+            width={300}
+            height={200}
+            focusBorderColor="green.500"
+            borderColor="gray.300"
+            placeholder="추가정보를 입력해주세요."
+            {...register("information")}
+          ></Textarea>
+        </FormControl>
+
+        <FormControl width={300}>
           <FormLabel>제품설명</FormLabel>
           <Textarea
             width={300}
+            height={200}
             focusBorderColor="green.500"
             borderColor="gray.300"
             placeholder="제품설명을 입력해주세요."
             {...register("content")}
+          ></Textarea>
+        </FormControl>
+
+        <FormControl width={300}>
+          <FormLabel>알러지 전체정보</FormLabel>
+          <Textarea
+            width={300}
+            height={200}
+            focusBorderColor="green.500"
+            borderColor="gray.300"
+            placeholder="전체정보를 입력해주세요."
+            {...register("allergyList")}
+          ></Textarea>
+        </FormControl>
+
+        <FormControl width={300}>
+          <FormLabel>제조시설 전체정보</FormLabel>
+          <Textarea
+            width={300}
+            height={200}
+            focusBorderColor="green.500"
+            borderColor="gray.300"
+            placeholder="전체정보를 입력해주세요."
+            {...register("manufacture")}
           ></Textarea>
         </FormControl>
         <div className="flex justify-evenly mt-[20px]">
