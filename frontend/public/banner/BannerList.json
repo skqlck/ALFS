@@ -1,0 +1,22 @@
+[
+    {
+        "image_url" : "/banner/images/online-drug-nono.PNG",
+        "moveTo" : "https://blog.naver.com/PostList.nhn?blogId=kfdazzang&from=postList&categoryNo=61",
+        "target" : "_blank"
+    },
+    {
+        "image_url" : "/banner/images/allergy.PNG",
+        "moveTo" : "https://blog.naver.com/kfdazzang/222072237012",
+        "target" : "_blank"
+    },
+    {
+        "image_url" : "/banner/images/howtoread.PNG",
+        "moveTo" : "https://blog.naver.com/kfdazzang/221053946711",
+        "target" : "_blank"
+    },
+    {
+        "image_url" : "/banner/images/11-2.PNG",
+        "moveTo" : "https://blog.naver.com/PostView.naver?blogId=kfdazzang&logNo=223261127059&categoryNo=74&parentCategoryNo=&from=thumbnailList",
+        "target" : "_blank"
+    }
+]
