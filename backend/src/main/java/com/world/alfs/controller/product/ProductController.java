@@ -56,9 +56,9 @@ public class ProductController {
     }
 
     @GetMapping("{id}")
-    public ApiResponse<List<GetProductListResponse>> getProduct(@PathVariable Long id) {
+    public ApiResponse<List<ProductResponse>> getProduct(@PathVariable Long id) {
         List<Product> product = productService.getProduct(id);
-        List<GetProductListResponse> response = productService.getAllProduct(product);
+        List<ProductResponse> response = productService.getAllProductResponse(product);
         return ApiResponse.ok(response);
     }
 
