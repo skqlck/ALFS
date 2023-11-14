@@ -68,9 +68,9 @@ public class ProductController {
         return ApiResponse.ok(productCnt);
     }
 
-    @GetMapping("/all/{page}")
-    public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Integer page) {
-        List<Product> product_list = productService.getAllProductId(productService.countPage(), page);
+    @GetMapping("/all")
+    public ApiResponse<List<GetProductListResponse>> getAllProduct() {
+        List<Product> product_list = productService.findAll();
         List<GetProductListResponse> response = productService.getAllProduct(product_list);
         return ApiResponse.ok(response);
     }

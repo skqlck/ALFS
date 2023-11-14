@@ -8,6 +8,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.GetMapping;
 
 import java.util.Optional;
 
@@ -27,5 +28,11 @@ public class EventService {
         Optional<Event> event = eventRepository.findById(dto.getId());
         event.get().choose(dto.getChoose_case());
         return event.get().getId();
+    }
+
+    @GetMapping()
+    public Optional<Event> getEvent(Long id) {
+        System.out.println(id+" 이벤트");
+        return eventRepository.findById(id);
     }
 }

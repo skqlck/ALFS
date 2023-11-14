@@ -1,5 +1,6 @@
 package com.world.alfs.config.batch.special;
 
+import com.world.alfs.domain.event.Event;
 import com.world.alfs.domain.special.Special;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +14,7 @@ import org.springframework.batch.item.ItemProcessor;
 import org.springframework.batch.item.database.JpaCursorItemReader;
 import org.springframework.batch.item.database.JpaItemWriter;
 import org.springframework.batch.item.database.builder.JpaCursorItemReaderBuilder;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -143,6 +145,14 @@ public class BatchJobConfiguration {
         // log.info("customItemProcessor");
         return new CustomJpaEndItemProcessor(entityManagerFactory);
     }
+
+//    @Bean
+//    @StepScope
+//    public ItemProcessor<Event, Event> customStartItemProcessor2() {
+//        // log.info("customItemProcessor");
+//        return new CustomJpaStartItemProcessor(entityManagerFactory);
+//    }
+
 
     @Bean
     @StepScope
