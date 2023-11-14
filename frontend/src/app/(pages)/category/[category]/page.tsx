@@ -53,8 +53,6 @@ export default function Page() {
                       title={item.title}
                       price={item.price}
                       sale={item.sale}
-                      delivery={item.delivery}
-                      member_id={memberId}
                       filterCode={!item.filterCode ? [] : item.filterCode}
                   />
                 </div>
