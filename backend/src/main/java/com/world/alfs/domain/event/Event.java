@@ -71,6 +71,7 @@ public class Event {
 
     public GetEventResponse toResponse() {
         return GetEventResponse.builder()
+                .id(this.id)
                 .case1(this.case1)
                 .case2(this.case2)
                 .title(this.title)
