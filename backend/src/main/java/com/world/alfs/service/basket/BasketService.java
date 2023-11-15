@@ -3,6 +3,7 @@ package com.world.alfs.service.basket;
 import com.world.alfs.controller.basket.response.GetBasketResponse;
 import com.world.alfs.controller.basket.response.GetPurchaseResponse;
 import com.world.alfs.controller.product.response.GetProductListResponse;
+import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.basket.Basket;
 import com.world.alfs.domain.basket.repository.BasketRepository;
@@ -17,6 +18,8 @@ import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
 import com.world.alfs.domain.product_ingredient.repostiory.ProductIngredientRepository;
+import com.world.alfs.domain.special.Special;
+import com.world.alfs.domain.special.repository.SpecialRepository;
 import com.world.alfs.service.basket.dto.AddBasketDto;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -38,6 +41,7 @@ public class BasketService {
     private final ProductIngredientRepository productIngredientRepository;
     private final MemberAllergyRepository memberAllergyRepository;
     private final ManufacturingAllergyRepository manufacturingAllergyRepository;
+    private final SpecialRepository specialRepository;
     // 장바구니 조회
     public List<GetBasketResponse> getBasket(Long member_id) throws Exception{
         Member member = memberRepository.findById(member_id)
@@ -122,10 +126,20 @@ public class BasketService {
             changeCount(member_id, existedBasket.get().getId(), count);
         }
 
+        GetProductListResponse getProductListResponse = product.toListResponse(img,null);
+
+        Optional<Special> special = specialRepository.findById(product.getId());
+        if (special.isPresent()) {
+            int status = specialRepository.findByStatus(product.getId());
+            if (status == 1) {
+                getProductListResponse.setSpecialPrice(special.get().getSalePrice());
+            }
+        }
+
         return GetBasketResponse.builder()
                 .basket_id(existedBasket.get().getId())
                 .count(existedBasket.get().getCount())
-                .getProductListResponse(product.toListResponse(img,null))
+                .getProductListResponse(getProductListResponse)
                 .pack(product.getPack())
                 .isCheck(true)
                 .build();

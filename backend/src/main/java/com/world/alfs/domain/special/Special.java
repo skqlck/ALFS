@@ -123,4 +123,9 @@ public class Special {
                 .end(end)
                 .build();
     }
+
+    // 비즈니스 로직
+    public void changeCount(int diff) {
+        this.count -= diff;
+    }
 }

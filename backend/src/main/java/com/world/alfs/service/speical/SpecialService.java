@@ -2,8 +2,6 @@ package com.world.alfs.service.speical;
 
 import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.common.exception.ErrorCode;
-import com.world.alfs.controller.product.response.GetProductListResponse;
-import com.world.alfs.controller.speical.request.AddSpecialQueueRequest;
 import com.world.alfs.controller.speical.response.GetSpecialListResponse;
 import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.domain.allergy.Allergy;
@@ -23,6 +21,9 @@ import com.world.alfs.domain.special.Special;
 import com.world.alfs.domain.special.repository.SpecialRepository;
 import com.world.alfs.domain.supervisor.Supervisor;
 import com.world.alfs.domain.supervisor.repository.SupervisorRepository;
+import com.world.alfs.domain.wining.Wining;
+import com.world.alfs.domain.wining.repository.WiningRepository;
+import com.world.alfs.service.basket.BasketService;
 import com.world.alfs.service.speical.dto.AddSpecialDto;
 import com.world.alfs.service.speical.dto.AddSpecialQueueDto;
 import com.world.alfs.service.speical.dto.DeleteSpecialDto;
@@ -30,6 +31,7 @@ import com.world.alfs.service.speical.dto.SetSpecialDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +40,9 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.world.alfs.common.exception.ErrorCode.MEMBER_NOT_FOUND;
+import static com.world.alfs.common.exception.ErrorCode.SPECIAL_NOT_FOUND;
 
 @RequiredArgsConstructor
 @Service
@@ -53,6 +58,9 @@ public class SpecialService {
     private final ProductIngredientRepository productIngredientRepository;
     private final MemberAllergyRepository memberAllergyRepository;
     private final ManufacturingAllergyRepository manufacturingAllergyRepository;
+    private final WiningRepository winingRepository;
+
+    private final BasketService basketService;
 
     private final RedisTemplate<String, Object> redisTemplate;
 
@@ -219,18 +227,59 @@ public class SpecialService {
     public void addQueue(AddSpecialQueueDto dto) {
         double now = System.currentTimeMillis();
 
-        // redisTemplate.opsForZSet().addIfAbsent(dto.getProductId().toString(), dto.getMemberId(), now);
-        redisTemplate.opsForZSet().add(dto.getProductId().toString(), dto.getMemberId(), now);
+        redisTemplate.opsForZSet().addIfAbsent(dto.getProductId().toString(), dto.getMemberId(), now);
         log.debug("key: {} value: {} score: ({}초)", dto.getProductId(), dto.getMemberId(), now);
+
+        Long waitingOrder = redisTemplate.opsForZSet().rank(dto.getProductId().toString(), dto.getMemberId());
+
     }
 
-    // 랭킹 가져오기
+    // 대기 순서 가져오기
     public Long getWaitingOrder(Long productId, Object value) {
         return redisTemplate.opsForZSet().rank(productId.toString(), value);
     }
 
+    // 대기열에서 삭제
+    public Long remove(Long productId, Object value) {
+        return redisTemplate.opsForZSet().remove(productId.toString(), value);
+    }
+
+    // 대기열에 있는 인원수
     public long geSize(Long productId) {
         return redisTemplate.opsForZSet().size(productId.toString());
+    }
+
+    // 장바구니에 담기
+    public void addCart(Long productId, Long startRank, Long endRank) {
+
+        Set<Object> queue = redisTemplate.opsForZSet().range(productId.toString(), startRank, endRank);
+        List<Wining> list = new ArrayList<>();
+
+        Special special = specialRepository.findById(productId)
+                        .orElseThrow(() -> new CustomException(SPECIAL_NOT_FOUND));
+
+        for (Object people : queue) {
+            if (special.getCount() <= 0) {
+                log.debug("재고가 소진되었습니다.");
+            }
+            Member member = memberRepository.findById(Long.parseLong(people.toString()))
+                            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+            // wining 테이블에 추가
+            Wining wining = Wining.builder()
+                    .special(special)
+                    .member(member)
+                    .build();
+
+            list.add(wining);
+
+            log.debug("memberId: {}, productId: {}", people, productId);
+            redisTemplate.opsForZSet().remove(productId.toString(), people);
+        }
+        winingRepository.saveAll(list);
+
+        // 특가 재고 감소
+        special.changeCount(queue.size());
     }
 
 }

@@ -85,4 +85,8 @@ public class SpecialController {
         return ApiResponse.ok(memberId);
     }
 
+    @GetMapping("/queue/{productId}/{startRank}/{endRank}")
+    public void addCart(@PathVariable Long productId, @PathVariable Long startRank, @PathVariable Long endRank) {
+        specialService.addCart(productId, startRank, endRank);
+    }
 }
