@@ -33,8 +33,7 @@ export default function CartAlert(props: any) {
 
   return (
     <div>
-      {/* className={`fixed`} style={popoverStyle} */}
-      <Popover isOpen={show} colorScheme="whatsapp">
+      <Popover isOpen={show}>
         <PopoverContent className="fixed shadow-xl" style={popoverStyle}>
           <PopoverArrow />
           <PopoverHeader>장바구니에 상품이 담겼습니다.</PopoverHeader>

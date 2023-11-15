@@ -21,10 +21,6 @@ function PropsCheckModal(props: any) {
   const [text, setText] = useState("");
   const toast = useToast({ position: "top" });
 
-  const handleShow = () => {
-    window.location.reload();
-  };
-
   const handleDelete = async () => {
     const res = await UserDelete(password);
     if (res?.data.data === null) {
@@ -45,7 +41,13 @@ function PropsCheckModal(props: any) {
 
   return (
     <div>
-      <Modal isOpen={show} onClose={handleShow} preserveScrollBarGap={true}>
+      <Modal
+        isOpen={show}
+        onClose={() => {
+          props.data();
+        }}
+        preserveScrollBarGap={true}
+      >
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>알림</ModalHeader>
@@ -56,7 +58,7 @@ function PropsCheckModal(props: any) {
               <Input
                 type="password"
                 variant="outline"
-                colorScheme="whatsapp"
+                focusBorderColor="green.500"
                 placeholder="현재 비밀번호를 입력해주세요."
                 value={password}
                 onChange={(e: any) => setPassword(e.target.value)}

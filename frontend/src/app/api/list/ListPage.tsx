@@ -17,3 +17,13 @@ export async function ProductCnt() {
     console.error(e);
   }
 }
+
+export async function ProductSearch(props: string) {
+  const id = localStorage.getItem("id");
+  try {
+    const res = await baseAxios.get(`api/product/search/${props}/${id}`);
+    return res.data.data;
+  } catch (e) {
+    console.error(e);
+  }
+}

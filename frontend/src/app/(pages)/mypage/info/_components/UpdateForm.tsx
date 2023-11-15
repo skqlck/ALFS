@@ -19,6 +19,7 @@ type Inputs = {
 };
 
 export default function UpdateForm(props: any) {
+  console.log(props);
   const idRex = /^[a-zA-Z0-9]{6,16}$/;
   const pwRex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,15}$/;
   const nameRex = /^[가-힣]{2,6}$/;
@@ -180,7 +181,7 @@ export default function UpdateForm(props: any) {
     setValue("email", props.props.email);
     setValue("phoneNumber", props.props.phoneNumber);
     setValue("birth", props.props.birth);
-  }, []);
+  }, [props]);
 
   return (
     <div className="min-w-[650px] flex justify-center">
@@ -452,7 +453,7 @@ export default function UpdateForm(props: any) {
         </FormControl>
       </form>
       {show && <PropsModal props="회원정보가 변경되었습니다." />}
-      {showDelete && <PropsCheckModal />}
+      {showDelete && <PropsCheckModal data={() => setShowDelete(false)} />}
     </div>
   );
 }

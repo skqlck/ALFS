@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import {
   Modal,
@@ -14,6 +14,7 @@ import {
 import { Link } from "@chakra-ui/next-js";
 import { AddProductToCart } from "@/app/api/cart/CartPage";
 import Image from "next/image";
+import CartAlert from "./CartAlert";
 type ItemProps = {
   id: string;
   cnt: number;
@@ -24,9 +25,14 @@ type ItemProps = {
 
 export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const AddCart = async (id: string, cnt: number, member_id: string) => {
+  const [show, setShow] = useState(false);
+  const AddCart = async (id: string, cnt: number) => {
     const response: any = await AddProductToCart(id, cnt);
-    console.log("장바구니 추가요청", response);
+    onClose();
+    setShow(true);
+    // setTimeout(() => {
+    //   setShow(false);
+    // }, 2000);
   };
   return (
     <div>
@@ -53,23 +59,16 @@ export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) 
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="whatsapp" variant="outline" mr={3}>
-              <Link
-                href={{ pathname: `/cart` }}
-                colorScheme="whatsapp"
-                variant="outline"
-                mr={3}
-                onClick={() => AddCart(id, cnt, member_id)}
-              >
-                Add
-              </Link>
-            </Button>
             <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
               Close
+            </Button>
+            <Button colorScheme="whatsapp" variant="outline" onClick={() => AddCart(String(id), cnt)}>
+              장바구니에 담기
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {show && <CartAlert props={[img, name]} />}
     </div>
   );
 }

@@ -29,11 +29,14 @@ type ProductData = {
   detail_img: string;
   ingre_img: string;
   main_img: string;
+  filterCode: Array<number>;
 };
 
 export default function Page() {
   const numId = Number(useParams().data);
   const [productData, setProductData] = useState<any>(null);
+  const [filter, setFilter] = useState<Array<number>>([0, 0, 0, 0]);
+  const [filtered, setFiltered] = useState<boolean>(false);
 
   useEffect(() => {
     // 페이지가 로드될 때마다 스크롤을 맨 위로 이동시킴
@@ -45,6 +48,12 @@ export default function Page() {
         let response: ProductData = await GetProductDetail(numId);
         console.log("리스폰스", response);
         setProductData(response);
+        const updatedFilter = [...filter];
+        response.filterCode.forEach((index) => {
+          updatedFilter[index] = 1;
+        });
+        setFilter(updatedFilter);
+        setFiltered(true);
       } catch (error) {
         console.log(error);
       }
@@ -82,7 +91,31 @@ export default function Page() {
           <Image src={productData.main_img} width={414} height={622} className="DetailImg" alt="detail Img" />
         </div>
         <div className="DetailDescriptionBox w-[633px] ml-[83px]">
-          <div className="Title w-[633px] h-[26px] text-[24px]">{productData.name}</div>
+          <div className="flex">
+            <div className="flex">
+              {filtered && filter[3] === 1 && (
+                <span className="mr-[5px]">
+                  <BsShieldFillCheck style={{ fontSize: "20px", color: "#008000" }} />
+                </span>
+              )}
+              {filtered && filter[0] === 1 && (
+                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ffff00" }}>
+                  <BsShieldFillExclamation />
+                </span>
+              )}
+              {filtered && filter[2] === 1 && (
+                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ff8c00" }}>
+                  <BsShieldFillMinus />
+                </span>
+              )}
+              {filtered && filter[1] === 1 && (
+                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ff0000" }}>
+                  <BsShieldFillX />
+                </span>
+              )}
+            </div>
+            <div className="Title w-[633px] h-[26px] text-[24px]">{productData.name}</div>
+          </div>
           <div className="Subtitle w-[633px] h-[26px] text-[16px] opacity-[0.3] mt-[7px]">{productData.title}</div>
           <div className="Price w-[633px] h-[26px] mt-[7px] text-[20px]">
             {discount !== 0 && (
@@ -178,15 +211,13 @@ export default function Page() {
             <span className="text-[40px]">{formattedPrice}원</span>
           </div>
           <div className="Submit w-[633px] min-h-[62px] flex justify-end">
-            <button className="SubmitBtn w-[472px] h-[62px] mt-[11px] flex items-center justify-center bg-[#33C130] text-white">
-              <AddToCart
-                id={productData.id}
-                cnt={cnt}
-                member_id={member_id}
-                img={productData.main_img}
-                name={productData.name}
-              />
-            </button>
+            <AddToCart
+              id={productData.id}
+              cnt={cnt}
+              member_id={member_id}
+              img={productData.main_img}
+              name={productData.name}
+            />
           </div>
         </div>
       </div>
