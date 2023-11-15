@@ -61,20 +61,20 @@ public class BatchJobConfiguration {
     }
 
     @Bean
-    public Job specialStartJob2(){
+    public Job eventStartJob(){
         // log.info("specialStartJob");
         return jobBuilderFactory.get(JOB_START_NAME)
-                .start(specialStartStep2())
+                .start(eventStartStep())
                 .incrementer(new RunIdIncrementer()) // listener 추가 가능
                 .listener(jobCompletionNotificationListener)
                 .build();
     }
 
     @Bean
-    public Job specialEndJob2(){
+    public Job eventEndJob(){
          log.info("specialEndJob2");
         return jobBuilderFactory.get(JOB_END_NAME)
-                .start(specialEndStep2())
+                .start(eventEndStep())
                 .incrementer(new RunIdIncrementer()) // listener 추가 가능
                 .listener(jobCompletionNotificationListener)
                 .build();
@@ -104,7 +104,7 @@ public class BatchJobConfiguration {
     }
 
     @Bean
-    public Step specialStartStep2(){
+    public Step eventStartStep(){
         // log.info("specialStartStep");
         return stepBuilderFactory.get(START_STEP_NAME)
                 .<Event, Event>chunk(CHUNK_SIZE)
@@ -115,8 +115,8 @@ public class BatchJobConfiguration {
     }
 
     @Bean
-    public Step specialEndStep2(){
-         log.info("specialEndStep2");
+    public Step eventEndStep(){
+//         log.info("specialEndStep2");
         return stepBuilderFactory.get(END_STEP_NAME)
                 .<Event, Event>chunk(CHUNK_SIZE)
                 .reader(customEndItemReader2(0L, 0L))
@@ -129,7 +129,7 @@ public class BatchJobConfiguration {
     @StepScope
     public JpaCursorItemReader<Special> customStartItemReader(@Value("#{jobParameters['supervisorId']}") Long supervisorId, @Value("#{jobParameters['productId']}") Long productId) {
         // log.info("customItemReader");
-//        log.debug("jobParameter 확인: "+supervisorId+" "+productId);
+        // log.debug("jobParameter 확인: "+supervisorId+" "+productId);
         if (supervisorId.equals(0L) || productId.equals(0L)) {
             throw new IllegalArgumentException("supervisorId와 productId는 필수 파라미터입니다.");
         }

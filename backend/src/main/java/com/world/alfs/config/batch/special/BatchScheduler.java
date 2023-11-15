@@ -35,7 +35,7 @@ public class BatchScheduler {
     private final EventRepository eventRepository;
 
 
-    @Scheduled(fixedRate = 1000) // 1초마다
+    @Scheduled(fixedRate = 600000) // 10분단위
     public void runSpecialStartJob() {
         LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         String parsedTime = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
@@ -53,7 +53,7 @@ public class BatchScheduler {
                         .addLong("eventId", event.getId())
                         .toJobParameters();
 
-                JobExecution jobExecution = jobLauncher.run(batchJobConfiguration.specialStartJob2(), jobParameters);
+                JobExecution jobExecution = jobLauncher.run(batchJobConfiguration.eventStartJob(), jobParameters);
 
                 // 여기서 JobExecution 결과를 처리하거나 로깅할 수 있습니다.
                 if (jobExecution.getStatus() == BatchStatus.COMPLETED) {
@@ -123,7 +123,6 @@ public class BatchScheduler {
 //        log.info("specials = {}", specials.toString());
 
 
-
         for (Event event : events) {
             try {
                 JobParameters jobParameters = new JobParametersBuilder()
@@ -132,7 +131,7 @@ public class BatchScheduler {
                         .addLong("eventId", event.getId())
                         .toJobParameters();
 
-                JobExecution jobExecution = jobLauncher.run(batchJobConfiguration.specialEndJob2(), jobParameters);
+                JobExecution jobExecution = jobLauncher.run(batchJobConfiguration.eventEndJob(), jobParameters);
 
                 // 여기서 JobExecution 결과를 처리하거나 로깅할 수 있습니다.
                 if (jobExecution.getStatus() == BatchStatus.COMPLETED) {

@@ -23,10 +23,4 @@ public class CustomJpaEndItemProcessor implements ItemProcessor<Special, Special
         return item;
     }
 
-//    @Override
-//    public Event process(Event item) {
-//        log.info("process");
-//        item.setStatus(2);
-//        return item;
-//    }
 }

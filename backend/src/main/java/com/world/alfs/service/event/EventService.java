@@ -2,6 +2,7 @@ package com.world.alfs.service.event;
 
 
 import com.world.alfs.controller.event.response.EventResponse;
+import com.world.alfs.controller.event.response.GetEventResponse;
 import com.world.alfs.domain.event.Event;
 import com.world.alfs.domain.event.repository.EventRepository;
 import com.world.alfs.service.event.dto.EventDto;
@@ -43,7 +44,11 @@ public class EventService {
 
     @GetMapping()
     public Optional<Event> getEvent(Long id) {
-        System.out.println(id + " 이벤트");
         return eventRepository.findById(id);
+    }
+
+    public GetEventResponse findEvent() {
+        Event event = eventRepository.findByStatus(1);
+        return event.toResponse();
     }
 }
