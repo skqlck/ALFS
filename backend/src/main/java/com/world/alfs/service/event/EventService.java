@@ -1,6 +1,7 @@
 package com.world.alfs.service.event;
 
 
+import com.world.alfs.controller.event.response.EventResponse;
 import com.world.alfs.domain.event.Event;
 import com.world.alfs.domain.event.repository.EventRepository;
 import com.world.alfs.service.event.dto.EventDto;
@@ -10,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.GetMapping;
 
+import java.text.DecimalFormat;
 import java.util.Optional;
 
 @RequiredArgsConstructor
@@ -24,15 +26,24 @@ public class EventService {
         return "Cached Values for ID: " + id;
     }
 
-    public Long choose(EventDto dto) {
+    public EventResponse choose(EventDto dto) {
         Optional<Event> event = eventRepository.findById(dto.getId());
         event.get().choose(dto.getChoose_case());
-        return event.get().getId();
+        DecimalFormat df = new DecimalFormat("#.#");
+        float case1_rate = event.get().getCase1_cnt();
+        float case2_rate = event.get().getCase2_cnt();
+        case1_rate = (case1_rate / (case1_rate + case2_rate)) * 100;
+        case2_rate = 100 - case1_rate;
+        return EventResponse.builder()
+                .case1_rate((int)case1_rate)
+                .case2_rate((int)case2_rate)
+                .build();
+
     }
 
     @GetMapping()
     public Optional<Event> getEvent(Long id) {
-        System.out.println(id+" 이벤트");
+        System.out.println(id + " 이벤트");
         return eventRepository.findById(id);
     }
 }

@@ -2,6 +2,7 @@ package com.world.alfs.controller.event;
 
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.event.request.EventChooseRequest;
+import com.world.alfs.controller.event.response.EventResponse;
 import com.world.alfs.service.event.EventService;
 import com.world.alfs.service.event.dto.EventDto;
 import lombok.RequiredArgsConstructor;
@@ -22,7 +23,7 @@ public class EventController {
     }
 
     @PostMapping()
-    ApiResponse<Long> choose(@RequestBody EventChooseRequest request){
+    ApiResponse<EventResponse> choose(@RequestBody EventChooseRequest request){
         EventDto dto = request.toDto();
         return ApiResponse.ok(eventService.choose(dto));
     }

@@ -8,9 +8,9 @@ import java.time.LocalDateTime;
 
 @Entity
 @Data
-@Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 public class Event {
+
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;

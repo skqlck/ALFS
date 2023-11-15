@@ -61,6 +61,27 @@ public class BatchJobConfiguration {
     }
 
     @Bean
+    public Job specialStartJob2(){
+        // log.info("specialStartJob");
+        return jobBuilderFactory.get(JOB_START_NAME)
+                .start(specialStartStep2())
+                .incrementer(new RunIdIncrementer()) // listener 추가 가능
+                .listener(jobCompletionNotificationListener)
+                .build();
+    }
+
+    @Bean
+    public Job specialEndJob2(){
+         log.info("specialEndJob2");
+        return jobBuilderFactory.get(JOB_END_NAME)
+                .start(specialEndStep2())
+                .incrementer(new RunIdIncrementer()) // listener 추가 가능
+                .listener(jobCompletionNotificationListener)
+                .build();
+    }
+
+
+    @Bean
     public Step specialStartStep(){
         // log.info("specialStartStep");
         return stepBuilderFactory.get(START_STEP_NAME)
@@ -83,6 +104,28 @@ public class BatchJobConfiguration {
     }
 
     @Bean
+    public Step specialStartStep2(){
+        // log.info("specialStartStep");
+        return stepBuilderFactory.get(START_STEP_NAME)
+                .<Event, Event>chunk(CHUNK_SIZE)
+                .reader(customStartItemReader2(0L,0L))
+                .processor(customStartItemProcessor2())
+                .writer(customStartItemWriter2())
+                .build();
+    }
+
+    @Bean
+    public Step specialEndStep2(){
+         log.info("specialEndStep2");
+        return stepBuilderFactory.get(END_STEP_NAME)
+                .<Event, Event>chunk(CHUNK_SIZE)
+                .reader(customEndItemReader2(0L, 0L))
+                .processor(customEndItemProcessor2())
+                .writer(customEndItemWriter2())
+                .build();
+    }
+//
+    @Bean
     @StepScope
     public JpaCursorItemReader<Special> customStartItemReader(@Value("#{jobParameters['supervisorId']}") Long supervisorId, @Value("#{jobParameters['productId']}") Long productId) {
         // log.info("customItemReader");
@@ -100,6 +143,31 @@ public class BatchJobConfiguration {
 //        log.debug("쿼리 확인: " + queryString);
 
         return new JpaCursorItemReaderBuilder<Special>()
+                .name("jpaCursorItemReader")
+                .entityManagerFactory(entityManagerFactory)
+                .queryString(queryString)
+                .parameterValues(parameters)
+                .build();
+    }
+
+    @Bean
+    @StepScope
+    public JpaCursorItemReader<Event> customStartItemReader2(@Value("#{jobParameters['supervisorId']}") Long supervisorId, @Value("#{jobParameters['eventId']}") Long eventId) {
+        // log.info("customItemReader");
+//        log.debug("jobParameter 확인: "+supervisorId+" "+productId);
+        if (supervisorId.equals(0L) || eventId.equals(0L)) {
+            throw new IllegalArgumentException("supervisorId와 productId는 필수 파라미터입니다.");
+        }
+
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("supervisorId", supervisorId);
+        parameters.put("eventId", eventId);
+        parameters.put("status",0);
+
+        String queryString = "select s from Event s where s.supervisor.id = :supervisorId and s.status = :status and s.id = :eventId";
+//        log.debug("쿼리 확인: " + queryString);
+
+        return new JpaCursorItemReaderBuilder<Event>()
                 .name("jpaCursorItemReader")
                 .entityManagerFactory(entityManagerFactory)
                 .queryString(queryString)
@@ -134,6 +202,31 @@ public class BatchJobConfiguration {
 
     @Bean
     @StepScope
+    public JpaCursorItemReader<Event> customEndItemReader2(@Value("#{jobParameters['supervisorId']}") Long supervisorId, @Value("#{jobParameters['eventId']}") Long eventId) {
+         log.info("customEndItemReader2");
+//        log.debug("jobParameter 확인: "+supervisorId+" "+productId);
+        if (supervisorId.equals(0L) || eventId.equals(0L)) {
+            throw new IllegalArgumentException("supervisorId와 productId는 필수 파라미터입니다.");
+        }
+
+        HashMap<String, Object> parameters = new HashMap<>();
+        parameters.put("supervisorId", supervisorId);
+        parameters.put("eventId", eventId);
+        parameters.put("status",1);
+
+        String queryString = "select s from Event s where s.supervisor.id = :supervisorId and s.status = :status and s.id = :eventId";
+        log.debug("쿼리 확인: " + queryString);
+
+        return new JpaCursorItemReaderBuilder<Event>()
+                .name("jpaCursorItemReader")
+                .entityManagerFactory(entityManagerFactory)
+                .queryString(queryString)
+                .parameterValues(parameters)
+                .build();
+    }
+
+    @Bean
+    @StepScope
     public ItemProcessor<Special, Special> customStartItemProcessor() {
         // log.info("customItemProcessor");
         return new CustomJpaStartItemProcessor(entityManagerFactory);
@@ -146,12 +239,19 @@ public class BatchJobConfiguration {
         return new CustomJpaEndItemProcessor(entityManagerFactory);
     }
 
-//    @Bean
-//    @StepScope
-//    public ItemProcessor<Event, Event> customStartItemProcessor2() {
-//        // log.info("customItemProcessor");
-//        return new CustomJpaStartItemProcessor(entityManagerFactory);
-//    }
+    @Bean
+    @StepScope
+    public ItemProcessor<Event, Event> customStartItemProcessor2() {
+        // log.info("customItemProcessor");
+        return new CustomJpaStartItemProcessor2(entityManagerFactory);
+    }
+
+    @Bean
+    @StepScope
+    public ItemProcessor<Event, Event> customEndItemProcessor2() {
+        // log.info("customItemProcessor");
+        return new CustomJpaEndItemProcessor2(entityManagerFactory);
+    }
 
 
     @Bean
@@ -167,6 +267,16 @@ public class BatchJobConfiguration {
     @Bean
     @StepScope
     @Transactional
+    public JpaItemWriter<Event> customStartItemWriter2() {
+        // log.info("customItemWriter");
+        JpaItemWriter<Event> itemWriter = new JpaItemWriter<>();
+        itemWriter.setEntityManagerFactory(entityManagerFactory);
+        return itemWriter;
+    }
+
+    @Bean
+    @StepScope
+    @Transactional
     public JpaItemWriter<Special> customEndItemWriter() {
         // log.info("customItemWriter");
         JpaItemWriter<Special> itemWriter = new JpaItemWriter<>();
@@ -174,4 +284,16 @@ public class BatchJobConfiguration {
         return itemWriter;
     }
 
+    @Bean
+    @StepScope
+    @Transactional
+    public JpaItemWriter<Event> customEndItemWriter2() {
+        // log.info("customItemWriter");
+        JpaItemWriter<Event> itemWriter = new JpaItemWriter<>();
+        itemWriter.setEntityManagerFactory(entityManagerFactory);
+        return itemWriter;
+    }
+
 }
+
+
