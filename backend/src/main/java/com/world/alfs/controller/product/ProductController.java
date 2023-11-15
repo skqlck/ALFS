@@ -90,9 +90,9 @@ public class ProductController {
         return ApiResponse.ok(response);
     }
 
-    @GetMapping("/all/{memberId}/{page}")
-    public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Long memberId, @PathVariable Integer page) {
-        List<Product> product_list = productService.getAllProductId(productService.countPage(), page);
+    @GetMapping("/all/{memberId}/{page}/{status}")
+    public ApiResponse<List<GetProductListResponse>> getAllProduct(@PathVariable Long memberId, @PathVariable Integer page, @PathVariable Integer status) {
+        List<Product> product_list = productService.getAllProductId(productService.countPage(), page, status);
         List<GetProductListResponse> response = productService.getAllProduct(product_list);
         allergy_filter(product_list, response, memberId);
         return ApiResponse.ok(response);
@@ -174,7 +174,6 @@ public class ProductController {
         }
 
     }
-
 
 
     public void allergy_filter2(List<Product> product_list, List<ProductResponse> response, Long memberId) {

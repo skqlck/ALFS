@@ -3,12 +3,10 @@ package com.world.alfs.service.basket;
 import com.world.alfs.controller.basket.response.GetBasketResponse;
 import com.world.alfs.controller.basket.response.GetPurchaseResponse;
 import com.world.alfs.controller.product.response.GetProductListResponse;
-import com.world.alfs.controller.product.response.ProductResponse;
 import com.world.alfs.domain.allergy.Allergy;
 import com.world.alfs.domain.basket.Basket;
 import com.world.alfs.domain.basket.repository.BasketRepository;
 import com.world.alfs.domain.ingredient.Ingredient;
-import com.world.alfs.domain.ingredient.repository.IngredientRepository;
 import com.world.alfs.domain.manufacturing_allergy.repository.ManufacturingAllergyRepository;
 import com.world.alfs.domain.member.Member;
 import com.world.alfs.domain.member.repository.MemberRepository;
@@ -18,8 +16,6 @@ import com.world.alfs.domain.product.repository.ProductRepository;
 import com.world.alfs.domain.product_img.ProductImg;
 import com.world.alfs.domain.product_img.repostiory.ProductImgRepository;
 import com.world.alfs.domain.product_ingredient.repostiory.ProductIngredientRepository;
-import com.world.alfs.domain.special.Special;
-import com.world.alfs.domain.special.repository.SpecialRepository;
 import com.world.alfs.service.basket.dto.AddBasketDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -43,7 +39,7 @@ public class BasketService {
     private final ProductIngredientRepository productIngredientRepository;
     private final MemberAllergyRepository memberAllergyRepository;
     private final ManufacturingAllergyRepository manufacturingAllergyRepository;
-    private final SpecialRepository specialRepository;
+
     // 장바구니 조회
     public List<GetBasketResponse> getBasket(Long member_id) throws Exception{
         Member member = memberRepository.findById(member_id)
@@ -58,16 +54,6 @@ public class BasketService {
             ProductImg img = productImgRepository.findByProductId(product.getId());
 
             GetProductListResponse getProductListResponse = product.toListResponse(img,null);
-
-            // 특가 상품의 경우 할인된 가격 적용
-            Optional<Special> special = specialRepository.findById(product.getId());
-            if (special.isPresent()) {
-                int status = specialRepository.findByStatus(product.getId());
-                if (status == 1) {
-                    getProductListResponse.setSpecialPrice(special.get().getSalePrice());
-                    log.debug("특가 상품 salePrice: {}", special.get().getSalePrice());
-                }
-            }
 
             // 알러지 및 기피 필터링
             Set<Integer> filterCode = new HashSet<>();
@@ -140,15 +126,6 @@ public class BasketService {
 
         GetProductListResponse getProductListResponse = product.toListResponse(img,null);
 
-        // 특가 상품의 경우 할인된 가격 적용
-        Optional<Special> special = specialRepository.findById(product.getId());
-        if (special.isPresent()) {
-            int status = specialRepository.findByStatus(product.getId());
-            if (status == 1) {
-                getProductListResponse.setSpecialPrice(special.get().getSalePrice());
-            }
-        }
-
         return GetBasketResponse.builder()
                 .basket_id(existedBasket.get().getId())
                 .count(existedBasket.get().getCount())
@@ -185,18 +162,6 @@ public class BasketService {
         if (basket.getStatus() != 0) throw new Exception("삭제 혹은 결제된 장바구니입니다.");
         if (basket.getMember().getId() != member_id) throw new Exception("권한이 없습니다.");
 
-        // 특가 상품의 경우 할인된 가격 적용
-        Optional<Special> special = specialRepository.findById(basket.getProduct().getId());
-        if (special.isPresent()) {
-            int status = specialRepository.findByStatus(basket.getProduct().getId());
-            if (status == 1) {
-                basket.setPurchase(special.get().getSalePrice());
-                log.debug("특가 상품 salePrice: {}", special.get().getSalePrice());
-            }
-        } else {
-            basket.setPurchase(basket.getProduct().getSale());
-        }
-
         basket.setStatus(1);
         basket.setPurchaseDate(LocalDate.now().toString());
         Basket purchasedBasket = basketRepository.save(basket);
@@ -205,15 +170,6 @@ public class BasketService {
 
         GetProductListResponse getProductListResponse = product.toListResponse(img,null);
 
-        // 특가 상품의 경우 할인된 가격 적용
-
-        if (special.isPresent()) {
-            int status = specialRepository.findByStatus(product.getId());
-            if (status == 1) {
-                getProductListResponse.setSpecialPrice(special.get().getSalePrice());
-                log.debug("특가 상품 salePrice: {}", special.get().getSalePrice());
-            }
-        }
         return GetPurchaseResponse.builder()
                 .basket_id(purchasedBasket.getId())
                 .count(purchasedBasket.getCount())
@@ -236,16 +192,6 @@ public class BasketService {
 
             GetProductListResponse getProductListResponse = product.toListResponse(img,null);
 
-            // 특가 상품의 경우 할인된 가격 적용
-            Optional<Special> special = specialRepository.findById(product.getId());
-            if (special.isPresent()) {
-                int status = specialRepository.findByStatus(product.getId());
-                if (status == 1) {
-                    getProductListResponse.setSpecialPrice(special.get().getSalePrice());
-                    log.debug("특가 상품 salePrice: {}", special.get().getSalePrice());
-                }
-            }
-
             // 알러지 및 기피 필터링
             Set<Integer> filterCode = new HashSet<>();
 
@@ -267,7 +213,7 @@ public class BasketService {
             // 제조시설 알러지 필터링
             if (manufacturingAllergyRepository.findCountByProductAndAllergy(product.getId(), memberAllergyList.stream().map(memberAllergy -> memberAllergy.getId()).collect(Collectors.toList())) > 0){
                 filterCode.add(2);
-            };
+            }
 
             // 필터링된 게 없으면 안전
             if (filterCode.isEmpty()){

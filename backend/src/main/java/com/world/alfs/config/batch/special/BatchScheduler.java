@@ -35,14 +35,16 @@ public class BatchScheduler {
     private final EventRepository eventRepository;
 
 
-    @Scheduled(fixedRate = 60000)
+    @Scheduled(cron = "0 * * * * *") // 매 분의 0초에 실행
     public void runSpecialStartJob() {
         LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
+        currentDateTime = currentDateTime.withSecond(0).withNano(0);
         String parsedTime = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
 //        log.debug("현시간:"+parsedTime);
         LocalDateTime parsedDateTime = LocalDateTime.parse(parsedTime, DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
         List<Event> events = eventRepository.findByStart(parsedDateTime);
         List<Special> specials = specialRepository.findByStart(parsedDateTime);
+//        log.debug("specials={}",specials.toArray());
 
 
         for (Event event : events) {
@@ -111,7 +113,7 @@ public class BatchScheduler {
         }
     }
 
-    @Scheduled(fixedRate = 1000) // 1초마다
+    @Scheduled(cron = "0 * * * * *") // 매 분의 0초에 실행
     public void runSpecialEndJob() {
         LocalDateTime currentDateTime = LocalDateTime.now(ZoneId.of("Asia/Seoul"));
         String parsedTime = currentDateTime.format(DateTimeFormatter.ofPattern("yyyy-MM-dd HH:mm:ss"));
