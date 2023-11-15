@@ -47,6 +47,7 @@ export default function AddToCartFromList({ id, image, name, price, sale }: Card
     const response: any = await AddProductToCart(id, cnt);
     onClose();
     setShow(true);
+    setCnt(1);
     setTimeout(() => {
       setShow(false);
     }, 2000);

@@ -215,7 +215,7 @@ export default function Page({}: Props) {
                         <Image src={SnowImage} width={50} height={50} className="SnowImg" alt="snow Img" />
                         <span className="ml-[20px]">냉동상품</span>
                       </div>
-                      <div onClick={toggleFrozenPV}>
+                      <div onClick={toggleFrozenPV} className="mr-[23px]">
                         {isFrozenVisible ? (
                           <IoIosArrowUp className="w-[30px] h-[30px]" />
                         ) : (
@@ -259,7 +259,7 @@ export default function Page({}: Props) {
                         />
                         <span className="ml-[20px]">냉장상품</span>
                       </div>
-                      <div onClick={toggleRefrigeratedPV}>
+                      <div onClick={toggleRefrigeratedPV} className="mr-[23px]">
                         {isRefrigeratedVisible ? (
                           <IoIosArrowUp className="w-[30px] h-[30px]" />
                         ) : (
@@ -297,7 +297,7 @@ export default function Page({}: Props) {
                         <Image src={SunImage} width={50} height={50} className="SunImg" alt="sun Img" />
                         <span className="ml-[20px]">상온상품</span>
                       </div>
-                      <div onClick={toggleRoomTempPV}>
+                      <div onClick={toggleRoomTempPV} className="mr-[23px]">
                         {isRoomTemperatureVisible ? (
                           <IoIosArrowUp className="w-[30px] h-[30px]" />
                         ) : (

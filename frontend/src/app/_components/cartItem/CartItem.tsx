@@ -61,12 +61,13 @@ export default function CartItem({
   };
   const [cnt, setCnt] = useState<number>(count);
   const formattedPrice = new Intl.NumberFormat().format(product.sale * cnt);
+  const formattedRawPrice = new Intl.NumberFormat().format(product.price * cnt);
   return (
     <div>
       {isProductVisible && (
         <div className="mt-[10px]">
           <div className="ProductMain h-[112px] flex items-center ml-[10px] justify-between">
-            <div className="flex items-center">
+            <div className="flex items-center max-w-[500px]">
               {isCheck ? (
                 <BsCheckCircleFill className="w-[30px] h-[30px]" style={{ color: "#21A71E" }} onClick={toggleCheck} />
               ) : (
@@ -77,8 +78,8 @@ export default function CartItem({
               </Link>
               <span className="ml-[25px]">{product.name}</span>
             </div>
-            <div className="flex items-center">
-              <div className="ButtonBox w-[114px] h-[38px] flex items-center ml-[36px]">
+            <div className="flex items-center min-w-[300px] justify-evenly">
+              <div className="ButtonBox w-[81px] h-[38px] flex items-center ml-[16px]">
                 <button
                   onClick={decreaseCount}
                   className="w-[27px] h-[27px] items-center justify-center border-t border-l border-b border-opacity-50"
@@ -95,7 +96,12 @@ export default function CartItem({
                   +
                 </button>
               </div>
-              <div className="Price">{formattedPrice}원</div>
+              <div className="Price">
+                {product.price !== product.sale ? (
+                  <div className="line-through opacity-30 text-[10px] mr-[5px]">{formattedRawPrice}원</div>
+                ) : null}
+                <div>{formattedPrice}원</div>
+              </div>
               <span className="ml-[10px]" onClick={() => onDeleteItem(basket_id)}>
                 <AiOutlineClose className="ml-auto w-[30px] h-[30px]" />
               </span>

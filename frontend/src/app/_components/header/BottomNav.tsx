@@ -87,14 +87,13 @@ export default function BottomNav({}: Props) {
           <Link href="/list">
             <p className=" hover:text-green-500">전체상품</p>
           </Link>
-          <p className=" hover:text-green-500">신상품</p>
-          <p className=" hover:text-green-500">베스트</p>
           <Link href="/alt">
             <p className=" hover:text-green-500">대체상품</p>
           </Link>
           <Link href="/bigsale">
             <p className=" hover:text-green-500">특가할인</p>
           </Link>
+          <p className=" hover:text-green-500">이벤트</p>
           <div className="w-[160px]">{isSticky && <MiddleIcon />}</div>
         </div>
       </div>

@@ -42,7 +42,7 @@ export default function Page() {
     <div className="flex flex-col items-center">
       <div className="Container flex flex-col justify-center items-center w-[1000px] h-auto">
         <Carousel></Carousel>
-        <div className="flex">
+        <div className="flex mt-[50px]">
           <div className="mt-[68px]">
             <div className="h-auto border-[2px] sticky top-[100px] ">
               {category.map((item) => (
@@ -65,7 +65,6 @@ export default function Page() {
                 <b>{categoryId && category[Number(categoryId)].title}</b>
               </h1>
             </div>
-
             {categorizedList && (
               <div className=" grid grid-cols-3">
                 {categorizedList.map((item: any) => (
