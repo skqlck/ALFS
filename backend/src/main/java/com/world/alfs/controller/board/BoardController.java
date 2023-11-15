@@ -2,6 +2,7 @@ package com.world.alfs.controller.board;
 
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.board.request.AddBoardRequest;
+import com.world.alfs.controller.board.request.AddCommentRequest;
 import com.world.alfs.controller.board.request.UpdateBoardRequest;
 import com.world.alfs.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
@@ -29,6 +30,11 @@ public class BoardController {
     @PostMapping("/add")
     public ApiResponse addBoard(@RequestBody AddBoardRequest addBoardRequest){
         return boardService.addBoard(addBoardRequest.getMember_id(), addBoardRequest.getBoard());
+    }
+
+    @PostMapping("/supervisor")
+    public ApiResponse<Long> addComment(@RequestBody AddCommentRequest request){
+        return boardService.addComment(request.toDto());
     }
 
     @PutMapping("/update")

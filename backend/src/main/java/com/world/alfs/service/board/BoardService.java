@@ -4,6 +4,7 @@ package com.world.alfs.service.board;
 import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.common.exception.ErrorCode;
 import com.world.alfs.controller.ApiResponse;
+import com.world.alfs.controller.board.request.AddCommentRequest;
 import com.world.alfs.domain.board.Board;
 import com.world.alfs.domain.board.repository.BoardRepository;
 import com.world.alfs.service.board.dto.AddBoardDto;
@@ -16,6 +17,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -61,5 +63,11 @@ public class BoardService {
         board.setContent(updateBoardDto.getContent());
         Board updatedBoard = boardRepository.save(board);
         return ApiResponse.ok(updatedBoard.toGetBoardDetailDto());
+    }
+
+    public ApiResponse<Long> addComment(AddCommentDto dto) {
+        Optional<Board> board = boardRepository.findById(dto.getId());
+        board.get().setComment(dto.getComment());
+        return ApiResponse.ok(1L);
     }
 }
