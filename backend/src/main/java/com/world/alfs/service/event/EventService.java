@@ -49,7 +49,8 @@ public class EventService {
     }
 
     public GetEventResponse findEvent() {
-        Event event = eventRepository.findByStatus(1);
-        return event.toResponse();
+        Optional<Event> event = Optional.ofNullable(eventRepository.findByStatus(1));
+        if(event.isEmpty()) return null;
+        return event.get().toResponse();
     }
 }
