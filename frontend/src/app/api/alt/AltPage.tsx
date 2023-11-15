@@ -13,17 +13,19 @@ export async function AlterList() {
 
 export async function AlterDetail(catName: string) {
   try {
-    const res = await baseAxios.get(`api/alternative/category/${catName}`);
+    const member_id = localStorage.getItem("id");
+    const res = await baseAxios.get(`api/alternative/category/${catName}/${member_id}`);
     return res.data.data;
   } catch (e) {
     console.error(e);
   }
 }
 
-export async function AlterAll(alternativeCategoryList: Array<string>) {
+export async function AlterAll(props: any) {
   try {
-    const res = await baseAxios.post(`api/alternative/all`, {
-      alternativeCategoryList: alternativeCategoryList,
+    const member_id = localStorage.getItem("id");
+    const res = await baseAxios.post(`api/alternative/all/${member_id}`, {
+      alternativeCategoryList: props,
     });
     return res.data.data;
   } catch (e) {

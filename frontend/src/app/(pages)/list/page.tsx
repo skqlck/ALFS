@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { GetList, ProductCnt } from "../../api/list/ListPage";
 import Loading from "@/app/_components/loading/loading";
 import dynamic from "next/dynamic";
+import Carousel from "@/app/_components/banner/Banner";
 
 const Card = dynamic(() => import("../../_components/card/Card"), {
   loading: () => <Loading />,
@@ -11,16 +12,13 @@ const Card = dynamic(() => import("../../_components/card/Card"), {
 });
 
 function GetListData() {
-  const [memberId, setMemberId] = useState<string>("");
   const [response, setResponse] = useState<any>([]);
   const [totalCnt, setTotalCnt] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(Math.ceil(totalCnt / 15));
   useEffect(() => {
     const ListData = async () => {
-      const member_id: string = localStorage.getItem("id")!;
-      setMemberId(member_id);
-      const res: any = await GetList(member_id, page);
+      const res: any = await GetList(page);
       const resCnt: any = await ProductCnt();
       setTotalCnt(resCnt);
       setResponse(res);
@@ -34,7 +32,7 @@ function GetListData() {
 
   const handlePageChange = async (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      const res: any = await GetList(memberId, newPage);
+      const res: any = await GetList(newPage);
       setResponse(res);
       setPage(newPage);
       window.scrollTo(0, 0);
@@ -42,12 +40,14 @@ function GetListData() {
   };
   return (
     <>
+      <Carousel></Carousel>
       {response && (
         <div className="Container flex flex-col justify-center w-[1000px] h-auto mt-[124px]">
           총 {totalCnt}건
-          <>
-            <span className="flex justify-end">가격높은순</span>
-          </>
+          <div className="flex justify-end">
+            <span className="mr-[5px]">최신순</span> |<span className="ml-[5px] mr-[5px]">가격높은순</span> |
+            <span className="ml-[5px] mr-[5px]">가격낮은순</span>
+          </div>
           <hr />
           <div className="grid grid-cols-3 mx-auto mt-[10px]">
             {response.map((item: any) => (

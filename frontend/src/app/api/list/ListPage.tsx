@@ -1,7 +1,8 @@
 import { baseAxios } from "../Api";
 
-export async function GetList(member_id: string, page: number) {
+export async function GetList(page: number) {
   try {
+    const member_id = localStorage.getItem("id");
     const res = await baseAxios.get(`api/product/all/${Number(member_id)}/${page}`);
     return res.data.data;
   } catch (e) {
