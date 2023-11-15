@@ -17,17 +17,17 @@ export default function Carousel() {
   };
   return (
     <div className="flex justify-center">
-      <div className="w-[900px]">
+      <div className="w-[100vw]">
         <Slider {...settings}>
-            {BannerInfos.map((info)=>{
-                return (
-                    <div className="w-[800px] h-[300px] relative" key={info.image_url}>
-                        <Link href={info.moveTo} replace={true} target={info.target}>
-                            <Image src={info.image_url} alt="없어요" fill={true}/>
-                        </Link> 
-                    </div>
-                )
-            })}
+          {BannerInfos.map((info) => {
+            return (
+              <div className="w-[800px] h-[300px] relative" key={info.image_url}>
+                <Link href={info.moveTo} replace={true} target={info.target}>
+                  <Image src={info.image_url} alt="없어요" fill={true} />
+                </Link>
+              </div>
+            );
+          })}
         </Slider>
       </div>
     </div>

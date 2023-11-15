@@ -56,6 +56,7 @@ export default function TossButton(props: any) {
           .filter((item: any) => item.isCheck === true)
           .map((item: any) => item.basket_id);
         const res2 = await PurchaseItem(basket_ids);
+        console.log(res2);
         props.data([res1, res2, price]);
       }
     } catch (error) {

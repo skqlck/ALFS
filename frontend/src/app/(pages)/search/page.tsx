@@ -1,5 +1,6 @@
 "use client";
 
+import Carousel from "@/app/_components/banner/Banner";
 import Card from "@/app/_components/card/Card";
 import { ProductSearch } from "@/app/api/list/ListPage";
 import { useSearchParams } from "next/navigation";
@@ -25,6 +26,7 @@ export default function Page({}: Props) {
 
   return (
     <div className="min-w-[1000px] flex flex-col items-center">
+      <Carousel />
       <div className="flex flex-col justify-center items-center w-[1000px] h-auto">
         {data?.length > 0 ? (
           <>

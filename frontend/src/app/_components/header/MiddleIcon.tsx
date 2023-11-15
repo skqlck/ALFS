@@ -1,9 +1,9 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaRegHeart } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineEnvironment } from "react-icons/ai";
+import { MdOutlineFoodBank } from "react-icons/md";
 import { Button } from "@chakra-ui/react";
 import Link from "next/link";
 
@@ -84,7 +84,9 @@ export default function MiddleIcon() {
           )}
         </PopoverContent>
       </Popover>
-      <FaRegHeart className="min-w-[40px] h-[40px]" />
+      <Link href={{ pathname: `/mypage/allergy` }}>
+        <MdOutlineFoodBank className="min-w-[40px] h-[40px]" />
+      </Link>
       <Link href={{ pathname: `/cart` }} id="cart">
         <AiOutlineShoppingCart className="min-w-[40px] h-[40px]" />
       </Link>

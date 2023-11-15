@@ -50,7 +50,10 @@ export default function RecentData({}: Props) {
   return (
     <>
       {desktop && (
-        <div className="w-[90px] h-[300px] border-[2px] fixed top-[35%] right-[20px] shadow-md bg-white">
+        <div
+          className="w-[90px] h-[300px] border-[2px] fixed top-[35%] right-[20px] shadow-md bg-white"
+          style={{ zIndex: 10 }}
+        >
           <p className="mt-[10px] flex justify-center text-[12px]">최근 조회 상품</p>
 
           <div className="flex justify-center my-[10px]">
@@ -59,7 +62,7 @@ export default function RecentData({}: Props) {
             </button>
           </div>
 
-          <div ref={scrollContainerRef} className=" h-[200px] overflow-hidden scrollbar-hide z-10">
+          <div ref={scrollContainerRef} className=" h-[200px] overflow-hidden scrollbar-hide">
             {data?.map((item: any, idx) => (
               <div key={idx} className="flex justify-center my-[5px]">
                 <Link href={`/detail/${item.id}`}>

@@ -127,6 +127,7 @@ export default function Page({}: Props) {
   //화면 우측의 총 상품금액, 할인금액, 배송료 관리
   const [totalPrice, setTotalPrice] = useState<number>(0);
   const [totalDiscount, setTotalDiscount] = useState<number>(0);
+  const [priceWithoutDelFee, setPriceWithoutDelFee] = useState<number>(0);
   const [deliveryFee, setDeliveryFee] = useState<number>(3000);
   const [result, setResult] = useState<number>(0);
 
@@ -155,6 +156,7 @@ export default function Page({}: Props) {
     // 업데이트된 값들을 상태로 저장
     setTotalPrice(price);
     setTotalDiscount(discount);
+    setPriceWithoutDelFee(price - discount);
     setDeliveryFee(fee);
     setResult(price - discount + fee);
   }, [memberData]);
@@ -171,6 +173,7 @@ export default function Page({}: Props) {
 
   const formattedTotalPrice = new Intl.NumberFormat().format(totalPrice);
   const formattedDiscount = new Intl.NumberFormat().format(totalDiscount);
+  const formattedPriceWithoutDelFee = new Intl.NumberFormat().format(priceWithoutDelFee);
   const formattedFee = new Intl.NumberFormat().format(deliveryFee);
   const ResultPrice = new Intl.NumberFormat().format(totalPrice - totalDiscount + deliveryFee);
 
@@ -355,7 +358,12 @@ export default function Page({}: Props) {
                     </div>
                     <div className="flex justify-between mb-[10px]">
                       <span>상품할인금액</span>
-                      <span>-{formattedDiscount}원</span>
+                      <span className="text-[red]">-{formattedDiscount}원</span>
+                    </div>
+                    <hr />
+                    <div className="flex justify-between mb-[20px] mt-[10px]">
+                      <span>상품총액</span>
+                      <span>{formattedPriceWithoutDelFee}원</span>
                     </div>
                     <div className="flex justify-between">
                       <span>배송비</span>

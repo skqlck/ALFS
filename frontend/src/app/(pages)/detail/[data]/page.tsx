@@ -46,7 +46,6 @@ export default function Page() {
     const fetchProductData = async () => {
       try {
         let response: ProductData = await GetProductDetail(numId);
-        console.log("리스폰스", response);
         setProductData(response);
         const updatedFilter = [...filter];
         response.filterCode.forEach((index) => {
