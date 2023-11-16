@@ -26,7 +26,6 @@ export default function Page() {
   const [detailData, setDetailData] = useState<any>([]);
   const params = useSearchParams();
   const detail = params.get("num");
-  console.log(detail);
 
   const GetData = async () => {
     const res = await BoardAll();
@@ -36,7 +35,6 @@ export default function Page() {
   const GetDetail = async (e: any) => {
     const res = await BoardDetail(e);
     setDetailData(res?.data.data);
-    console.log(res);
   };
 
   useEffect(() => {

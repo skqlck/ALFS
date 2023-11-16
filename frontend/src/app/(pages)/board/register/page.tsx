@@ -18,7 +18,6 @@ export default function Page() {
   const sendData = async (e: any) => {
     const res = await BoardAdd(e);
     setShow(true);
-    console.log(res);
   };
 
   return (

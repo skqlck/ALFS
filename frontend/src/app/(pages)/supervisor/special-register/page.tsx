@@ -47,7 +47,6 @@ export default function Page() {
   const registerProduct = async (e: any) => {
     setValue("start", e.start + ":00.000");
     setValue("end", e.end + ":00.000");
-    console.log(watch("start"));
     const data = {
       status: 0,
       start: watch("start"),

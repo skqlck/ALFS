@@ -38,7 +38,6 @@ export default function Page() {
 
   const GetData = async () => {
     const res = await BoardSupervisorAll();
-    console.log(res);
     setData(res?.data.data.reverse());
   };
 

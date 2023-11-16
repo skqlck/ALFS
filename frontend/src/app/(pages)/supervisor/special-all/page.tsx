@@ -36,7 +36,6 @@ export default function Page() {
 
   const deleteProduct = async (e: number) => {
     const res = await SpecialDelete(e);
-    console.log(res);
     getData();
   };
 

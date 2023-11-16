@@ -241,6 +241,7 @@ export default function Page({}: Props) {
                               basket_id={cartItem.basket_id}
                               onCountChange={(newCount: number) => setCountInParent(index, newCount)}
                               onDeleteItem={() => deleteItem(cartItem.basket_id)}
+                              isBigsale={cartItem.isBigsale}
                             />
                           );
                         }
@@ -285,6 +286,7 @@ export default function Page({}: Props) {
                               basket_id={cartItem.basket_id}
                               onCountChange={(newCount: number) => setCountInParent(index, newCount)}
                               onDeleteItem={() => deleteItem(cartItem.basket_id)}
+                              isBigsale={cartItem.isBigsale}
                             />
                           );
                         }
@@ -323,6 +325,7 @@ export default function Page({}: Props) {
                               basket_id={cartItem.basket_id}
                               onCountChange={(newCount: number) => setCountInParent(index, newCount)}
                               onDeleteItem={() => deleteItem(cartItem.basket_id)}
+                              isBigsale={cartItem.isBigsale}
                             />
                           );
                         }
@@ -395,7 +398,7 @@ export default function Page({}: Props) {
             <div className="w-[700px] border-[1px] mt-[50px]">
               <div className="MainBox w-[700px] my-[20px] ml-[20px]">
                 <p>결제방법 : {receipt?.easyPay.provider}</p>
-                <p>총 결제금액 : {formattedreceiptPrice(receipt?.easyPay.amount)}원</p>
+                <p>총 결제금액 : {formattedreceiptPrice(receipt?.totalAmount)}원</p>
               </div>
               <div className="w-[700px] ml-[20px]">
                 {payList.map((item: any, idx: number) => (

@@ -11,7 +11,6 @@ const clientKey = "test_ck_ORzdMaqN3w964Rzy7B4Pr5AkYXQG";
 const customerKey = "test_sk_mBZ1gQ4YVXWOqkW44eM93l2KPoqN";
 
 export default function TossButton(props: any) {
-  console.log(props);
   const paymentWidgetRef = useRef<any>(null);
   const paymentMethodsWidgetRef = useRef<any>(null);
   const [price, setPrice] = useState(props.props[1]);
@@ -32,7 +31,7 @@ export default function TossButton(props: any) {
       // 코드샌드박스 환경에선 요청 결과 페이지(`successUrl`, `failUrl`)로 이동할 수가 없으니 유의하세요.
       const res = await paymentWidget?.requestPayment({
         orderId: nanoid(),
-        orderName: "상품",
+        orderName: `${props.props[0][0].product.name} 외 ${props.props[0].length - 1}건`,
         customerName: "김토스",
         // successUrl: `${window.location.origin}/success`,
         // failUrl: `${window.location.origin}/fail`,
@@ -56,7 +55,7 @@ export default function TossButton(props: any) {
           .filter((item: any) => item.isCheck === true)
           .map((item: any) => item.basket_id);
         const res2 = await PurchaseItem(basket_ids);
-        console.log(res2);
+
         props.data([res1, res2, price]);
       }
     } catch (error) {

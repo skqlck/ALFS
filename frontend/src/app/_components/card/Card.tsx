@@ -41,13 +41,16 @@ export default function Card({
   const moveDetail = (id: number, image: string) => {
     const existingDataString = sessionStorage.getItem("productId") || "[]";
     const existingData = JSON.parse(existingDataString);
-    existingData.unshift({ id, image });
-    sessionStorage.setItem("productId", JSON.stringify(existingData));
+    const isIdExists = existingData.some((item: any) => item.id === id);
+    const lastItemIndex = existingData.length > 0 ? existingData[0].index : null;
+    if (!isIdExists || (lastItemIndex !== null && Math.abs(lastItemIndex - id) >= 1)) {
+      existingData.unshift({ id, image, index: id });
+      sessionStorage.setItem("productId", JSON.stringify(existingData));
+    }
 
     router.push(`/detail/${id}`);
   };
   useEffect(() => {
-    console.log("카드에서", isSpecial);
     const updatedFilter = [...filter];
     filterCode.forEach((index) => {
       updatedFilter[index] = 1;

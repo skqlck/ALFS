@@ -11,7 +11,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { Link } from "@chakra-ui/next-js";
 import { AddProductToCart } from "@/app/api/cart/CartPage";
 import Image from "next/image";
 import CartAlert from "./CartAlert";

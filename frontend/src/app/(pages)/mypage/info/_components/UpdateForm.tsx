@@ -19,7 +19,6 @@ type Inputs = {
 };
 
 export default function UpdateForm(props: any) {
-  console.log(props);
   const idRex = /^[a-zA-Z0-9]{6,16}$/;
   const pwRex = /^(?=.*[a-zA-Z])(?=.*[!@#$%^+=-])(?=.*[0-9]).{8,15}$/;
   const nameRex = /^[가-힣]{2,6}$/;

@@ -11,7 +11,6 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { Link } from "@chakra-ui/next-js";
 import { AddProductToCart } from "@/app/api/cart/CartPage";
 import { LuShoppingCart } from "react-icons/lu";
 import Image from "next/image";
@@ -46,13 +45,10 @@ export default function AddToCartFromList({ id, image, name, price, sale, isSpec
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [show, setShow] = useState(false);
   const AddCart = async (id: string, cnt: number) => {
-    console.log("스페셜상태", isSpecial);
     if (isSpecial) {
       const response: any = await AddCartSpecial(id);
-      console.log(response, "스페셜");
     } else {
       const response: any = await AddProductToCart(id, cnt);
-      console.log(response, "일반");
     }
     onClose();
     setShow(true);

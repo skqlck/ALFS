@@ -38,12 +38,17 @@ function parseLeftTime(mills: number) {
 }
 
 export default function BigSaleCard({name,image,id,title,price,status,start,end,sale,filterCode,allergies,hates,isSpecial} : Props) {
-  const [leftTime, setLeftTime] = useState(0);
+  const [leftTime, setLeftTime] = useState(Date.parse(start) - Date.now());
+  const [special, setSpecial] = useState(isSpecial);
+
   useEffect(() => {
     if (status == 0 && Date.now() < Date.parse(start)) {
       setLeftTime(Date.parse(start) - Date.now());
       setInterval(() => {
         setLeftTime(Date.parse(start) - Date.now());
+        if (Date.parse(start) - Date.now() < 0){
+          setSpecial(true);
+        }
       }, 1000);
       console.log(name);
     }
@@ -53,7 +58,7 @@ export default function BigSaleCard({name,image,id,title,price,status,start,end,
     <div className="mx-auto">
       {status == 0 && Date.now() < Date.parse(start) ? (
         <span className="absolute text-center text-lg font-bold text-red-600 ml-3.5 mt-24 bg-white rounded w-[150px] pt-1 -rotate-12">
-          {parseLeftTime(leftTime)}
+          {Date.now() < Date.parse(start) ? parseLeftTime(leftTime) : "START!"}
         </span>
       ) : null}
       {status == 2 ? (
@@ -71,7 +76,7 @@ export default function BigSaleCard({name,image,id,title,price,status,start,end,
         filterCode={filterCode}
         allergies={allergies}
         hates={hates}
-        isSpecial={isSpecial}
+        isSpecial={special}
       />
     </div>
   );

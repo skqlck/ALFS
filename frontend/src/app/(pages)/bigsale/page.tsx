@@ -72,7 +72,6 @@ export default function Page() {
       setUpComingList(upcoming);
       setOnSaleList(onsale);
       setEndedList(ended);
-      console.log(onsale, "안종상");
     };
     initial();
   }, []);

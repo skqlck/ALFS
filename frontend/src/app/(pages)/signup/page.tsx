@@ -93,7 +93,6 @@ export default function Page() {
   //회원가입버튼
   const handleSignup = async (e: any) => {
     const userId = await UserSignup(e);
-    console.log(userId);
 
     toast({
       title: "회원가입에 성공했습니다. 로그인 페이지로 이동합니다.",

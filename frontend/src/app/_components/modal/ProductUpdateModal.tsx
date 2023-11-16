@@ -58,7 +58,6 @@ const category = [
 ];
 
 function ProductUpdateModal(props: any) {
-  console.log(props);
   const [show, setShow] = useState(true);
   const [showModal, setShowModal] = useState(false);
   const { register, handleSubmit, watch, setValue } = useForm<Inputs>();

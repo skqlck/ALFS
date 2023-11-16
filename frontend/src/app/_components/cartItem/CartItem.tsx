@@ -24,6 +24,7 @@ type CartItemProps = {
   basket_id: number;
   onCountChange: (count: number) => void;
   onDeleteItem: (basket_id: number) => void;
+  isBigsale: boolean;
 };
 
 export default function CartItem({
@@ -36,15 +37,18 @@ export default function CartItem({
   basket_id,
   onCountChange,
   onDeleteItem,
+  isBigsale,
 }: CartItemProps) {
   const toggleCheck = () => {
     setIsCheck(!isCheck);
   };
   const increaseCount = async () => {
     try {
-      const res: number = await AddCount(basket_id);
-      onCountChange(res);
-      setCnt(res);
+      if (isBigsale) {
+        const res: number = await AddCount(basket_id);
+        onCountChange(res);
+        setCnt(res);
+      }
     } catch (error) {
       console.error("상품 수량 증가 에러:", error);
     }
@@ -52,9 +56,11 @@ export default function CartItem({
 
   const decreaseCount = async () => {
     try {
-      const res: number = await RemoveCount(basket_id);
-      onCountChange(Math.max(res, 1));
-      setCnt((prevCnt) => Math.max(res, 1));
+      if (isBigsale) {
+        const res: number = await RemoveCount(basket_id);
+        onCountChange(Math.max(res, 1));
+        setCnt((prevCnt) => Math.max(res, 1));
+      }
     } catch (error) {
       console.error("상품 수량 감소 에러:", error);
     }

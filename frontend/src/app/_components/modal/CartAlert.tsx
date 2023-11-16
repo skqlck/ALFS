@@ -12,7 +12,6 @@ import {
 import Image from "next/image";
 
 export default function CartAlert(props: any) {
-  console.log(props);
   const [show, setShow] = useState(true);
   const [top, setTop] = useState<number>();
   const [left, setLeft] = useState<number>();

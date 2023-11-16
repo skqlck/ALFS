@@ -5,7 +5,6 @@ import Image from "next/image";
 import { Tooltip } from "@chakra-ui/react";
 import { useParams } from "next/navigation";
 import { GetProductDetail } from "@/app/api/detail/DetailPage";
-import AllergyNotice from "@/app/_components/modal/AllergyNotice";
 import AddToCart from "@/app/_components/modal/AddToCart";
 import { BsShieldFillCheck, BsShieldFillExclamation, BsShieldFillMinus, BsShieldFillX } from "react-icons/bs";
 
