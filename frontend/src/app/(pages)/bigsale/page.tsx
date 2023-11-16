@@ -30,6 +30,8 @@ type BigSaleItem = {
   start : string
   end : string
   filterCode : number[]
+  allergies : string[]
+  hates : string[]
 }
 
 export default function Page() {

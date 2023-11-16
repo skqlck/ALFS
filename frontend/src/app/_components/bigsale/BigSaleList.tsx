@@ -26,6 +26,8 @@ type BigSaleItem = {
     start : string
     end : string
     filterCode : number[]
+    allergies : string[]
+    hates : string[]
 }
 
 export default function BigSaleList(itemList: BigSaleItem[]){
@@ -47,6 +49,8 @@ export default function BigSaleList(itemList: BigSaleItem[]){
                         start={item.start}
                         end={item.end}
                         filterCode={!item.filterCode ? [] : item.filterCode}
+                        allergies={item.allergies}
+                        hates={item.hates}
                     />
                     )
                 }

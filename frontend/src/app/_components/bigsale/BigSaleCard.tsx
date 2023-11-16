@@ -16,8 +16,8 @@ type Props = {
   start: string;
   end: string;
   filterCode: number[];
-  // hates: Array<string>;
-  // allergies: Array<string>;
+  hates: string[];
+  allergies: string[];
 };
 
 function parseLeftTime(mills: number) {
@@ -36,22 +36,8 @@ function parseLeftTime(mills: number) {
   );
 }
 
-export default function BigSaleCard({
-  name,
-  image,
-  id,
-  title,
-  price,
-  status,
-  start,
-  end,
-  sale,
-  filterCode,
-}: // hates,
-// allergies,
-Props) {
+export default function BigSaleCard({name,image,id,title,price,status,start,end,sale,filterCode,allergies,hates} : Props) {
   const [leftTime, setLeftTime] = useState(0);
-
   useEffect(() => {
     if (status == 0 && Date.now() < Date.parse(start)) {
       setLeftTime(Date.parse(start) - Date.now());
@@ -74,7 +60,17 @@ Props) {
           SOLD OUT
         </span>
       ) : null}
-      <Card name={name} image={image} id={id} title={title} price={price} sale={sale} filterCode={filterCode} />
+      <Card 
+        name={name} 
+        image={image} 
+        id={id} 
+        title={title} 
+        price={price} 
+        sale={sale} 
+        filterCode={filterCode}
+        allergies={allergies}
+        hates={hates}
+      />
     </div>
   );
 }
