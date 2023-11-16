@@ -4,7 +4,7 @@ import { UserLogin } from "@/app/api/user/user";
 import { Button, FormControl, Input, useToast } from "@chakra-ui/react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import React from "react";
+import React, { useEffect } from "react";
 import { useForm } from "react-hook-form";
 
 type Inputs = {
@@ -32,6 +32,13 @@ export default function Page() {
       window.location.replace("/");
     }
   };
+
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    if (id) {
+      router.push("/");
+    }
+  }, []);
 
   return (
     <div className="min-w-[650px] flex justify-center">

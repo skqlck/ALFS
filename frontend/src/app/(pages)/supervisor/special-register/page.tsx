@@ -75,7 +75,7 @@ export default function Page() {
   }, []);
   return (
     <div>
-      <div className="my-[20px]">
+      <div className="my-[20px] flex justify-end">
         <InputGroup size="lg" width={400}>
           <Input type="text" placeholder="검색어를 입력하세요" focusBorderColor="green.500" onChange={handleSearch} />
           <InputRightElement display="flex" justifyContent="center" alignItems="center">

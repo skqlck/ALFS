@@ -9,6 +9,7 @@ import { Button, Input } from "@chakra-ui/react";
 import CropImage from "./_components/image";
 import { useRouter } from "next/navigation";
 import NextStep from "./_components/NextStep";
+import RegisterGuide from "@/app/_components/modal/RegisterGuide";
 
 type Inputs = {
   name: string;
@@ -44,6 +45,7 @@ export default function Page() {
   const [text, setText] = useState("이미지 업로드하기");
   const [data, setData] = useState<any>();
   const [mode, setMode] = useState(1);
+  const [next, setNext] = useState(true);
 
   const uploadImage = async () => {
     setLoading(true);
@@ -64,7 +66,7 @@ export default function Page() {
       setLoading(false);
       setText("이미지 업로드완료");
       setData(res.data.data);
-      console.log(res);
+      setNext(false);
     } catch (error) {
       setLoading(false);
       console.error("Error:", error);
@@ -114,9 +116,10 @@ export default function Page() {
   };
   return (
     <div>
+      <RegisterGuide />
       {mode === 1 ? (
         <>
-          <div className="my-[50px]">
+          <div className="mb-[50px]">
             <div className="mt-[20px] flex justify-between ">
               <div className="flex flex-col ustify-between items-center w-[240px]">
                 <p className="flex text-[25px]">상품 메인 사진</p>
@@ -158,7 +161,7 @@ export default function Page() {
             >
               {text}
             </Button>
-            <Button variant="outline" colorScheme="whatsapp" onClick={() => setMode(2)}>
+            <Button isDisabled={next} variant="outline" colorScheme="whatsapp" onClick={() => setMode(2)}>
               다음단계
             </Button>
           </div>

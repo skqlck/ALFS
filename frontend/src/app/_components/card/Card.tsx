@@ -3,6 +3,7 @@
 import React, { useState, useEffect } from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
+import { Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
 import AddToCartFromList from "../modal/AddToCartFromList";
 import { BsShieldFillCheck, BsShieldFillExclamation, BsShieldFillMinus, BsShieldFillX } from "react-icons/bs";
@@ -14,9 +15,23 @@ type CardProps = {
   price: number;
   sale: number;
   filterCode: Array<number>;
+  hates: Array<string>;
+  allergies: Array<string>;
+  isSpecial: boolean;
 };
 
-export default function Card({ name, image, id, title, price, sale, filterCode }: CardProps) {
+export default function Card({
+  name,
+  image,
+  id,
+  title,
+  price,
+  sale,
+  filterCode,
+  hates,
+  allergies,
+  isSpecial,
+}: CardProps) {
   const formattedSale = new Intl.NumberFormat().format(sale);
   const formattedPrice = new Intl.NumberFormat().format(price);
   const discount = Math.round(((price - sale) / price) * 100);
@@ -32,7 +47,7 @@ export default function Card({ name, image, id, title, price, sale, filterCode }
     router.push(`/detail/${id}`);
   };
   useEffect(() => {
-    console.log(filterCode);
+    console.log("카드에서", isSpecial);
     const updatedFilter = [...filter];
     filterCode.forEach((index) => {
       updatedFilter[index] = 1;
@@ -55,31 +70,39 @@ export default function Card({ name, image, id, title, price, sale, filterCode }
         />
       </Link>
       <div className="AddToCartFromList">
-        <AddToCartFromList id={id} image={image} name={name} price={price} sale={sale} />
+        <AddToCartFromList id={id} image={image} name={name} price={price} sale={sale} isSpecial={isSpecial} />
       </div>
 
       <Link href={{ pathname: `/detail/${id}` }}>
         <div className="CardFooter w-[178px] h-[80px] mt-[4px]">
           <div className="flex">
             {filtered && filter[3] === 1 && (
-              <span className="mr-[5px]">
-                <BsShieldFillCheck style={{ fontSize: "20px", color: "#008000" }} />
-              </span>
+              <Tooltip label="안전합니다!" placement="top">
+                <span className="mr-[5px]">
+                  <BsShieldFillCheck style={{ fontSize: "20px", color: "#008000" }} />
+                </span>
+              </Tooltip>
             )}
             {filtered && filter[0] === 1 && (
-              <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ffff00" }}>
-                <BsShieldFillExclamation />
-              </span>
+              <Tooltip label={`${hates}가 포함되어있습니다.`} placement="top">
+                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ffff00" }}>
+                  <BsShieldFillExclamation />
+                </span>
+              </Tooltip>
             )}
             {filtered && filter[2] === 1 && (
-              <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ff8c00" }}>
-                <BsShieldFillMinus />
-              </span>
+              <Tooltip label="제조시설 알러지가 포함되어있습니다." placement="top">
+                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ff8c00" }}>
+                  <BsShieldFillMinus />
+                </span>
+              </Tooltip>
             )}
             {filtered && filter[1] === 1 && (
-              <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ff0000" }}>
-                <BsShieldFillX />
-              </span>
+              <Tooltip label={`${allergies}가 포함되어있습니다.`} placement="top">
+                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ff0000" }}>
+                  <BsShieldFillX />
+                </span>
+              </Tooltip>
             )}
           </div>
           <div className="CardTitle w-[full] text-[13px] mt-[5px]">{name}</div>

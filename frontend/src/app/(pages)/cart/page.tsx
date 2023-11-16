@@ -183,6 +183,9 @@ export default function Page({}: Props) {
     setPayList(e[1].success_list);
   };
 
+  const formattedreceiptPrice = (price: number) => {
+    return new Intl.NumberFormat().format(price);
+  };
   return (
     <>
       {mode === 0 ? (
@@ -392,7 +395,7 @@ export default function Page({}: Props) {
             <div className="w-[700px] border-[1px] mt-[50px]">
               <div className="MainBox w-[700px] my-[20px] ml-[20px]">
                 <p>결제방법 : {receipt?.easyPay.provider}</p>
-                <p>총 결제금액 : {receipt?.easyPay.amount}원</p>
+                <p>총 결제금액 : {formattedreceiptPrice(receipt?.easyPay.amount)}원</p>
               </div>
               <div className="w-[700px] ml-[20px]">
                 {payList.map((item: any, idx: number) => (
@@ -401,7 +404,7 @@ export default function Page({}: Props) {
                     <div className="ml-[20px]">
                       <p>{item.product.name}</p>
                       <p>수량 : {item.count}개</p>
-                      <p>가격 : {item.product.sale}원</p>
+                      <p>가격 : {formattedreceiptPrice(item.product.sale * item.count)}원</p>
                     </div>
                   </div>
                 ))}

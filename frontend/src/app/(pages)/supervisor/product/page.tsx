@@ -20,7 +20,6 @@ export default function Page() {
 
   const getData = async () => {
     const res = await AllProduct();
-    console.log(res);
     setData(res?.data.data);
     setFilteredData(res?.data.data); // Set initial data and filtered data to be the same
   };
@@ -35,7 +34,6 @@ export default function Page() {
 
   const deleteProduct = async (e: number) => {
     const res = await DeleteProduct(e);
-    console.log(res);
     getData();
   };
 
@@ -44,9 +42,9 @@ export default function Page() {
   }, []);
   return (
     <div>
-      <div className="my-[20px]">
+      <div className="my-[20px] flex justify-end">
         <InputGroup size="lg" width={400}>
-          <Input type="text" placeholder="검색어를 입력하세요" focusBorderColor="none" onChange={handleSearch} />
+          <Input type="text" placeholder="검색어를 입력하세요" focusBorderColor="green.500" onChange={handleSearch} />
           <InputRightElement display="flex" justifyContent="center" alignItems="center">
             <AiOutlineSearch className="w-[40px] h-[40px]" />
           </InputRightElement>

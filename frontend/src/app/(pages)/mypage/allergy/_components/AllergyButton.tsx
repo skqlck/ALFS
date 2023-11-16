@@ -22,6 +22,31 @@ import {
 import { RegisterAllergy, RegisterHate } from "@/app/api/user/user";
 import PropsModal from "@/app/_components/modal/PropsModal";
 
+const allergy = [
+  { idx: 1, name: "밀" },
+  { idx: 2, name: "메밀" },
+  { idx: 3, name: "대두" },
+  { idx: 4, name: "호두" },
+  { idx: 5, name: "땅콩" },
+  { idx: 6, name: "복숭아" },
+  { idx: 7, name: "토마토" },
+  { idx: 8, name: "돼지고기" },
+  { idx: 9, name: "난류" },
+  { idx: 10, name: "우유" },
+  { idx: 11, name: "닭고기" },
+  { idx: 12, name: "쇠고기" },
+  { idx: 13, name: "새우 " },
+  { idx: 14, name: "고등어" },
+  { idx: 15, name: "홍합" },
+  { idx: 16, name: "전복" },
+  { idx: 17, name: "굴" },
+  { idx: 18, name: "조개류" },
+  { idx: 19, name: "게" },
+  { idx: 20, name: "오징어" },
+  { idx: 21, name: "아황산류" },
+  { idx: 22, name: "잣" },
+];
+
 export default function AllergyButton(props: any) {
   const [allergy_1, setAllergy_1] = useState<string[]>([]);
   const [allergy_2, setAllergy_2] = useState("");
@@ -47,6 +72,14 @@ export default function AllergyButton(props: any) {
   //추가입력한 알러지 지우기
   const removeAllergy2 = (data: any) => {
     setSelectedAllergy2((prev: any) => {
+      const isAlreadySelected = prev.filter((item: any) => item !== data);
+      return [...isAlreadySelected];
+    });
+  };
+
+  //기존에 있는 알러지에서 22가지중에 없는거 지우기
+  const removeAllergy1 = (data: any) => {
+    setAllergy_1((prev: any) => {
       const isAlreadySelected = prev.filter((item: any) => item !== data);
       return [...isAlreadySelected];
     });
@@ -131,6 +164,13 @@ export default function AllergyButton(props: any) {
                             marginBottom={2}
                           >
                             <TagLabel>{data}</TagLabel>
+                            {!allergy.some((allergy) => allergy.name === data) && (
+                              <TagCloseButton
+                                onClick={() => {
+                                  removeAllergy1(data);
+                                }}
+                              />
+                            )}
                           </Tag>
                         ))}
                       </div>

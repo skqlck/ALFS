@@ -45,6 +45,9 @@ export default function Page({}: Props) {
                     price={item.price}
                     sale={item.sale}
                     filterCode={!item.filterCode ? [] : item.filterCode}
+                    hates={item.hates}
+                    allergies={item.allergies}
+                    isSpecial={item.isSpecial}
                   />
                 </div>
               ))}

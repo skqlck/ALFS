@@ -5,6 +5,7 @@ import React, { useState, useEffect } from "react";
 import Loading from "@/app/_components/loading/loading";
 import dynamic from "next/dynamic";
 import Carousel from "@/app/_components/banner/Banner";
+import { isStyleProp } from "@chakra-ui/react";
 
 type Props = {};
 
@@ -53,6 +54,9 @@ export default function Page({}: Props) {
     <div className="flex flex-col items-center">
       <Carousel></Carousel>
       <span className="text-[30px]">대체식품</span>
+      <span className="text-[20px] opacity-30 mb-[10px]">
+        회원님의 알러지 및 기피식품의 영양소를 기반한 대체 식품이에요
+      </span>
       <div className="grid grid-cols-5 gap-4 w-800 border border-[#33C130] p-4">
         <button
           key={0}
@@ -79,7 +83,7 @@ export default function Page({}: Props) {
         <div className="grid grid-cols-3 mx-auto mt-[10px]">
           {alterProduct.length > 0 ? (
             alterProduct.map((item: any, index: number) => (
-              <div key={index} className="w-[178px] h-[450px] ml-[44px]">
+              <div key={item.id} className="w-[178px] h-[450px] ml-[44px]">
                 <Card
                   name={item.name}
                   image={item.img}
@@ -88,6 +92,9 @@ export default function Page({}: Props) {
                   price={item.price}
                   sale={item.sale}
                   filterCode={item.filterCode}
+                  hates={item.hates}
+                  allergies={item.allergies}
+                  isSpecial={item.isSpecial}
                 />
               </div>
             ))

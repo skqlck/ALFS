@@ -15,24 +15,26 @@ import { Link } from "@chakra-ui/next-js";
 import { AddProductToCart } from "@/app/api/cart/CartPage";
 import Image from "next/image";
 import CartAlert from "./CartAlert";
+import { AddCartSpecial } from "@/app/api/special/special";
 type ItemProps = {
   id: string;
   cnt: number;
-  member_id: string;
   img: string;
   name: string;
+  isSpecial: boolean;
 };
 
-export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) {
+export default function AddToCart({ id, cnt, img, name, isSpecial }: ItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
   const [show, setShow] = useState(false);
   const AddCart = async (id: string, cnt: number) => {
-    const response: any = await AddProductToCart(id, cnt);
+    if (isSpecial) {
+      const response: any = await AddCartSpecial(id);
+    } else {
+      const response: any = await AddProductToCart(id, cnt);
+    }
     onClose();
     setShow(true);
-    // setTimeout(() => {
-    //   setShow(false);
-    // }, 2000);
   };
   return (
     <div>
@@ -62,7 +64,13 @@ export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) 
             <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
               Close
             </Button>
-            <Button colorScheme="whatsapp" variant="outline" onClick={() => AddCart(String(id), cnt)}>
+            <Button
+              colorScheme="whatsapp"
+              variant="solid"
+              color="white"
+              onClick={() => AddCart(String(id), cnt)}
+              style={{ opacity: 1, pointerEvents: "auto", backgroundColor: "#33c130", color: "white" }}
+            >
               장바구니에 담기
             </Button>
           </ModalFooter>

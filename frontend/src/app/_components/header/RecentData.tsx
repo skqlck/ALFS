@@ -39,7 +39,7 @@ export default function RecentData({}: Props) {
   };
 
   const isDesktop = useMediaQuery({
-    query: "(min-width: 1520px)",
+    query: "(min-width: 1200px)",
   });
 
   // 이후 useState 훅을 통해 해당 컴포넌트에서 desktop 뷰포트인지 식별할 수 있도록 상태를 선언한다.
@@ -53,7 +53,7 @@ export default function RecentData({}: Props) {
     <>
       {desktop && (
         <div
-          className="w-[90px] h-[400px] border-[2px] fixed top-[35%] right-[20px] shadow-md bg-white"
+          className="w-[90px] h-[400px] border-[2px] fixed top-[25%] right-[20px] shadow-md bg-white"
           style={{ zIndex: 10 }}
         >
           <div className="my-[10px] border-b-[1px]">

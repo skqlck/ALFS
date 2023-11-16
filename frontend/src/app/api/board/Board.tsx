@@ -32,3 +32,30 @@ export async function BoardDetail(board_id: string) {
     console.error(e);
   }
 }
+
+export async function BoardSupervisorAll() {
+  try {
+    const res = await baseAxios.get(`api/board/list`);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function BoardSupervisorDetail(props: number) {
+  try {
+    const res = await baseAxios.get(`api/board/supervisor/${props}`);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function BoardSupervisorComment(props: any) {
+  try {
+    const res = await baseAxios.post(`api/board/supervisor`, props);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}

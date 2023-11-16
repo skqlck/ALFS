@@ -21,7 +21,6 @@ export default function MiddleNav() {
 
   const sendData = (e: any) => {
     router.push(`/search?data=${e.search}`);
-    console.log(e);
   };
   return (
     <div className="min-w-[1000px] h-[100px] justify-center flex ">
