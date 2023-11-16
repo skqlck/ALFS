@@ -35,7 +35,7 @@ public class GetSpecialResponse {
     private String productDetailImg;
     private String productIngreImg;
     private Set<Integer> filterCode;
-    private boolean isSpeical;
+    private Boolean isSpecial;
 
     // special
     private Long supervisorId;
@@ -49,5 +49,5 @@ public class GetSpecialResponse {
     public void setCode(Set<Integer> filterCode) {
         this.filterCode = filterCode;
     }
-    public void setIsSpecial(boolean check) { this.isSpeical = check; }
+    public void setIsSpecial(boolean check) { this.isSpecial = check; }
 }
