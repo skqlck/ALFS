@@ -242,7 +242,7 @@ public class SupervisorService {
                     JSONObject fieldObject = fieldsArray.getJSONObject(i);
                     String inferText = fieldObject.optString("inferText");
 
-                    String[] words = inferText.split("[\\s,.\n):；·]+");
+                    String[] words = inferText.split("[\\s,.\n):;·(\\[\\]{}]+");
                     for (String word : words) {
                         if (!word.isEmpty()) {
                             result.add(word);
