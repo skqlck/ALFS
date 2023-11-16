@@ -14,11 +14,12 @@ const Card = dynamic(() => import("../../_components/card/Card"), {
 function GetListData() {
   const [response, setResponse] = useState<any>([]);
   const [totalCnt, setTotalCnt] = useState<number>(0);
+  const [status, setStatus] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(Math.ceil(totalCnt / 15));
   useEffect(() => {
     const ListData = async () => {
-      const res: any = await GetList(page);
+      const res: any = await GetList(page, status);
       const resCnt: any = await ProductCnt();
       setTotalCnt(resCnt);
       setResponse(res);
@@ -32,11 +33,17 @@ function GetListData() {
 
   const handlePageChange = async (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      const res: any = await GetList(newPage);
+      const res: any = await GetList(newPage, status);
       setResponse(res);
       setPage(newPage);
       window.scrollTo(0, 0);
     }
+  };
+
+  const ChangeStatus = async (status: number, page: number) => {
+    setStatus(status);
+    const res: any = await GetList(page, status);
+    setResponse(res);
   };
   return (
     <>
@@ -45,8 +52,38 @@ function GetListData() {
         <div className="Container flex flex-col justify-center w-[1000px] h-auto mt-[124px]">
           총 {totalCnt}건
           <div className="flex justify-end">
-            <span className="mr-[5px]">최신순</span> |<span className="ml-[5px] mr-[5px]">가격높은순</span> |
-            <span className="ml-[5px] mr-[5px]">가격낮은순</span>
+            <button>
+              <span
+                className={`mr-[5px] ${status === 0 ? "text-green-500" : ""}`}
+                onClick={() => {
+                  ChangeStatus(0, page);
+                }}
+              >
+                최신순
+              </span>{" "}
+            </button>
+            |
+            <button>
+              <span
+                className={` ml-[5px] mr-[5px] ${status === 1 ? "text-green-500" : ""}`}
+                onClick={() => {
+                  ChangeStatus(1, page);
+                }}
+              >
+                가격높은순
+              </span>{" "}
+            </button>
+            |{" "}
+            <button>
+              <span
+                className={` ml-[5px] mr-[5px] ${status === 2 ? "text-green-500" : ""}`}
+                onClick={() => {
+                  ChangeStatus(2, page);
+                }}
+              >
+                가격낮은순
+              </span>
+            </button>
           </div>
           <hr />
           <div className="grid grid-cols-3 mx-auto mt-[10px]">
