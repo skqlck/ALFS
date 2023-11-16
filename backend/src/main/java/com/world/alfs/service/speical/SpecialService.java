@@ -2,9 +2,12 @@ package com.world.alfs.service.speical;
 
 import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.common.exception.ErrorCode;
+import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.speical.response.GetSpecialListResponse;
 import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.domain.allergy.Allergy;
+import com.world.alfs.domain.basket.Basket;
+import com.world.alfs.domain.basket.repository.BasketRepository;
 import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.manufacturing_allergy.repository.ManufacturingAllergyRepository;
 import com.world.alfs.domain.member.Member;
@@ -30,8 +33,10 @@ import com.world.alfs.service.speical.dto.DeleteSpecialDto;
 import com.world.alfs.service.speical.dto.SetSpecialDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
 import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -41,8 +46,7 @@ import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-import static com.world.alfs.common.exception.ErrorCode.MEMBER_NOT_FOUND;
-import static com.world.alfs.common.exception.ErrorCode.SPECIAL_NOT_FOUND;
+import static com.world.alfs.common.exception.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -59,6 +63,7 @@ public class SpecialService {
     private final MemberAllergyRepository memberAllergyRepository;
     private final ManufacturingAllergyRepository manufacturingAllergyRepository;
     private final WiningRepository winingRepository;
+    private final BasketRepository basketRepository;
 
     private final BasketService basketService;
 
@@ -245,7 +250,7 @@ public class SpecialService {
     }
 
     // redis에 특가상품 수량 등록
-    public void addSpecialCnt(Long productId, String cnt) {
+    public ApiResponse addSpecialCnt(Long productId, String cnt) {
         String cntKey = "productId" + productId + "Cnt";
         Set<String> productCntSet = redisTemplate.opsForZSet().range(cntKey, 0, 0);
         if (productCntSet.size() != 0) {
@@ -264,10 +269,11 @@ public class SpecialService {
 
         redisTemplate.opsForZSet().add(cntKey, cnt, 0);
         log.debug("특가상품 수량 등록");
+        return ApiResponse.of(HttpStatus.OK, "특가 상품 수량 등록", cnt);
     }
 
     // 선착순 대기열에 추가
-    public void addQueue(AddSpecialQueueDto dto) {
+    public ApiResponse addQueue(AddSpecialQueueDto dto) {
         double now = System.currentTimeMillis();
 
         // 대기열에 추가
@@ -292,13 +298,19 @@ public class SpecialService {
                 redisTemplate.opsForZSet().add(cntKey, String.valueOf(productCnt - 1) , 0);
 
                 // 장바구니에 추가
-                addCart(dto.getProductId(), 0L, 0L);
+                boolean result =  addCart(dto.getProductId(), 0L, 0L);
+                if (result) {
+                    return ApiResponse.ok("장바구니 담기 성공");
+                }
             } else {
                 log.debug("재고 부족");
+                return ApiResponse.badRequest("재고 부족");
             }
         } else {
             log.debug("이미 참여한 회원");
+            return ApiResponse.badRequest("이미 참여한 회원");
         }
+        return ApiResponse.badRequest("이미 존재하는 특가 상품");
     }
 
     // 대기 순서 가져오기
@@ -317,7 +329,7 @@ public class SpecialService {
     }
 
     // 장바구니에 담기
-    public void addCart(Long productId, Long startRank, Long endRank) {
+    public boolean addCart(Long productId, Long startRank, Long endRank) {
 
         List<Wining> list = new ArrayList<>();
 
@@ -347,6 +359,7 @@ public class SpecialService {
                     basketService.addBasket(member.getId(), productId, 1);
                 } catch (Exception e) {
                     log.debug("장바구니 예외 발생: {}", e.getMessage());
+                    return false;
                 }
 
                 list.add(wining);
@@ -354,14 +367,41 @@ public class SpecialService {
                 log.debug("memberId: {}, productId: {}", memberValue, productId);
                 // queue 에서 삭제
                 redisTemplate.opsForZSet().remove(productKey, memberValue);
+                // 특가 재고 감소
+                special.changeCount(1);
             }
         } else {
             log.debug("해당 상품에 대한 구매 요청이 없습니다.");
+
         }
         winingRepository.saveAll(list);
 
-        // 특가 재고 감소
-        special.changeCount(queue.size());
+
+
+        Product product = productRepository.findById(special.getId())
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        String productIdKey = String.valueOf(product.getId());
+        Object saleValue = hashOperations.get("saleCache", productIdKey);
+        int sale = 0;
+        if (saleValue != null) {
+            try {
+                sale = Integer.parseInt(saleValue.toString());
+                product.setSale(sale); // Product 객체의 sale을 기존 가격에서 특가할인가격으로 변경
+            } catch (NumberFormatException e) {
+                log.error("Failed to parse sale value from Redis: {}", e.getMessage());
+            }
+        } else {
+            log.warn("Sale value not found in Redis for productId: {}", product.getId());
+        }
+        Basket basket = basketRepository.findByProductId(productId);
+        if (special.getCount() == 0) {
+            special.setStatus(2);
+            product.setSale(sale);
+            basket.setIsBigSale(false);
+        }
+
+        return true;
     }
 
 }
