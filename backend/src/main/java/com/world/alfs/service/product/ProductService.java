@@ -113,7 +113,10 @@ public class ProductService {
         List<GetProductListResponse> productResponseList = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
             ProductImg img = productImgRepository.findByProductId(productList.get(i).getId());
-            productResponseList.add(productList.get(i).toListResponse(img, countPage()));
+            Boolean isSpecial = false;
+            Special special = specialRepository.findByProductId(productList.get(i).getId());
+            if (special != null && special.getStatus() == 1) isSpecial = true;
+            productResponseList.add(productList.get(i).toListResponse(img, countPage(),isSpecial));
         }
         return productResponseList;
     }
@@ -122,7 +125,10 @@ public class ProductService {
         List<ProductResponse> productResponseList = new ArrayList<>();
         for (int i = 0; i < productList.size(); i++) {
             ProductImg img = productImgRepository.findByProductId(productList.get(i).getId());
-            productResponseList.add(productList.get(i).toListProductResponse(img));
+            Boolean isSpecial = false;
+            Special special = specialRepository.findByProductId(productList.get(i).getId());
+            if (special != null && special.getStatus() == 1) isSpecial = true;
+            productResponseList.add(productList.get(i).toListProductResponse(img, isSpecial));
         }
         return productResponseList;
     }

@@ -52,9 +52,11 @@ public class ProductResponse {
 
     private Set<Integer> filterCode;
 
+    private Boolean isSpecial;
+
     @Builder
     public ProductResponse(Long id, String name, String title, int price, int sale, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate,
-                           String information, String buyType, int stock, String content, String main_img, String detail_img, String ingre_img, int category, Set<Integer> filterCode) {
+                           String information, String buyType, int stock, String content, String main_img, String detail_img, String ingre_img, int category, Set<Integer> filterCode, Boolean isSpecial) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -76,6 +78,7 @@ public class ProductResponse {
         this.ingre_img = ingre_img;
         this.category = category;
         this.filterCode = filterCode;
+        this.isSpecial = isSpecial;
     }
 
     public void setSpecialPrice(int salePrice) {

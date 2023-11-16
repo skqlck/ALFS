@@ -120,7 +120,7 @@ public class Product {
                 .build();
     }
 
-    public GetProductListResponse toListResponse(ProductImg img, Long pageCnt) {
+    public GetProductListResponse toListResponse(ProductImg img, Long pageCnt, Boolean isSpecial) {
         return GetProductListResponse.builder()
                 .id(id)
                 .title(title)
@@ -133,6 +133,7 @@ public class Product {
                 .filterCode(null)
                 .hates(null)
                 .allergies(null)
+                .isSpecial(isSpecial)
                 .build();
     }
 
@@ -163,7 +164,7 @@ public class Product {
                 .build();
     }
 
-    public ProductResponse toListProductResponse(ProductImg img) {
+    public ProductResponse toListProductResponse(ProductImg img, Boolean isSpecial) {
         return ProductResponse.builder()
                 .id(id)
                 .name(name)
@@ -185,6 +186,7 @@ public class Product {
                 .main_img(img.getImg_1())
                 .detail_img(img.getImg_2())
                 .ingre_img(img.getImg_3())
+                .isSpecial(isSpecial)
                 .build();
     }
 }

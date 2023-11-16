@@ -33,8 +33,10 @@ public class GetProductListResponse {
 
     private List<String> allergies;
 
+    private Boolean isSpecial;
+
     @Builder
-    public GetProductListResponse(Long id, String name, String title, int price, int sale, String img, int category, Long pageCnt, Set<Integer> filterCode, List<String> hates, List<String> allergies) {
+    public GetProductListResponse(Long id, String name, String title, int price, int sale, String img, int category, Long pageCnt, Set<Integer> filterCode, List<String> hates, List<String> allergies, Boolean isSpecial) {
         this.id = id;
         this.name = name;
         this.title = title;
@@ -46,6 +48,7 @@ public class GetProductListResponse {
         this.filterCode = filterCode;
         this.hates = hates;
         this.allergies = allergies;
+        this.isSpecial = isSpecial;
     }
 
 

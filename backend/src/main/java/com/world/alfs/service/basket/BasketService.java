@@ -55,8 +55,10 @@ public class BasketService {
         for (Basket basket : basketList) {
             Product product = basket.getProduct();
             ProductImg img = productImgRepository.findByProductId(product.getId());
-
-            GetProductListResponse getProductListResponse = product.toListResponse(img, null);
+            Boolean isSpecial = false;
+            Special special = specialRepository.findByProductId(product.getId());
+            if (special != null && special.getStatus() == 1) isSpecial = true;
+            GetProductListResponse getProductListResponse = product.toListResponse(img, null, isSpecial);
 
             // 알러지 및 기피 필터링
             Set<Integer> filterCode = new HashSet<>();
@@ -143,7 +145,7 @@ public class BasketService {
             changeCount(member_id, existedBasket.get().getId(), count);
         }
 
-        GetProductListResponse getProductListResponse = product.toListResponse(img, null);
+        GetProductListResponse getProductListResponse = product.toListResponse(img, null, isBigSaleCheck);
 
         return GetBasketResponse.builder()
                 .basket_id(existedBasket.get().getId())
@@ -193,8 +195,10 @@ public class BasketService {
         Basket purchasedBasket = basketRepository.save(basket);
 
         ProductImg img = productImgRepository.findByProductId(product.getId());
-
-        GetProductListResponse getProductListResponse = product.toListResponse(img, null);
+        Boolean isSpecial = false;
+        Special special = specialRepository.findByProductId(product.getId());
+        if (special != null && special.getStatus() == 1) isSpecial = true;
+        GetProductListResponse getProductListResponse = product.toListResponse(img, null, isSpecial);
 
         return GetPurchaseResponse.builder()
                 .basket_id(purchasedBasket.getId())
@@ -216,7 +220,10 @@ public class BasketService {
             Product product = basket.getProduct();
             ProductImg img = productImgRepository.findByProductId(product.getId());
 
-            GetProductListResponse getProductListResponse = product.toListResponse(img, null);
+            Boolean isSpecial = false;
+            Special special = specialRepository.findByProductId(product.getId());
+            if (special != null && special.getStatus() == 1) isSpecial = true;
+            GetProductListResponse getProductListResponse = product.toListResponse(img, null, isSpecial);
 
             // 알러지 및 기피 필터링
             Set<Integer> filterCode = new HashSet<>();
