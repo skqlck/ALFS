@@ -39,6 +39,10 @@ export default function Page() {
     }
   };
 
+  const formattedreceiptPrice = (price: number) => {
+    return new Intl.NumberFormat().format(price);
+  };
+
   useEffect(() => {
     GetOrder();
   }, []);
@@ -59,7 +63,7 @@ export default function Page() {
                 <div className="ml-[20px]">
                   <p>{item.product.name}</p>
                   <p>구매 수량 : {item.count}</p>
-                  <p>구매 가격 : {item.purchase}원</p>
+                  <p>구매 가격 : {formattedreceiptPrice(item.purchase)}원</p>
                   <p>구매 날짜 : {item.date}</p>
                 </div>
               </div>
