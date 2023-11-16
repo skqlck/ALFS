@@ -53,6 +53,9 @@ export default function Page({}: Props) {
     <div className="flex flex-col items-center">
       <Carousel></Carousel>
       <span className="text-[30px]">대체식품</span>
+      <span className="text-[20px] opacity-30 mb-[10px]">
+        회원님의 알러지 및 기피식품의 영양소를 기반한 대체 식품이에요
+      </span>
       <div className="grid grid-cols-5 gap-4 w-800 border border-[#33C130] p-4">
         <button
           key={0}
