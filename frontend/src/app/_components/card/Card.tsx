@@ -26,7 +26,7 @@ export default function Card({ name, image, id, title, price, sale, filterCode }
   const moveDetail = (id: number, image: string) => {
     const existingDataString = sessionStorage.getItem("productId") || "[]";
     const existingData = JSON.parse(existingDataString);
-    existingData.push({ id, image });
+    existingData.unshift({ id, image });
     sessionStorage.setItem("productId", JSON.stringify(existingData));
 
     router.push(`/detail/${id}`);

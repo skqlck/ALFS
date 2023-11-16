@@ -1,9 +1,11 @@
 "use client";
+import { Tooltip } from "@chakra-ui/react";
 import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect, useRef, useState } from "react";
 import { AiOutlineArrowUp, AiOutlineArrowDown } from "react-icons/ai";
+import { BsShieldFillCheck, BsShieldFillExclamation, BsShieldFillMinus, BsShieldFillX } from "react-icons/bs";
 import { useMediaQuery } from "react-responsive";
 
 type Props = {};
@@ -51,9 +53,38 @@ export default function RecentData({}: Props) {
     <>
       {desktop && (
         <div
-          className="w-[90px] h-[300px] border-[2px] fixed top-[35%] right-[20px] shadow-md bg-white"
+          className="w-[90px] h-[400px] border-[2px] fixed top-[35%] right-[20px] shadow-md bg-white"
           style={{ zIndex: 10 }}
         >
+          <div className="my-[10px] border-b-[1px]">
+            <div className="flex justify-center text-[12px] mb-[10px]">
+              <p>뱃지 정보</p>
+            </div>
+            <div className="flex justify-evenly">
+              <Tooltip label="알러지가 포함되어 있지 않을 때" placement="left">
+                <span>
+                  <BsShieldFillCheck style={{ fontSize: "20px", color: "#008000" }} />
+                </span>
+              </Tooltip>
+              <Tooltip label="기피식품이 포함되어 있을 때 " placement="left">
+                <span style={{ fontSize: "20px", color: "#ffff00" }}>
+                  <BsShieldFillExclamation />
+                </span>
+              </Tooltip>
+            </div>
+            <div className="flex justify-evenly my-[10px]">
+              <Tooltip label="제조시설에 알러지가 포함되어 있을 때 " placement="left">
+                <span style={{ fontSize: "20px", color: "#ff8c00" }}>
+                  <BsShieldFillMinus />
+                </span>
+              </Tooltip>
+              <Tooltip label="알러지가 포함되어 있을 때" placement="left">
+                <span style={{ fontSize: "20px", color: "#ff0000" }}>
+                  <BsShieldFillX />
+                </span>
+              </Tooltip>
+            </div>
+          </div>
           <p className="mt-[10px] flex justify-center text-[12px]">최근 조회 상품</p>
 
           <div className="flex justify-center my-[10px]">

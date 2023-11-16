@@ -90,25 +90,25 @@ export default function Page() {
           <Image src={productData.main_img} width={414} height={622} className="DetailImg" alt="detail Img" />
         </div>
         <div className="DetailDescriptionBox w-[633px] ml-[83px]">
-          <div className="flex">
+          <div className="flex items-center">
             <div className="flex">
               {filtered && filter[3] === 1 && (
                 <span className="mr-[5px]">
-                  <BsShieldFillCheck style={{ fontSize: "20px", color: "#008000" }} />
+                  <BsShieldFillCheck style={{ fontSize: "50px", color: "#008000" }} />
                 </span>
               )}
               {filtered && filter[0] === 1 && (
-                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ffff00" }}>
+                <span className="mr-[5px]" style={{ fontSize: "50px", color: "#ffff00" }}>
                   <BsShieldFillExclamation />
                 </span>
               )}
               {filtered && filter[2] === 1 && (
-                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ff8c00" }}>
+                <span className="mr-[5px]" style={{ fontSize: "50px", color: "#ff8c00" }}>
                   <BsShieldFillMinus />
                 </span>
               )}
               {filtered && filter[1] === 1 && (
-                <span className="mr-[5px]" style={{ fontSize: "20px", color: "#ff0000" }}>
+                <span className="mr-[5px]" style={{ fontSize: "50px", color: "#ff0000" }}>
                   <BsShieldFillX />
                 </span>
               )}

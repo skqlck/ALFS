@@ -1,7 +1,7 @@
 import { baseAxios } from "../Api";
 
 export async function BoardAll() {
-  const member_id = localStorage.getItem("id");
+  const member_id = localStorage.getItem("id") || 0;
   try {
     const res = await baseAxios.get(`api/board/${member_id}`);
     return res;

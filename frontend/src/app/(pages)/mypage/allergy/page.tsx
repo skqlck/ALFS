@@ -1,7 +1,7 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import AllergyButton from "./_components/AllergyButton";
-import { MyAllergy, MyHate, NaverImage } from "@/app/api/user/user";
+import { MyAllergy, MyHate } from "@/app/api/user/user";
 import { Button } from "@chakra-ui/react";
 
 export default function Page() {

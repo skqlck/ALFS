@@ -74,3 +74,46 @@ export async function RegisterManufacturing(props: any) {
     console.error(e);
   }
 }
+
+export async function SpecialRegister(props: any) {
+  try {
+    const res = await baseAxios.post(`api/special`, props);
+    console.log(res);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function SpecialAll() {
+  try {
+    const res = await baseAxios.get(`api/special/all`);
+    console.log(res);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function SpecialDelete(props: number) {
+  const supervisorId = localStorage.getItem("supervisorId");
+  try {
+    const res = await baseAxios.post(`api/special/${props}`, { supervisorId: supervisorId });
+    console.log(res);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function SpecialUpdate(props: any, id: number) {
+  console.log(props);
+  console.log(id);
+  try {
+    const res = await baseAxios.patch(`api/special/${id}`, props);
+    console.log(res);
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
