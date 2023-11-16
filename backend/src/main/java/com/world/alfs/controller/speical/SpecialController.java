@@ -75,6 +75,7 @@ public class SpecialController {
     @PostMapping("/queue")
     public ApiResponse<Long> addQueue(@RequestBody AddSpecialQueueRequest request) {
         AddSpecialQueueDto dto = request.toDto();
+        log.debug("dto.getProductId: {}, dto.getMemberId: {}", dto.getProductId(), dto.getMemberId());
         specialService.addQueue(dto);
         return ApiResponse.ok(request.getMemberId());
     }
@@ -89,4 +90,10 @@ public class SpecialController {
     public void addCart(@PathVariable Long productId, @PathVariable Long startRank, @PathVariable Long endRank) {
         specialService.addCart(productId, startRank, endRank);
     }
+
+    @GetMapping("/register/{productId}/{cnt}")
+    public void addSpecialCnt(@PathVariable Long productId, @PathVariable String cnt) {
+        specialService.addSpecialCnt(productId, cnt);
+    }
+
 }

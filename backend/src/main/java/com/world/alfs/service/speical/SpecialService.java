@@ -62,7 +62,7 @@ public class SpecialService {
 
     private final BasketService basketService;
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final RedisTemplate<String, String> redisTemplate;
 
     public Long addSpecial(AddSpecialDto dto) {
         Product product = productRepository.findById(dto.getProductId()).orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
@@ -75,6 +75,9 @@ public class SpecialService {
 
         Special special = dto.toEntity(product, supervisor);
         specialRepository.save(special);
+
+        // redis에 특가 상품 수량 추가
+        addSpecialCnt(dto.getProductId(), String.valueOf(dto.getCount()));
 
         return special.getId();
     }
@@ -223,15 +226,61 @@ public class SpecialService {
         return id;
     }
 
+    // redis에 특가상품 수량 등록
+    public void addSpecialCnt(Long productId, String cnt) {
+        String cntKey = "productId" + productId + "Cnt";
+        Set<String> productCntSet = redisTemplate.opsForZSet().range(cntKey, 0, 0);
+        if (productCntSet.size() != 0) {
+            int productCnt = Integer.parseInt(productCntSet.iterator().next().toString());
+            redisTemplate.opsForZSet().remove(cntKey, String.valueOf(productCnt));
+        }
+
+        String productKey = "productId" + productId;
+        Set<String> productSet = redisTemplate.opsForZSet().range(productKey, 0, -1);
+
+        if (productSet != null) {
+            for (String memberValue : productSet) {
+                redisTemplate.opsForZSet().remove(productKey, memberValue);
+            }
+        }
+
+        redisTemplate.opsForZSet().add(cntKey, cnt, 0);
+        log.debug("특가상품 수량 등록");
+    }
+
     // 선착순 대기열에 추가
     public void addQueue(AddSpecialQueueDto dto) {
         double now = System.currentTimeMillis();
 
-        redisTemplate.opsForZSet().addIfAbsent(dto.getProductId().toString(), dto.getMemberId(), now);
-        log.debug("key: {} value: {} score: ({}초)", dto.getProductId(), dto.getMemberId(), now);
+        // 대기열에 추가
+        String productKey = "productId" + dto.getProductId();
+        String memberValue = String.valueOf(dto.getMemberId());
+        Boolean addResult = redisTemplate.opsForZSet().addIfAbsent(productKey, memberValue, now);
 
-        Long waitingOrder = redisTemplate.opsForZSet().rank(dto.getProductId().toString(), dto.getMemberId());
+        if (addResult) {
+            // 선착순 특가 상품 개수 구하기
+            String cntKey = "productId" + dto.getProductId() + "Cnt";
+            Set<String> productCntSet = redisTemplate.opsForZSet().range(cntKey, 0, 0);
+            int productCnt = Integer.parseInt(productCntSet.iterator().next().toString());
+            log.debug("특가 상품 productId: {}, 개수: {}", dto.getProductId(), productCnt);
 
+
+            Long waitingOrder = redisTemplate.opsForZSet().rank(productKey, memberValue);
+            log.debug("waitingOrder: {}", waitingOrder);
+
+            if (waitingOrder + 1 <= productCnt) {
+                log.debug("장바구니에 상품이 추가되었습니다.");
+                redisTemplate.opsForZSet().remove(cntKey, String.valueOf(productCnt));
+                redisTemplate.opsForZSet().add(cntKey, String.valueOf(productCnt - 1) , 0);
+
+                // 장바구니에 추가
+                addCart(dto.getProductId(), 0L, 0L);
+            } else {
+                log.debug("재고 부족");
+            }
+        } else {
+            log.debug("이미 참여한 회원");
+        }
     }
 
     // 대기 순서 가져오기
@@ -245,36 +294,51 @@ public class SpecialService {
     }
 
     // 대기열에 있는 인원수
-    public long geSize(Long productId) {
-        return redisTemplate.opsForZSet().size(productId.toString());
+    public long geSize(String productKey) {
+        return redisTemplate.opsForZSet().size(productKey);
     }
 
     // 장바구니에 담기
     public void addCart(Long productId, Long startRank, Long endRank) {
 
-        Set<Object> queue = redisTemplate.opsForZSet().range(productId.toString(), startRank, endRank);
         List<Wining> list = new ArrayList<>();
 
         Special special = specialRepository.findById(productId)
                         .orElseThrow(() -> new CustomException(SPECIAL_NOT_FOUND));
 
-        for (Object people : queue) {
-            if (special.getCount() <= 0) {
-                log.debug("재고가 소진되었습니다.");
+        String productKey = "productId" + productId;
+
+        Set<String> queue = redisTemplate.opsForZSet().range(productKey, startRank, endRank);
+
+        if (!queue.isEmpty()) {
+            for (String memberValue : queue) {
+                if (special.getCount() <= 0) {
+                    log.debug("재고가 소진되었습니다.");
+                    break;
+                }
+                Member member = memberRepository.findById(Long.parseLong(memberValue.toString()))
+                                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+                // wining 테이블에 추가
+                Wining wining = Wining.builder()
+                        .special(special)
+                        .member(member)
+                        .build();
+
+                try {
+                    basketService.addBasket(member.getId(), productId, 1);
+                } catch (Exception e) {
+                    log.debug("장바구니 예외 발생: {}", e.getMessage());
+                }
+
+                list.add(wining);
+
+                log.debug("memberId: {}, productId: {}", memberValue, productId);
+                // queue 에서 삭제
+                redisTemplate.opsForZSet().remove(productKey, memberValue);
             }
-            Member member = memberRepository.findById(Long.parseLong(people.toString()))
-                            .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
-
-            // wining 테이블에 추가
-            Wining wining = Wining.builder()
-                    .special(special)
-                    .member(member)
-                    .build();
-
-            list.add(wining);
-
-            log.debug("memberId: {}, productId: {}", people, productId);
-            redisTemplate.opsForZSet().remove(productId.toString(), people);
+        } else {
+            log.debug("해당 상품에 대한 구매 요청이 없습니다.");
         }
         winingRepository.saveAll(list);
 
