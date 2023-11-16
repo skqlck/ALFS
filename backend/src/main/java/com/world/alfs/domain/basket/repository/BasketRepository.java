@@ -14,5 +14,5 @@ public interface BasketRepository extends JpaRepository<Basket, Long> {
 
     void deleteByProductId(Long id);
 
-    Basket findByProductId(Long id);
+    List<Basket> findByProductId(Long productId);
 }
