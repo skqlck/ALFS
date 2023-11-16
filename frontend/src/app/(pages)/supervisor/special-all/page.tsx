@@ -6,6 +6,7 @@ import { AllProduct, DeleteProduct, SpecialAll, SpecialDelete } from "@/app/api/
 import Loading from "@/app/_components/loading/loading";
 import dynamic from "next/dynamic";
 import ProductUpdateModal from "@/app/_components/modal/ProductUpdateModal";
+import SpecialUpdateModal from "@/app/_components/modal/SpecialUpdateModal";
 
 const Card = dynamic(() => import("../../../_components/card/SupervisorCard"), {
   loading: () => <Loading />,
@@ -63,7 +64,7 @@ export default function Page() {
                     colorScheme="whatsapp"
                     onClick={() => {
                       setShow(true);
-                      setSendData(item.productId);
+                      setSendData(item);
                     }}
                   >
                     수정
@@ -93,7 +94,7 @@ export default function Page() {
           ))}
         </div>
       </div>
-      {show && <ProductUpdateModal props={sendData} data={(e: boolean) => setShow(e)} />}
+      {show && <SpecialUpdateModal props={sendData} data={(e: boolean) => setShow(e)} />}
     </div>
   );
 }

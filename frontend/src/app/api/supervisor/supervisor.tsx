@@ -106,9 +106,11 @@ export async function SpecialDelete(props: number) {
   }
 }
 
-export async function SpecialUpdate(props: any) {
+export async function SpecialUpdate(props: any, id: number) {
+  console.log(props);
+  console.log(id);
   try {
-    const res = await baseAxios.post(`api/special/props`, props);
+    const res = await baseAxios.put(`api/special/${id}`, props);
     console.log(res);
     return res;
   } catch (e) {

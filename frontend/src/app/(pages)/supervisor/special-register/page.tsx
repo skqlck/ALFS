@@ -6,6 +6,7 @@ import { AllProduct, DeleteProduct, SpecialRegister } from "@/app/api/supervisor
 import Loading from "@/app/_components/loading/loading";
 import dynamic from "next/dynamic";
 import { useForm } from "react-hook-form";
+import PropsModal from "@/app/_components/modal/PropsModal";
 
 const Card = dynamic(() => import("../../../_components/card/SupervisorCard"), {
   loading: () => <Loading />,
@@ -20,6 +21,7 @@ type Inputs = {
   salePrice: string;
   productId: number;
   supervisorId: number;
+  productName: string;
 };
 
 export default function Page() {
@@ -27,6 +29,7 @@ export default function Page() {
   const [filteredData, setFilteredData] = useState([]);
   const toast = useToast({ position: "top" });
   const { register, handleSubmit, setValue, watch } = useForm<Inputs>();
+  const [show, setShow] = useState(false);
 
   const getData = async () => {
     const res = await AllProduct();
@@ -55,6 +58,16 @@ export default function Page() {
       supervisorId: localStorage.getItem("supervisorId"),
     };
     const res = await SpecialRegister(data);
+    if (res?.data.code === 200) {
+      setShow(true);
+    } else {
+      toast({
+        title: "이미 특가로 등록된 상품입니다.",
+        status: "error",
+        duration: 3000,
+        isClosable: true,
+      });
+    }
   };
 
   useEffect(() => {
@@ -71,16 +84,18 @@ export default function Page() {
         </InputGroup>
       </div>
       <div className="w-[750px] h-auto mt-[50px]">
+        <p>현재선택된 상품 : {watch("productName")}</p>
         <div className="grid grid-cols-3 mx-auto mt-[10px]">
           {filteredData.map((item: any) => (
             <>
-              <div key={item.id} className="w-[178px] h-[500px] ml-[44px]">
+              <div key={item.id} className="w-[178px] h-[500px] ml-[44px] ">
                 <div className="flex justify-evenly mb-[10px]">
                   <Button
                     variant="outline"
                     colorScheme="whatsapp"
                     onClick={() => {
                       setValue("productId", item.id);
+                      setValue("productName", item.name);
                       toast({
                         title: "선택이 완료되었습니다.",
                         status: "success",
@@ -164,6 +179,7 @@ export default function Page() {
           </form>
         </div>
       </div>
+      {show && <PropsModal props="특가상품이 등록되었습니다." />}
     </div>
   );
 }
