@@ -394,11 +394,13 @@ public class SpecialService {
         } else {
             log.warn("Sale value not found in Redis for productId: {}", product.getId());
         }
-        Basket basket = basketRepository.findByProductId(productId);
+        List<Basket> basketList = basketRepository.findByProductId(productId);
         if (special.getCount() == 0) {
             special.setStatus(2);
             product.setSale(sale);
-            basket.setIsBigSale(false);
+            for (Basket basket : basketList) {
+                basket.setIsBigSale(false);
+            }
         }
 
         return true;
