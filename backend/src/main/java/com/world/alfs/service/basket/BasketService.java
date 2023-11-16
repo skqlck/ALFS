@@ -162,10 +162,13 @@ public class BasketService {
         if (basket.getStatus() != 0) throw new Exception("삭제 혹은 결제된 장바구니입니다.");
         if (basket.getMember().getId() != member_id) throw new Exception("권한이 없습니다.");
 
+        Product product = basket.getProduct();
+
         basket.setStatus(1);
         basket.setPurchaseDate(LocalDate.now().toString());
+        basket.setPurchase(product.getPrice());
         Basket purchasedBasket = basketRepository.save(basket);
-        Product product = purchasedBasket.getProduct();
+
         ProductImg img = productImgRepository.findByProductId(product.getId());
 
         GetProductListResponse getProductListResponse = product.toListResponse(img,null);
