@@ -35,6 +35,7 @@ public class GetSpecialListResponse {
     private Set<Integer> filterCode;
     private List<String> hates;
     private List<String> allergies;
+    private boolean isSpeical;
 
     // special
     private Long supervisorId;
@@ -55,4 +56,5 @@ public class GetSpecialListResponse {
     public void setHateDetail(List<String> str) {
         this.hates = str;
     }
+    public void setIsSpecial(boolean check) { this.isSpeical = check; }
 }

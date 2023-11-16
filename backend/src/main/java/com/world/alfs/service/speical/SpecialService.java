@@ -149,6 +149,10 @@ public class SpecialService {
             responseList.get(i).setCode(filterCode);
             responseList.get(i).setAllergyDetail(allergies);
             responseList.get(i).setHateDetail(hates);
+
+            boolean check = false;
+            if(special.getStatus() == 1) check = true;
+            responseList.get(i).setIsSpecial(check);
         }
 
         return responseList;
@@ -199,6 +203,9 @@ public class SpecialService {
         }
 
         response.setCode(filterCode);
+        boolean check = false;
+        if(special.getStatus() == 1) check = true;
+        response.setIsSpecial(check);
 
         return response;
     }
