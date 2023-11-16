@@ -4,10 +4,13 @@ import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.board.request.AddBoardRequest;
 import com.world.alfs.controller.board.request.AddCommentRequest;
 import com.world.alfs.controller.board.request.UpdateBoardRequest;
+import com.world.alfs.controller.board.response.BoardResponse;
 import com.world.alfs.service.board.BoardService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @RestController
 @RequiredArgsConstructor
@@ -25,6 +28,11 @@ public class BoardController {
     @GetMapping("/{member_id}/{board_id}")
     public ApiResponse getBoardDetail(@PathVariable Long member_id, @PathVariable Long board_id){
         return boardService.getBoardDetail(member_id, board_id);
+    }
+
+    @GetMapping("/list")
+    public ApiResponse<List<BoardResponse>> getBoardList(){
+        return boardService.getBoardList();
     }
 
     @PostMapping("/add")

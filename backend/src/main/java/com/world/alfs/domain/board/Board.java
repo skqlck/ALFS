@@ -1,5 +1,6 @@
 package com.world.alfs.domain.board;
 
+import com.world.alfs.controller.board.response.BoardResponse;
 import com.world.alfs.domain.member.Member;
 import com.world.alfs.service.board.dto.GetBoardDetailDto;
 import com.world.alfs.service.board.dto.GetBoardListDto;
@@ -69,6 +70,15 @@ public class Board{
                 .board_id(id)
                 .title(title)
                 .status(comment != null)
+                .build();
+    }
+
+    public BoardResponse toBoardResponse() {
+        return BoardResponse.builder()
+                .id(id)
+                .title(title)
+                .comment(comment)
+                .content(content)
                 .build();
     }
 }

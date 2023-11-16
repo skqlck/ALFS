@@ -5,6 +5,7 @@ import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.common.exception.ErrorCode;
 import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.board.request.AddCommentRequest;
+import com.world.alfs.controller.board.response.BoardResponse;
 import com.world.alfs.domain.board.Board;
 import com.world.alfs.domain.board.repository.BoardRepository;
 import com.world.alfs.service.board.dto.AddBoardDto;
@@ -16,6 +17,7 @@ import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.stream.Collectors;
@@ -28,7 +30,7 @@ public class BoardService {
     private final BoardRepository boardRepository;
     private final MemberRepository memberRepository;
 
-    public ApiResponse getAllBoard(Long member_id){
+    public ApiResponse getAllBoard(Long member_id) {
         Member member = memberRepository.findById(member_id).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         List<GetBoardListDto> boardList = boardRepository.findByMember(member)
                 .stream().map(board -> board.toGetBoardListDto())
@@ -36,29 +38,29 @@ public class BoardService {
         return ApiResponse.ok(boardList);
     }
 
-    public ApiResponse getBoardDetail(Long member_id, Long board_id){
+    public ApiResponse getBoardDetail(Long member_id, Long board_id) {
         Member member = memberRepository.findById(member_id).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Board board = boardRepository.findByMember(member).stream()
                 .filter(board1 -> board1.getId() == board_id).findAny()
-                .orElseThrow(()-> new CustomException(ErrorCode.BOARD_NOT_FOUND));
+                .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND));
         return ApiResponse.ok(board.toGetBoardDetailDto());
     }
 
-    public ApiResponse addBoard(Long member_id, AddBoardDto addBoardDto){
+    public ApiResponse addBoard(Long member_id, AddBoardDto addBoardDto) {
         Member member = memberRepository.findById(member_id).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Board board = addBoardDto.toEntity();
         board.setMember(member);
         board.setComment(null);
         Board newBoard = boardRepository.save(board);
-        return ApiResponse.created("생성되었습니다.",newBoard.toGetBoardDetailDto());
+        return ApiResponse.created("생성되었습니다.", newBoard.toGetBoardDetailDto());
     }
 
-    public ApiResponse updateBoard(Long member_id, UpdateBoardDto updateBoardDto){
+    public ApiResponse updateBoard(Long member_id, UpdateBoardDto updateBoardDto) {
         Member member = memberRepository.findById(member_id).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Board board = boardRepository.findByMember(member).stream()
                 .filter(b -> b.getId().equals(updateBoardDto.getBoard_id())).findAny()
                 .orElseThrow(() -> new CustomException(ErrorCode.BOARD_NOT_FOUND));
-        if ( board.getComment() != null ) throw new CustomException(ErrorCode.CANNOT_CHANGE_BOARD);
+        if (board.getComment() != null) throw new CustomException(ErrorCode.CANNOT_CHANGE_BOARD);
         board.setTitle(updateBoardDto.getTitle());
         board.setContent(updateBoardDto.getContent());
         Board updatedBoard = boardRepository.save(board);
@@ -69,5 +71,14 @@ public class BoardService {
         Optional<Board> board = boardRepository.findById(dto.getId());
         board.get().setComment(dto.getComment());
         return ApiResponse.ok(1L);
+    }
+
+    public ApiResponse<List<BoardResponse>> getBoardList() {
+        List<Board> boardList = boardRepository.findAll();
+        List<BoardResponse> responses = new ArrayList<>();
+        for (Board board : boardList) {
+            responses.add(board.toBoardResponse());
+        }
+        return ApiResponse.ok(responses);
     }
 }
