@@ -49,7 +49,7 @@ function GetListData() {
     <>
       <Carousel></Carousel>
       {response && (
-        <div className="Container flex flex-col justify-center w-[1000px] h-auto mt-[124px]">
+        <div className="Container flex flex-col justify-center w-[800px] h-auto mt-[124px]">
           총 {totalCnt}건
           <div className="flex justify-end">
             <button>
@@ -97,6 +97,8 @@ function GetListData() {
                   price={item.price}
                   sale={item.sale}
                   filterCode={item.filterCode}
+                  hates={item.hates}
+                  allergies={item.allergies}
                 />
               </div>
             ))}

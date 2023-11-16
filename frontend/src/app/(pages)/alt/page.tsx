@@ -79,7 +79,7 @@ export default function Page({}: Props) {
         <div className="grid grid-cols-3 mx-auto mt-[10px]">
           {alterProduct.length > 0 ? (
             alterProduct.map((item: any, index: number) => (
-              <div key={index} className="w-[178px] h-[450px] ml-[44px]">
+              <div key={item.id} className="w-[178px] h-[450px] ml-[44px]">
                 <Card
                   name={item.name}
                   image={item.img}
@@ -88,6 +88,8 @@ export default function Page({}: Props) {
                   price={item.price}
                   sale={item.sale}
                   filterCode={item.filterCode}
+                  hates={item.hates}
+                  allergies={item.allergies}
                 />
               </div>
             ))

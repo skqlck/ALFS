@@ -21,7 +21,6 @@ export default function Page() {
     { idx: 9, title: "베이커리 · 치즈 · 델리" },
   ];
   const pathname = usePathname();
-  console.log(pathname);
   const params = useParams();
   const [memberId, setMemberId] = useState<string>("");
   const [categoryId, setcategoryId] = useState<string>("");
@@ -77,6 +76,8 @@ export default function Page() {
                       price={item.price}
                       sale={item.sale}
                       filterCode={!item.filterCode ? [] : item.filterCode}
+                      hates={item.hates}
+                      allergies={item.allergies}
                     />
                   </div>
                 ))}
