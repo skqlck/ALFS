@@ -45,6 +45,11 @@ public class BoardController {
         return boardService.addComment(request.toDto());
     }
 
+    @GetMapping("/supervisor/{board_id}")
+    public ApiResponse<Long> getBoardDetailSupervisor(@PathVariable Long board_id){
+        return boardService.getBoardDetailSupervisor(board_id);
+    }
+
     @PutMapping("/update")
     public ApiResponse updatedBoard(@RequestBody UpdateBoardRequest updateBoardRequest){
         return boardService.updateBoard(updateBoardRequest.getMember_id(), updateBoardRequest.getBoard());

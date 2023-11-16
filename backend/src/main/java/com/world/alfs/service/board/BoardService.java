@@ -46,6 +46,11 @@ public class BoardService {
         return ApiResponse.ok(board.toGetBoardDetailDto());
     }
 
+    public ApiResponse getBoardDetailSupervisor(Long boardId) {
+        Board board = boardRepository.findById(boardId).orElseThrow(()-> new CustomException(ErrorCode.BOARD_NOT_FOUND));
+        return ApiResponse.ok(board.toGetBoardDetailDto());
+    }
+
     public ApiResponse addBoard(Long member_id, AddBoardDto addBoardDto) {
         Member member = memberRepository.findById(member_id).orElseThrow(() -> new CustomException(ErrorCode.MEMBER_NOT_FOUND));
         Board board = addBoardDto.toEntity();
