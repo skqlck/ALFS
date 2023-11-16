@@ -142,9 +142,12 @@ public class ProductController {
 
 
     public void allergy_filter(List<Product> product_list, List<GetProductListResponse> response, Long memberId) {
-
         for (int i = 0; i < product_list.size(); i++) {
             List<String> compare_ingredient = new ArrayList<>();
+
+            List<String> allergies = new ArrayList<>();
+            List<String> hates = new ArrayList<>();
+
             List<Ingredient> product_ingredient_list = productIngredientService.getAllIngredientId(product_list.get(i).getId());
             for (int a = 0; a < product_ingredient_list.size(); a++) {
                 compare_ingredient.add(product_ingredient_list.get(a).getName());
@@ -156,7 +159,15 @@ public class ProductController {
                 Allergy allergy = allergyService.getAllergy(memberAllergy_allergy_id_list.get(a));
                 for (int b = 0; b < compare_ingredient.size(); b++) {
                     if (compare_ingredient.get(b).equals(allergy.getAllergyName())) {
+
                         FilterCode.add(allergy.getAllergyType());
+
+
+                        if(allergy.getAllergyType()==0){
+                            hates.add(allergy.getAllergyName());
+                        }else if(allergy.getAllergyType()==1){
+                            allergies.add(allergy.getAllergyName());
+                        }
                     }
                 }
             }
@@ -170,9 +181,16 @@ public class ProductController {
             if (FilterCode.isEmpty()) {
                 FilterCode.add(3);
             }
+
             response.get(i).setCode(FilterCode);
+            response.get(i).setAllergyDetail(allergies);
+            response.get(i).setHateDetail(hates);
         }
 
+    }
+
+    private int findStatus(Long allergyId) {
+        return allergyService.getAllergyType2(allergyId);
     }
 
 

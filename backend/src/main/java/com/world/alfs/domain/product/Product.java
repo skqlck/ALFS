@@ -130,6 +130,9 @@ public class Product {
                 .category(category)
                 .pageCnt(pageCnt)
                 .img(img.getImg_1())
+                .filterCode(null)
+                .hates(null)
+                .allergies(null)
                 .build();
     }
 

@@ -5,6 +5,7 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.List;
 import java.util.Set;
 
 @Data
@@ -28,18 +29,25 @@ public class GetProductListResponse {
 
     private Set<Integer> filterCode;
 
+    private List<String> hates;
+
+    private List<String> allergies;
+
     @Builder
-    public GetProductListResponse(Long id, String name, String title, int price, int sale, String img, Set<Integer> filterCode, int category, Long pageCnt) {
+    public GetProductListResponse(Long id, String name, String title, int price, int sale, String img, int category, Long pageCnt, Set<Integer> filterCode, List<String> hates, List<String> allergies) {
         this.id = id;
         this.name = name;
         this.title = title;
         this.price = price;
         this.sale = sale;
         this.img = img;
-        this.filterCode = filterCode;
         this.category = category;
         this.pageCnt = pageCnt;
+        this.filterCode = filterCode;
+        this.hates = hates;
+        this.allergies = allergies;
     }
+
 
     public GetProductListResponse toGetProductListResponse(Product product) {
         return GetProductListResponse.builder()
@@ -48,10 +56,24 @@ public class GetProductListResponse {
                 .title(product.getTitle())
                 .price(product.getPrice())
                 .sale(product.getSale())
+                .filterCode(null)
+                .allergies(null)
+                .hates(null)
                 .build();
     }
 
     public void setCode(Set<Integer> filterCode) {
         this.filterCode = filterCode;
     }
+
+    public void setAllergyDetail(List<String> str) {
+        this.allergies = str;
+    }
+
+    public void setHateDetail(List<String> str) {
+        this.hates = str;
+    }
+
+
+
 }
