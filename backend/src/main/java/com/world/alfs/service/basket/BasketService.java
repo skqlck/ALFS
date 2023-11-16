@@ -57,6 +57,8 @@ public class BasketService {
 
             // 알러지 및 기피 필터링
             Set<Integer> filterCode = new HashSet<>();
+            List<String> allergies = new ArrayList<>();
+            List<String> hates = new ArrayList<>();
 
             List<Ingredient> productIngredientList = productIngredientRepository.findAllByProduct(product)
                     .stream().map(i -> i.getIngredient()).collect(Collectors.toList());
@@ -69,6 +71,12 @@ public class BasketService {
                 for (Allergy allergy : memberAllergyList) {
                     if (ingredient.getName().equals(allergy.getAllergyName())) {
                         filterCode.add(allergy.getAllergyType());
+                        if (allergy.getAllergyType() == 0){
+                            hates.add(allergy.getAllergyName());
+                        }
+                        else if (allergy.getAllergyType() == 1) {
+                            allergies.add(allergy.getAllergyName());
+                        }
                     }
                 }
             }
@@ -84,6 +92,8 @@ public class BasketService {
             }
 
             getProductListResponse.setFilterCode(filterCode);
+            getProductListResponse.setAllergies(allergies);
+            getProductListResponse.setHates(hates);
 
             GetBasketResponse response = GetBasketResponse.builder()
                     .basket_id(basket.getId())

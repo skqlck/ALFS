@@ -4,7 +4,6 @@ package com.world.alfs.service.board;
 import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.common.exception.ErrorCode;
 import com.world.alfs.controller.ApiResponse;
-import com.world.alfs.controller.board.request.AddCommentRequest;
 import com.world.alfs.controller.board.response.BoardResponse;
 import com.world.alfs.domain.board.Board;
 import com.world.alfs.domain.board.repository.BoardRepository;
