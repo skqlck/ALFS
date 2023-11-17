@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useEffect } from "react";
+import React, { useState } from "react";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import {
   Modal,
@@ -11,10 +11,11 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { Link } from "@chakra-ui/next-js";
 import { AddProductToCart } from "@/app/api/cart/CartPage";
 import { LuShoppingCart } from "react-icons/lu";
 import Image from "next/image";
+import CartAlert from "./CartAlert";
+import { AddCartSpecial } from "@/app/api/special/special";
 
 type CardProps = {
   id: number;
@@ -22,9 +23,9 @@ type CardProps = {
   name: string;
   price: number;
   sale: number;
-  member_id: string;
+  isSpecial: boolean;
 };
-export default function AddToCartFromList({ id, image, name, price, sale, member_id }: CardProps) {
+export default function AddToCartFromList({ id, image, name, price, sale, isSpecial }: CardProps) {
   const [cnt, setCnt] = useState<number>(1);
   const changeCount = (operator: string) => {
     if (id) {
@@ -42,10 +43,21 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
   const formattedPrice = new Intl.NumberFormat().format(price * cnt);
   const formattedSale = new Intl.NumberFormat().format(sale * cnt);
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const AddCart = async (id: string, cnt: number, member_id: string) => {
-    const response: any = await AddProductToCart(id, cnt, member_id);
-    console.log("장바구니 추가요청", response);
+  const [show, setShow] = useState(false);
+  const AddCart = async (id: string, cnt: number) => {
+    if (isSpecial) {
+      const response: any = await AddCartSpecial(id);
+    } else {
+      const response: any = await AddProductToCart(id, cnt);
+    }
+    onClose();
+    setShow(true);
+    setCnt(1);
+    setTimeout(() => {
+      setShow(false);
+    }, 2000);
   };
+
   return (
     <div>
       <button
@@ -56,7 +68,7 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
         담기
       </button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader mb={3}>
@@ -100,20 +112,18 @@ export default function AddToCartFromList({ id, image, name, price, sale, member
             <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
               취소
             </Button>
-            <Link
-              href={{ pathname: `/cart` }}
+            <Button
               colorScheme="whatsapp"
               variant="outline"
-              mr={3}
-              onClick={() => AddCart(String(id), cnt, member_id)}
+              onClick={() => AddCart(String(id), cnt)}
+              style={{ opacity: 1, pointerEvents: "auto", backgroundColor: "#33c130", color: "white" }}
             >
-              <Button colorScheme="whatsapp" variant="outline" mr={3}>
-                장바구니에 담기
-              </Button>
-            </Link>
+              장바구니에 담기
+            </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {show && <CartAlert props={[image, name]} />}
     </div>
   );
 }

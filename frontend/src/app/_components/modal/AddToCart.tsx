@@ -1,6 +1,6 @@
 "use client";
 
-import React from "react";
+import React, { useState } from "react";
 import { Button, useDisclosure } from "@chakra-ui/react";
 import {
   Modal,
@@ -11,22 +11,29 @@ import {
   ModalBody,
   ModalCloseButton,
 } from "@chakra-ui/react";
-import { Link } from "@chakra-ui/next-js";
 import { AddProductToCart } from "@/app/api/cart/CartPage";
 import Image from "next/image";
+import CartAlert from "./CartAlert";
+import { AddCartSpecial } from "@/app/api/special/special";
 type ItemProps = {
   id: string;
   cnt: number;
-  member_id: string;
   img: string;
   name: string;
+  isSpecial: boolean;
 };
 
-export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) {
+export default function AddToCart({ id, cnt, img, name, isSpecial }: ItemProps) {
   const { isOpen, onOpen, onClose } = useDisclosure();
-  const AddCart = async (id: string, cnt: number, member_id: string) => {
-    const response: any = await AddProductToCart(id, cnt, member_id);
-    console.log("장바구니 추가요청", response);
+  const [show, setShow] = useState(false);
+  const AddCart = async (id: string, cnt: number) => {
+    if (isSpecial) {
+      const response: any = await AddCartSpecial(id);
+    } else {
+      const response: any = await AddProductToCart(id, cnt);
+    }
+    onClose();
+    setShow(true);
   };
   return (
     <div>
@@ -38,7 +45,7 @@ export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) 
         장바구니에 담기
       </button>
 
-      <Modal isOpen={isOpen} onClose={onClose} size="xl">
+      <Modal isOpen={isOpen} onClose={onClose} size="xl" preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>
@@ -53,23 +60,22 @@ export default function AddToCart({ id, cnt, member_id, img, name }: ItemProps) 
             </div>
           </ModalBody>
           <ModalFooter>
-            <Button colorScheme="whatsapp" variant="outline" mr={3}>
-              <Link
-                href={{ pathname: `/cart` }}
-                colorScheme="whatsapp"
-                variant="outline"
-                mr={3}
-                onClick={() => AddCart(id, cnt, member_id)}
-              >
-                Add
-              </Link>
-            </Button>
             <Button colorScheme="whatsapp" variant="outline" mr={3} onClick={onClose}>
               Close
+            </Button>
+            <Button
+              colorScheme="whatsapp"
+              variant="solid"
+              color="white"
+              onClick={() => AddCart(String(id), cnt)}
+              style={{ opacity: 1, pointerEvents: "auto", backgroundColor: "#33c130", color: "white" }}
+            >
+              장바구니에 담기
             </Button>
           </ModalFooter>
         </ModalContent>
       </Modal>
+      {show && <CartAlert props={[img, name]} />}
     </div>
   );
 }

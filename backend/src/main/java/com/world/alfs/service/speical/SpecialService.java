@@ -2,11 +2,12 @@ package com.world.alfs.service.speical;
 
 import com.world.alfs.common.exception.CustomException;
 import com.world.alfs.common.exception.ErrorCode;
-import com.world.alfs.controller.product.response.GetProductListResponse;
-import com.world.alfs.controller.speical.request.AddSpecialQueueRequest;
+import com.world.alfs.controller.ApiResponse;
 import com.world.alfs.controller.speical.response.GetSpecialListResponse;
 import com.world.alfs.controller.speical.response.GetSpecialResponse;
 import com.world.alfs.domain.allergy.Allergy;
+import com.world.alfs.domain.basket.Basket;
+import com.world.alfs.domain.basket.repository.BasketRepository;
 import com.world.alfs.domain.ingredient.Ingredient;
 import com.world.alfs.domain.manufacturing_allergy.repository.ManufacturingAllergyRepository;
 import com.world.alfs.domain.member.Member;
@@ -23,13 +24,19 @@ import com.world.alfs.domain.special.Special;
 import com.world.alfs.domain.special.repository.SpecialRepository;
 import com.world.alfs.domain.supervisor.Supervisor;
 import com.world.alfs.domain.supervisor.repository.SupervisorRepository;
+import com.world.alfs.domain.wining.Wining;
+import com.world.alfs.domain.wining.repository.WiningRepository;
+import com.world.alfs.service.basket.BasketService;
 import com.world.alfs.service.speical.dto.AddSpecialDto;
 import com.world.alfs.service.speical.dto.AddSpecialQueueDto;
 import com.world.alfs.service.speical.dto.DeleteSpecialDto;
 import com.world.alfs.service.speical.dto.SetSpecialDto;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.data.redis.core.HashOperations;
 import org.springframework.data.redis.core.RedisTemplate;
+import org.springframework.data.redis.core.ZSetOperations;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -38,6 +45,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.stream.Collectors;
+
+import static com.world.alfs.common.exception.ErrorCode.*;
 
 @RequiredArgsConstructor
 @Service
@@ -53,8 +62,12 @@ public class SpecialService {
     private final ProductIngredientRepository productIngredientRepository;
     private final MemberAllergyRepository memberAllergyRepository;
     private final ManufacturingAllergyRepository manufacturingAllergyRepository;
+    private final WiningRepository winingRepository;
+    private final BasketRepository basketRepository;
 
-    private final RedisTemplate<String, Object> redisTemplate;
+    private final BasketService basketService;
+
+    private final RedisTemplate<String, String> redisTemplate;
 
     public Long addSpecial(AddSpecialDto dto) {
         Product product = productRepository.findById(dto.getProductId()).orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
@@ -67,6 +80,9 @@ public class SpecialService {
 
         Special special = dto.toEntity(product, supervisor);
         specialRepository.save(special);
+
+        // redis에 특가 상품 수량 추가
+        addSpecialCnt(dto.getProductId(), String.valueOf(dto.getCount()));
 
         return special.getId();
     }
@@ -101,6 +117,9 @@ public class SpecialService {
             // 알러지 및 기피 필터링
             Set<Integer> filterCode = new HashSet<>();
 
+            List<String> allergies = new ArrayList<>();
+            List<String> hates = new ArrayList<>();
+
             List<Ingredient> productIngredientList = productIngredientRepository.findAllByProduct(product)
                     .stream().map(ProductIngredient::getIngredient).collect(Collectors.toList());
 
@@ -112,6 +131,12 @@ public class SpecialService {
                 for (Allergy allergy : memberAllergyList) {
                     if (ingredient.getName().equals(allergy.getAllergyName())) {
                         filterCode.add(allergy.getAllergyType());
+
+                        if(allergy.getAllergyType()==0){
+                            hates.add(allergy.getAllergyName());
+                        }else if(allergy.getAllergyType()==1){
+                            allergies.add(allergy.getAllergyName());
+                        }
                     }
                 }
             }
@@ -127,6 +152,12 @@ public class SpecialService {
             }
 
             responseList.get(i).setCode(filterCode);
+            responseList.get(i).setAllergyDetail(allergies);
+            responseList.get(i).setHateDetail(hates);
+
+            boolean check = false;
+            if(special.getStatus() == 1) check = true;
+            responseList.get(i).setIsSpecial(check);
         }
 
         return responseList;
@@ -177,6 +208,9 @@ public class SpecialService {
         }
 
         response.setCode(filterCode);
+        boolean check = false;
+        if(special.getStatus() == 1) check = true;
+        response.setIsSpecial(check);
 
         return response;
     }
@@ -215,22 +249,161 @@ public class SpecialService {
         return id;
     }
 
-    // 선착순 대기열에 추가
-    public void addQueue(AddSpecialQueueDto dto) {
-        double now = System.currentTimeMillis();
+    // redis에 특가상품 수량 등록
+    public ApiResponse addSpecialCnt(Long productId, String cnt) {
+        String cntKey = "productId" + productId + "Cnt";
+        Set<String> productCntSet = redisTemplate.opsForZSet().range(cntKey, 0, 0);
+        if (productCntSet.size() != 0) {
+            int productCnt = Integer.parseInt(productCntSet.iterator().next().toString());
+            redisTemplate.opsForZSet().remove(cntKey, String.valueOf(productCnt));
+        }
 
-        // redisTemplate.opsForZSet().addIfAbsent(dto.getProductId().toString(), dto.getMemberId(), now);
-        redisTemplate.opsForZSet().add(dto.getProductId().toString(), dto.getMemberId(), now);
-        log.debug("key: {} value: {} score: ({}초)", dto.getProductId(), dto.getMemberId(), now);
+        String productKey = "productId" + productId;
+        Set<String> productSet = redisTemplate.opsForZSet().range(productKey, 0, -1);
+
+        if (productSet != null) {
+            for (String memberValue : productSet) {
+                redisTemplate.opsForZSet().remove(productKey, memberValue);
+            }
+        }
+
+        redisTemplate.opsForZSet().add(cntKey, cnt, 0);
+        log.debug("특가상품 수량 등록");
+        return ApiResponse.of(HttpStatus.OK, "특가 상품 수량 등록", cnt);
     }
 
-    // 랭킹 가져오기
+    // 선착순 대기열에 추가
+    public ApiResponse addQueue(AddSpecialQueueDto dto) {
+        double now = System.currentTimeMillis();
+
+        // 대기열에 추가
+        String productKey = "productId" + dto.getProductId();
+        String memberValue = String.valueOf(dto.getMemberId());
+        Boolean addResult = redisTemplate.opsForZSet().addIfAbsent(productKey, memberValue, now);
+
+        if (addResult) {
+            // 선착순 특가 상품 개수 구하기
+            String cntKey = "productId" + dto.getProductId() + "Cnt";
+            Set<String> productCntSet = redisTemplate.opsForZSet().range(cntKey, 0, 0);
+            int productCnt = Integer.parseInt(productCntSet.iterator().next().toString());
+            log.debug("특가 상품 productId: {}, 개수: {}", dto.getProductId(), productCnt);
+
+
+            Long waitingOrder = redisTemplate.opsForZSet().rank(productKey, memberValue);
+            log.debug("waitingOrder: {}", waitingOrder);
+
+            if (waitingOrder + 1 <= productCnt) {
+                log.debug("장바구니에 상품이 추가되었습니다.");
+                redisTemplate.opsForZSet().remove(cntKey, String.valueOf(productCnt));
+                redisTemplate.opsForZSet().add(cntKey, String.valueOf(productCnt - 1) , 0);
+
+                // 장바구니에 추가
+                boolean result =  addCart(dto.getProductId(), 0L, 0L);
+                if (result) {
+                    return ApiResponse.ok("장바구니 담기 성공");
+                }
+            } else {
+                log.debug("재고 부족");
+                return ApiResponse.badRequest("재고 부족");
+            }
+        } else {
+            log.debug("이미 참여한 회원");
+            return ApiResponse.badRequest("이미 참여한 회원");
+        }
+        return ApiResponse.badRequest("이미 존재하는 특가 상품");
+    }
+
+    // 대기 순서 가져오기
     public Long getWaitingOrder(Long productId, Object value) {
         return redisTemplate.opsForZSet().rank(productId.toString(), value);
     }
 
-    public long geSize(Long productId) {
-        return redisTemplate.opsForZSet().size(productId.toString());
+    // 대기열에서 삭제
+    public Long remove(Long productId, Object value) {
+        return redisTemplate.opsForZSet().remove(productId.toString(), value);
+    }
+
+    // 대기열에 있는 인원수
+    public long geSize(String productKey) {
+        return redisTemplate.opsForZSet().size(productKey);
+    }
+
+    // 장바구니에 담기
+    public boolean addCart(Long productId, Long startRank, Long endRank) {
+
+        List<Wining> list = new ArrayList<>();
+
+        Special special = specialRepository.findById(productId)
+                        .orElseThrow(() -> new CustomException(SPECIAL_NOT_FOUND));
+
+        String productKey = "productId" + productId;
+
+        Set<String> queue = redisTemplate.opsForZSet().range(productKey, startRank, endRank);
+
+        if (!queue.isEmpty()) {
+            for (String memberValue : queue) {
+                if (special.getCount() <= 0) {
+                    log.debug("재고가 소진되었습니다.");
+                    break;
+                }
+                Member member = memberRepository.findById(Long.parseLong(memberValue.toString()))
+                                .orElseThrow(() -> new CustomException(MEMBER_NOT_FOUND));
+
+                // wining 테이블에 추가
+                Wining wining = Wining.builder()
+                        .special(special)
+                        .member(member)
+                        .build();
+
+                try {
+                    basketService.addBasket(member.getId(), productId, 1);
+                } catch (Exception e) {
+                    log.debug("장바구니 예외 발생: {}", e.getMessage());
+                    return false;
+                }
+
+                list.add(wining);
+
+                log.debug("memberId: {}, productId: {}", memberValue, productId);
+                // queue 에서 삭제
+                redisTemplate.opsForZSet().remove(productKey, memberValue);
+                // 특가 재고 감소
+                special.changeCount(1);
+            }
+        } else {
+            log.debug("해당 상품에 대한 구매 요청이 없습니다.");
+
+        }
+        winingRepository.saveAll(list);
+
+
+
+        Product product = productRepository.findById(special.getId())
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        String productIdKey = String.valueOf(product.getId());
+        Object saleValue = hashOperations.get("saleCache", productIdKey);
+        int sale = 0;
+        if (saleValue != null) {
+            try {
+                sale = Integer.parseInt(saleValue.toString());
+                product.setSale(sale); // Product 객체의 sale을 기존 가격에서 특가할인가격으로 변경
+            } catch (NumberFormatException e) {
+                log.error("Failed to parse sale value from Redis: {}", e.getMessage());
+            }
+        } else {
+            log.warn("Sale value not found in Redis for productId: {}", product.getId());
+        }
+        List<Basket> basketList = basketRepository.findByProductId(productId);
+        if (special.getCount() == 0) {
+            special.setStatus(2);
+            product.setSale(sale);
+            for (Basket basket : basketList) {
+                basket.setIsBigSale(false);
+            }
+        }
+
+        return true;
     }
 
 }

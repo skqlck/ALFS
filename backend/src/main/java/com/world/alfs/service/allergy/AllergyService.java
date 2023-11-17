@@ -79,4 +79,9 @@ public class AllergyService {
         Optional<Allergy> allergy = allergyRepository.findById(allergyId);
         return allergy.get();
     }
+
+    public int getAllergyType2(Long allergyId) {
+        Optional<Allergy> allergy = allergyRepository.findById(allergyId);
+        return allergy.get().getAllergyType();
+    }
 }

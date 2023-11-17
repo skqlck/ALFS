@@ -4,6 +4,7 @@ import React, { useState, useEffect } from "react";
 import { GetList, ProductCnt } from "../../api/list/ListPage";
 import Loading from "@/app/_components/loading/loading";
 import dynamic from "next/dynamic";
+import Carousel from "@/app/_components/banner/Banner";
 
 const Card = dynamic(() => import("../../_components/card/Card"), {
   loading: () => <Loading />,
@@ -11,16 +12,14 @@ const Card = dynamic(() => import("../../_components/card/Card"), {
 });
 
 function GetListData() {
-  const [memberId, setMemberId] = useState<string>("");
   const [response, setResponse] = useState<any>([]);
   const [totalCnt, setTotalCnt] = useState<number>(0);
+  const [status, setStatus] = useState<number>(0);
   const [page, setPage] = useState<number>(1);
   const [totalPages, setTotalPages] = useState<number>(Math.ceil(totalCnt / 15));
   useEffect(() => {
     const ListData = async () => {
-      const member_id: string = localStorage.getItem("id")!;
-      setMemberId(member_id);
-      const res: any = await GetList(member_id, page);
+      const res: any = await GetList(page, status);
       const resCnt: any = await ProductCnt();
       setTotalCnt(resCnt);
       setResponse(res);
@@ -34,19 +33,58 @@ function GetListData() {
 
   const handlePageChange = async (newPage: number) => {
     if (newPage >= 1 && newPage <= totalPages) {
-      const res: any = await GetList(memberId, newPage);
+      const res: any = await GetList(newPage, status);
       setResponse(res);
       setPage(newPage);
+      window.scrollTo(0, 0);
     }
+  };
+
+  const ChangeStatus = async (status: number, page: number) => {
+    setStatus(status);
+    const res: any = await GetList(page, status);
+    setResponse(res);
   };
   return (
     <>
+      <Carousel></Carousel>
       {response && (
-        <div className="Container flex flex-col justify-center w-[1000px] h-auto mt-[124px]">
+        <div className="Container flex flex-col justify-center w-[800px] h-auto mt-[124px]">
           총 {totalCnt}건
-          <>
-            <span className="flex justify-end">가격높은순</span>
-          </>
+          <div className="flex justify-end">
+            <button>
+              <span
+                className={`mr-[5px] ${status === 0 ? "text-green-500" : ""}`}
+                onClick={() => {
+                  ChangeStatus(0, page);
+                }}
+              >
+                최신순
+              </span>{" "}
+            </button>
+            |
+            <button>
+              <span
+                className={` ml-[5px] mr-[5px] ${status === 1 ? "text-green-500" : ""}`}
+                onClick={() => {
+                  ChangeStatus(1, page);
+                }}
+              >
+                가격높은순
+              </span>{" "}
+            </button>
+            |{" "}
+            <button>
+              <span
+                className={` ml-[5px] mr-[5px] ${status === 2 ? "text-green-500" : ""}`}
+                onClick={() => {
+                  ChangeStatus(2, page);
+                }}
+              >
+                가격낮은순
+              </span>
+            </button>
+          </div>
           <hr />
           <div className="grid grid-cols-3 mx-auto mt-[10px]">
             {response.map((item: any) => (
@@ -58,9 +96,10 @@ function GetListData() {
                   title={item.title}
                   price={item.price}
                   sale={item.sale}
-                  delivery={item.delivery}
-                  member_id={memberId}
                   filterCode={item.filterCode}
+                  hates={item.hates}
+                  allergies={item.allergies}
+                  isSpecial={item.isSpecial}
                 />
               </div>
             ))}

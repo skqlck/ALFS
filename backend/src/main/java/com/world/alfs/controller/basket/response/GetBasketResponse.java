@@ -15,13 +15,15 @@ public class GetBasketResponse {
     private GetProductListResponse product;
     private String pack;
     private Boolean isCheck;
+    private Boolean isBigSale;
 
     @Builder
-    public GetBasketResponse(Long basket_id, int count, GetProductListResponse getProductListResponse, String pack, Boolean isCheck) {
+    public GetBasketResponse(Long basket_id, int count, GetProductListResponse getProductListResponse, String pack, Boolean isCheck, Boolean isBigSale) {
         this.basket_id = basket_id;
         this.count = count;
         this.product = getProductListResponse;
         this.pack = pack;
         this.isCheck = isCheck;
+        this.isBigSale = isBigSale;
     }
 }

@@ -3,6 +3,7 @@ import "./globals.css";
 import Nav from "./_components/header/Nav";
 import Footer from "./_components/footer/Footer";
 import { Providers } from "./providers";
+import RecentData from "./_components/header/RecentData";
 
 export const metadata: Metadata = {
   title: "ALFS",
@@ -15,6 +16,7 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       <body>
         <Providers>
           <Nav></Nav>
+          <RecentData />
           {children}
           <Footer />
         </Providers>

@@ -73,16 +73,26 @@ public class SpecialController {
     }
 
     @PostMapping("/queue")
-    public ApiResponse<Long> addQueue(@RequestBody AddSpecialQueueRequest request) {
+    public ApiResponse addQueue(@RequestBody AddSpecialQueueRequest request) {
         AddSpecialQueueDto dto = request.toDto();
-        specialService.addQueue(dto);
-        return ApiResponse.ok(request.getMemberId());
+        log.debug("dto.getProductId: {}, dto.getMemberId: {}", dto.getProductId(), dto.getMemberId());
+        return specialService.addQueue(dto);
     }
 
     @GetMapping("/queue/{productId}/{memberId}")
     public ApiResponse<Long> getWaitingOrder(@PathVariable Long productId, @PathVariable Long memberId) {
         specialService.getWaitingOrder(productId, memberId);
         return ApiResponse.ok(memberId);
+    }
+
+    @GetMapping("/queue/{productId}/{startRank}/{endRank}")
+    public void addCart(@PathVariable Long productId, @PathVariable Long startRank, @PathVariable Long endRank) {
+        specialService.addCart(productId, startRank, endRank);
+    }
+
+    @GetMapping("/register/{productId}/{cnt}")
+    public ApiResponse addSpecialCnt(@PathVariable Long productId, @PathVariable String cnt) {
+        return specialService.addSpecialCnt(productId, cnt);
     }
 
 }

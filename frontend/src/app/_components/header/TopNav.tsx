@@ -7,8 +7,9 @@ import { useRouter } from "next/navigation";
 
 export default function TopNav() {
   const router = useRouter();
-  const toast = useToast();
+  const toast = useToast({ position: "top" });
   const [memberId, setMemberId] = useState<any>();
+  const [superId, setSuperId] = useState<any>();
   const handleLogout = () => {
     toast({
       title: "로그아웃 되었습니다.",
@@ -17,13 +18,17 @@ export default function TopNav() {
       isClosable: true,
     });
     localStorage.removeItem("id");
+    localStorage.removeItem("supervisorId");
     setMemberId("");
+    setSuperId("");
     router.push("/");
   };
 
   useEffect(() => {
     const id = localStorage.getItem("id");
+    const sup = localStorage.getItem("supervisorId");
     setMemberId(id);
+    setSuperId(sup);
   }, []);
 
   return (
@@ -40,6 +45,17 @@ export default function TopNav() {
               </Button>
             </Link>
           </>
+        ) : superId ? (
+          <>
+            <Button variant="unstyled" marginRight="10px" onClick={handleLogout}>
+              로그아웃
+            </Button>
+            <Link href="/supervisor/register">
+              <Button variant="unstyled" marginRight="10px">
+                관리자페이지
+              </Button>
+            </Link>
+          </>
         ) : (
           <>
             <Link href="/login">
@@ -47,7 +63,7 @@ export default function TopNav() {
                 로그인
               </Button>
             </Link>
-            <Link href="signup">
+            <Link href="/signup">
               <Button variant="unstyled" marginRight="10px">
                 회원가입
               </Button>
@@ -56,10 +72,13 @@ export default function TopNav() {
         )}
 
         <Menu>
-          <MenuButton>고객센터</MenuButton>
+          <MenuButton>
+            <b>고객센터</b>
+          </MenuButton>
           <MenuList>
-            <MenuItem>1:1 문의</MenuItem>
-            <MenuItem>상품 문의</MenuItem>
+            <Link href="/board/all">
+              <MenuItem>1:1 문의</MenuItem>
+            </Link>
           </MenuList>
         </Menu>
       </div>

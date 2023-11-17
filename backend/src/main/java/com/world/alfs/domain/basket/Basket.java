@@ -36,11 +36,15 @@ public class Basket {
     // 구매 시점에 데이터 삽입
     private Integer purchase;
 
+    // 특가상품인지 파악하는 컬럼
+    @Column
+    private Boolean isBigSale;
+
     @Column(name = "purchase_date")
     private String purchaseDate;
 
     @Builder
-    public Basket(Long id, Member member, Product product, int count, int status, Integer purchase, String purchaseDate) {
+    public Basket(Long id, Member member, Product product, int count, int status, Integer purchase, String purchaseDate, Boolean isBigSale) {
         this.id = id;
         this.member = member;
         this.product = product;
@@ -48,6 +52,7 @@ public class Basket {
         this.status = status;
         this.purchase = purchase;
         this.purchaseDate = purchaseDate;
+        this.isBigSale = isBigSale;
     }
 
     // == 비지니스 로직 == //
@@ -74,4 +79,6 @@ public class Basket {
     public void setPurchaseDate(String purchaseDate) {
         this.purchaseDate = purchaseDate;
     }
+
+    public void setIsBigSale(boolean isBigSale) { this.isBigSale = isBigSale; }
 }

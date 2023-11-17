@@ -176,23 +176,6 @@ export async function MyHate(props: any) {
   }
 }
 
-export async function NaverImage(e: any) {
-  try {
-    const res = await axios.get(
-      `	https://dapi.kakao.com/v2/search/web?query=${e}음식 나무위키&sort=accuracy&size=1&page=1`,
-      {
-        headers: {
-          Authorization: `KakaoAK fc854580a3982d3c7489ae94709707aa`,
-        },
-      }
-    );
-    console.log(res.data);
-    return res.data;
-  } catch (e) {
-    console.error(e);
-  }
-}
-
 export async function UserInfo() {
   const id = localStorage.getItem("id");
   try {
@@ -217,6 +200,16 @@ export async function UserDelete(props: any) {
   const id = localStorage.getItem("id");
   try {
     const res = await baseAxios.put(`api/member/delete`, { member_id: id, password: props });
+    return res;
+  } catch (e) {
+    console.error(e);
+  }
+}
+
+export async function UserOrder() {
+  const id = localStorage.getItem("id");
+  try {
+    const res = await baseAxios.get(`api/basket/purchase/${id}`);
     return res;
   } catch (e) {
     console.error(e);

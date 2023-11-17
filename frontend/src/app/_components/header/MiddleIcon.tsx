@@ -1,10 +1,10 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { FaRegHeart } from "react-icons/fa";
 import { AiOutlineShoppingCart } from "react-icons/ai";
 import { AiOutlineEnvironment } from "react-icons/ai";
-import { Button } from "@chakra-ui/react";
+import { MdOutlineFoodBank } from "react-icons/md";
+import { Button, Tooltip } from "@chakra-ui/react";
 import Link from "next/link";
 
 import {
@@ -37,56 +37,70 @@ export default function MiddleIcon() {
   }, []);
   return (
     <div className="flex gap-[20px]">
-      <Popover>
-        <PopoverTrigger>
-          <Button width="40px" height="40px" variant="unstyled">
-            <AiOutlineEnvironment className="min-w-[40px] min-h-[40px]" />
-          </Button>
-        </PopoverTrigger>
-        <PopoverContent>
-          <PopoverArrow />
-          <PopoverCloseButton />
-          {memberId ? (
-            <>
-              <PopoverHeader>
-                <b className="text-[20px]">현재배송지</b>
-              </PopoverHeader>
-              <PopoverBody>
-                {address[0]?.address_1}
-                <br />
-                {address[0]?.address_2}
-              </PopoverBody>
-              <PopoverFooter justifyContent="end" display="flex">
-                <Link href="/mypage/home">
-                  <Button variant="outline" colorScheme="whatsapp">
-                    배송지 추가하러 가기
-                  </Button>
-                </Link>
-              </PopoverFooter>
-            </>
-          ) : (
-            <>
-              <PopoverHeader>
-                <b className="text-[20px]">현재배송지</b>
-              </PopoverHeader>
-              <PopoverBody>
-                배송지 정보가 없습니다.
-                <br />
-              </PopoverBody>
-              <PopoverFooter justifyContent="end" display="flex">
-                <Link href="/login">
-                  <Button variant="outline" colorScheme="whatsapp">
-                    로그인
-                  </Button>
-                </Link>
-              </PopoverFooter>
-            </>
-          )}
-        </PopoverContent>
-      </Popover>
-      <FaRegHeart className="min-w-[40px] h-[40px]" />
-      <Link href={{ pathname: `/cart` }}>
-        <AiOutlineShoppingCart className="min-w-[40px] h-[40px]" />
+      <Tooltip label="배송지" placement="top">
+        <span>
+          <Popover>
+            <PopoverTrigger>
+              <Button width="40px" height="40px" variant="unstyled">
+                <AiOutlineEnvironment className="min-w-[40px] min-h-[40px]" />
+              </Button>
+            </PopoverTrigger>
+            <PopoverContent>
+              <PopoverArrow />
+              <PopoverCloseButton />
+              {memberId ? (
+                <>
+                  <PopoverHeader>
+                    <b className="text-[20px]">현재배송지</b>
+                  </PopoverHeader>
+                  <PopoverBody>
+                    {address[0]?.address_1}
+                    <br />
+                    {address[0]?.address_2}
+                  </PopoverBody>
+                  <PopoverFooter justifyContent="end" display="flex">
+                    <Link href="/mypage/home">
+                      <Button variant="outline" colorScheme="whatsapp">
+                        배송지 추가하러 가기
+                      </Button>
+                    </Link>
+                  </PopoverFooter>
+                </>
+              ) : (
+                <>
+                  <PopoverHeader>
+                    <b className="text-[20px]">현재배송지</b>
+                  </PopoverHeader>
+                  <PopoverBody>
+                    배송지 정보가 없습니다.
+                    <br />
+                  </PopoverBody>
+                  <PopoverFooter justifyContent="end" display="flex">
+                    <Link href="/login">
+                      <Button variant="outline" colorScheme="whatsapp">
+                        로그인
+                      </Button>
+                    </Link>
+                  </PopoverFooter>
+                </>
+              )}
+            </PopoverContent>
+          </Popover>
+        </span>
+      </Tooltip>
+      <Link href={{ pathname: `/mypage/allergy` }}>
+        <Tooltip label="알러지" placement="top">
+          <span>
+            <MdOutlineFoodBank className="min-w-[40px] h-[40px]" />
+          </span>
+        </Tooltip>
+      </Link>
+      <Link href={{ pathname: `/cart` }} id="cart">
+        <Tooltip label="장바구니" placement="top">
+          <span>
+            <AiOutlineShoppingCart className="min-w-[40px] h-[40px]" />
+          </span>
+        </Tooltip>
       </Link>
     </div>
   );

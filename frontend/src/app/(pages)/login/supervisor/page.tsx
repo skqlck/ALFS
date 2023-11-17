@@ -1,7 +1,6 @@
 "use client";
 
 import { Button, FormControl, Input, useToast } from "@chakra-ui/react";
-import { useRouter } from "next/navigation";
 import React from "react";
 import { useForm } from "react-hook-form";
 
@@ -15,7 +14,6 @@ type Inputs = {
 export default function Page() {
   const { register, handleSubmit } = useForm<Inputs>();
   const toast = useToast();
-  const router = useRouter();
 
   const handleLogin = async (e: any) => {
     const res = await SupervisorLogin(e);
@@ -27,8 +25,8 @@ export default function Page() {
         isClosable: true,
       });
     } else {
-      localStorage.setItem("supervisorId", res.data.supervisorId);
-      router.push("/supervisor/register");
+      localStorage.setItem("supervisorId", res.data.data.supervisorId);
+      window.location.replace("/supervisor/register");
     }
   };
   return (

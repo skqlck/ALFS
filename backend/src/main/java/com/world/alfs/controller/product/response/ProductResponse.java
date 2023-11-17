@@ -4,6 +4,8 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
+import java.util.Set;
+
 
 @Data
 @NoArgsConstructor
@@ -17,8 +19,6 @@ public class ProductResponse {
     private int price;
 
     private int sale;
-
-    private String img;
 
     private String delivery;
 
@@ -50,15 +50,18 @@ public class ProductResponse {
 
     private int category;
 
+    private Set<Integer> filterCode;
+
+    private Boolean isSpecial;
+
     @Builder
-    public ProductResponse(Long id, String name, String title, int price, int sale, String img, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate,
-                           String information, String buyType, int stock, String content, String main_img, String detail_img, String ingre_img, int category) {
+    public ProductResponse(Long id, String name, String title, int price, int sale, String delivery, String seller, String pack, String count, String weight, String allergy, String expireDate,
+                           String information, String buyType, int stock, String content, String main_img, String detail_img, String ingre_img, int category, Set<Integer> filterCode, Boolean isSpecial) {
         this.id = id;
         this.name = name;
         this.title = title;
         this.price = price;
         this.sale = sale;
-        this.img = img;
         this.delivery = delivery;
         this.seller = seller;
         this.pack = pack;
@@ -74,10 +77,16 @@ public class ProductResponse {
         this.detail_img = detail_img;
         this.ingre_img = ingre_img;
         this.category = category;
+        this.filterCode = filterCode;
+        this.isSpecial = isSpecial;
     }
 
     public void setSpecialPrice(int salePrice) {
         this.sale = salePrice;
+    }
+
+    public void setCode(Set<Integer> filterCode){
+        this.filterCode = filterCode;
     }
 
 }

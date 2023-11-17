@@ -14,13 +14,15 @@ public class AddBasketDto {
     private Product product;
     private int count;
     private int status;
+    private Boolean isBigSale;
 
     @Builder
-    public AddBasketDto(Member member, Product product, int count, int status) {
+    public AddBasketDto(Member member, Product product, int count, int status, Boolean isBigSale) {
         this.member = member;
         this.product = product;
         this.count = count;
         this.status = status;
+        this.isBigSale = isBigSale;
     }
 
     public Basket toEntity(){
@@ -31,6 +33,7 @@ public class AddBasketDto {
                 .count(count)
                 .purchase(null)
                 .purchaseDate(null)
+                .isBigSale(isBigSale)
                 .build();
     }
 }

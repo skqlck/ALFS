@@ -11,7 +11,7 @@ export default function DownArrow() {
       animationData={lottieJson}
       play
       // style 은 선택
-      style={{ width: 300, height: 300 }}
+      style={{ width: 250, height: 250 }}
     />
   );
 }

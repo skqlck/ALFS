@@ -21,10 +21,10 @@ function LoginModal() {
     if (show === false) {
       router.push("/login");
     }
-  });
+  }, [show]);
   return (
     <div>
-      <Modal isOpen={show} onClose={() => setShow(false)}>
+      <Modal isOpen={show} onClose={() => setShow(false)} preserveScrollBarGap={true}>
         <ModalOverlay />
         <ModalContent>
           <ModalHeader>ERROR</ModalHeader>

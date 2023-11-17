@@ -8,6 +8,7 @@ import { useToast } from "@chakra-ui/react";
 import DaumPost from "@/app/_components/location/Daumpost";
 
 import { CheckEmail, CheckId, CheckPhone, UserSignup } from "@/app/api/user/user";
+import { useRouter } from "next/navigation";
 
 type Inputs = {
   name: string;
@@ -33,12 +34,20 @@ export default function Page() {
   const emailRex = /^[A-Z0-9._%+-]+@[A-Z0-9.-]+\.[A-Z]{2,4}$/i;
   const phoneRex = /^010\d{3,4}\d{4}$/;
   const toast = useToast();
+  const router = useRouter();
 
   const [allergy2, setAllergy2] = useState("");
   const [selectedAllergy2, setSelectedAllergy2] = useState<string[]>([]);
   const [hate, setHate] = useState("");
   const [selectedHate, setSelectedHate] = useState<string[]>([]);
   const { register, handleSubmit, watch, setValue } = useForm<Inputs>();
+
+  useEffect(() => {
+    const id = localStorage.getItem("id");
+    if (id) {
+      router.push("/");
+    }
+  }, []);
 
   //helpertext보여주기
   const [showtext, setShowText] = useState({
@@ -84,7 +93,6 @@ export default function Page() {
   //회원가입버튼
   const handleSignup = async (e: any) => {
     const userId = await UserSignup(e);
-    console.log(userId);
 
     toast({
       title: "회원가입에 성공했습니다. 로그인 페이지로 이동합니다.",
