@@ -524,5 +524,5 @@
 
 | 연주원                                  | 김수진                                | 손효민                                        | 신대혁               | 안종상     | 홍주영    |
 | --------------------------------------- | ------------------------------------- | --------------------------------------------- | -------------------- | ---------- | --------- |
-| [joo1yeon](https://github.com/joo1yeon) | [soo0300](https://github.com/soo0300) | [SonHyoMin00](https://github.com/SonHyoMin00) |                      |            |           |
+| [joo1yeon](https://github.com/joo1yeon) | [soo0300](https://github.com/soo0300) | [SonHyoMin00](https://github.com/SonHyoMin00) | [shindaehyuk](https://github.com/shindaehyuk) | [skqlck](https://github.com/skqlck) | [Juaaang](https://github.com/Juaaang) |
 | 팀장, Back-end, Infra, 기획 발표        | Back-end                              | Back-end                                      | Front-end, 최종 발표 | Full-stack | Front-end |
