@@ -107,6 +107,153 @@
 
 # 📌기능 소개
 
+## &#128106; 페이지 소개 - 일반회원 
+  <div>
+    <h3 style= "text-align : center;">메인페이지</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        메인페이지 상단부<img src="./ALFS_IMAGE/main_top.PNG" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        메인페이지 중단부<img src="./ALFS_IMAGE/main_mid.PNG" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        메인페이지 하단부<img src="./ALFS_IMAGE/main_bottom.PNG" />
+      </div>
+    </div>
+    <h3 style="text-align : center">마이페이지 - 알러지 관리</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        회원가입 후 알러지 조회<img src="./ALFS_IMAGE/init_allergy.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        알러지 추가<img src="./ALFS_IMAGE/setting_allergy.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        기본 알러지 22가지<img src="./ALFS_IMAGE/default_22allergy.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        기피 식품 추가<img src="./ALFS_IMAGE/add_hates.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+       추가 후 알러지 조회<img src="./ALFS_IMAGE/after_setting_allergy.png"/>
+      </div>
+    </div>
+    <h3 style="text-align : center">상품 조회</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        전체 상품 조회<img src="./ALFS_IMAGE/list_product.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        알러지 필터링<img src="./ALFS_IMAGE/why.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        상품 상세 조회<img src="./ALFS_IMAGE/product_detail.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        장바구니에 담기<img src="./ALFS_IMAGE/addcart.png" />
+      </div>
+    </div>
+    <h3 style="text-align : center">대체상품 조회</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        대체상품 조회<img src="./ALFS_IMAGE/alternative_food.png"/>
+        추가한 알러지에 대한 대체식품군으로 조회
+      </div>
+    </div>
+    <h3 style="text-align : center">특가할인 페이지</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        특가 할인 예정 상품<img src="./ALFS_IMAGE/bigsale_upcoming.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        특가 할인중인 상품<img src="./ALFS_IMAGE/bigsale_now.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        특가 할인 종료된 상품<img src="./ALFS_IMAGE/bigsale_soldout.png"/>
+      </div>
+    </div>
+    <h3 style="text-align : center">장바구니</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        장바구니 조회<img src="./ALFS_IMAGE/basket.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        결제<img src="./ALFS_IMAGE/purchase.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        결제 완료 후<img src="./ALFS_IMAGE/purchase_success.png" />
+      </div>
+    </div>
+    <h3 style="text-align : center">마이페이지 - 주문내역</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        주문내역 조회<img src="./ALFS_IMAGE/purchase_list.png" />
+      </div>
+    </div>
+    <h3 style="text-align : center">마이페이지 - 배송지 관리</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        배송지 조회 및 추가<img src="./ALFS_IMAGE/address_list.png" />
+      </div>
+    </div>
+    <h3 style="text-align : center">이벤트 페이지</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        이벤트 (양자택일) <img src="./ALFS_IMAGE/event.png"/>
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        이벤트 참여<img src="./ALFS_IMAGE/choose_one.png"/>
+      </div>
+    </div>
+  </div>
+
+## &#128119; 페이지 소개 - 관리자
+  <div>
+    <h3 style="text-align : center">관리자 페이지 - 상품등록</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        상품등록<img src="./ALFS_IMAGE/register_product.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        상품등록 - 상품 사진 등록<img src="./ALFS_IMAGE/register_product_1.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        상품등록 - 원재료<img src="./ALFS_IMAGE/register_product_2.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        상품등록 - 원재료 추출<img src="./ALFS_IMAGE/register_product_3.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        상품등록 - 기타 정보<img src="./ALFS_IMAGE/register_product_4.png" />
+      </div>
+    </div>
+    <h3 style="text-align : center">관리자 페이지 - 상품관리</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        상품 관리<img src="./ALFS_IMAGE/management_product.png" />
+      </div>
+    </div>
+    <h3 style="text-align : center">관리자 페이지 - 특가상품 등록</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        특가상품 등록<img src="./ALFS_IMAGE/register_bigsale_product.png" />
+      </div>
+    </div>
+    <h3 style="text-align : center">관리자 페이지 - 특가상품 관리</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        특가상품 관리<img src="./ALFS_IMAGE/management_bigsale_product.png" />
+      </div>
+    </div>
+    <h3 style="text-align : center">관리자 페이지 - 문의내역 관리</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        1:1 문의 답변<img src="./ALFS_IMAGE/counsel.png" />
+      </div>
+    </div>
+  </div>
+
 ## 주요 기능
 
 ⭐ **알러지 필터링**
