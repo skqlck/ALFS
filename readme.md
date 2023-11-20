@@ -120,6 +120,9 @@
       <div style="border : solid white 1px; text-align : center;">
         메인페이지 하단부<img src="./ALFS_IMAGE/main_bottom.PNG" />
       </div>
+      <div style="border : solid white 1px; text-align : center;">
+        메인페이지<img src="./exec/Readme-asset/ALFS_gif/메인.gif" />
+      </div>
     </div>
     <h3 style="text-align : center">마이페이지 - 알러지 관리</h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
@@ -138,6 +141,12 @@
       <div style="border : solid white 1px; text-align : center;">
        추가 후 알러지 조회<img src="./ALFS_IMAGE/after_setting_allergy.png"/>
       </div>
+      <div style="border : solid white 1px; text-align : center;">
+        회원가입<img src="./exec/Readme-asset/ALFS_gif/회원가입.gif" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        알러지 선택<img src="./exec/Readme-asset/ALFS_gif/알러지-선택.gif" />
+      </div>
     </div>
     <h3 style="text-align : center">상품 조회</h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
@@ -153,12 +162,27 @@
       <div style="border : solid white 1px; text-align : center;">
         장바구니에 담기<img src="./ALFS_IMAGE/addcart.png" />
       </div>
+      <div style="border : solid white 1px; text-align : center;">
+        알러지 필터링<img src="./exec/Readme-asset/ALFS_gif/알러지-뱃지-확인.gif" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        상품 정렬<img src="./exec/Readme-asset/ALFS_gif/전체-상품-정렬.gif" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        카테고리 조회<img src="./exec/Readme-asset/ALFS_gif/카테고리.gif" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        검색<img src="./exec/Readme-asset/ALFS_gif/검색.gif" />
+      </div>
     </div>
     <h3 style="text-align : center">대체상품 조회</h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
       <div style="border : solid white 1px; text-align : center;">
         대체상품 조회<img src="./ALFS_IMAGE/alternative_food.png"/>
         추가한 알러지에 대한 대체식품군으로 조회
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        대체 상품<img src="./exec/Readme-asset/ALFS_gif/대체식품.gif" />
       </div>
     </div>
     <h3 style="text-align : center">특가할인 페이지</h3>
@@ -172,6 +196,9 @@
       <div style="border : solid white 1px; text-align : center;">
         특가 할인 종료된 상품<img src="./ALFS_IMAGE/bigsale_soldout.png"/>
       </div>
+      <div style="border : solid white 1px; text-align : center;">
+        특가 할인<img src="./exec/Readme-asset/ALFS_gif/특가상품-구매.gif" />
+      </div>
     </div>
     <h3 style="text-align : center">장바구니</h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
@@ -183,6 +210,9 @@
       </div>
       <div style="border : solid white 1px; text-align : center;">
         결제 완료 후<img src="./ALFS_IMAGE/purchase_success.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        장바구니<img src="./exec/Readme-asset/ALFS_gif/장바구니-결제.gif" />
       </div>
     </div>
     <h3 style="text-align : center">마이페이지 - 주문내역</h3>
@@ -196,6 +226,9 @@
       <div style="border : solid white 1px; text-align : center;">
         배송지 조회 및 추가<img src="./ALFS_IMAGE/address_list.png" />
       </div>
+      <div style="border : solid white 1px; text-align : center;">
+        배송지 관리<img src="./exec/Readme-asset/ALFS_gif/배송지-추가-및-변경.gif" />
+      </div>
     </div>
     <h3 style="text-align : center">이벤트 페이지</h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
@@ -205,11 +238,26 @@
       <div style="border : solid white 1px; text-align : center;">
         이벤트 참여<img src="./ALFS_IMAGE/choose_one.png"/>
       </div>
+      <div style="border : solid white 1px; text-align : center;">
+        이벤트 참여<img src="./exec/Readme-asset/ALFS_gif/이벤트.gif" />
+      </div>
+    </div>
+    <h3 style="text-align : center">고객 센터 1:1 문의</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        1:1 문의 작성<img src="./exec/Readme-asset/ALFS_gif/사용자-문의-작성.gif" />
+      </div>
     </div>
   </div>
 
 ## &#128119; 페이지 소개 - 관리자
   <div>
+    <h3 style="text-align : center">관리자 로그인</h3>
+    <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
+      <div style="border : solid white 1px; text-align : center;">
+        카테고리 조회<img src="./exec/Readme-asset/ALFS_gif/관리자-로그인.gif" />
+      </div>
+    </div>
     <h3 style="text-align : center">관리자 페이지 - 상품등록</h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
       <div style="border : solid white 1px; text-align : center;">
@@ -227,17 +275,26 @@
       <div style="border : solid white 1px; text-align : center;">
         상품등록 - 기타 정보<img src="./ALFS_IMAGE/register_product_4.png" />
       </div>
+      <div style="border : solid white 1px; text-align : center;">
+        상품 등록 <img src="./exec/Readme-asset/ALFS_gif/관리자-상품-등록.gif" />
+      </div>
     </div>
     <h3 style="text-align : center">관리자 페이지 - 상품관리</h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
       <div style="border : solid white 1px; text-align : center;">
         상품 관리<img src="./ALFS_IMAGE/management_product.png" />
       </div>
+      <div style="border : solid white 1px; text-align : center;">
+        상품 관리<img src="./exec/Readme-asset/ALFS_gif/관리자-상품-삭제.gif" />
+      </div>
     </div>
     <h3 style="text-align : center">관리자 페이지 - 특가상품 등록</h3>
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
       <div style="border : solid white 1px; text-align : center;">
         특가상품 등록<img src="./ALFS_IMAGE/register_bigsale_product.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        회원가입<img src="./exec/Readme-asset/ALFS_gif/특가상품-등록.gif" />
       </div>
     </div>
     <h3 style="text-align : center">관리자 페이지 - 특가상품 관리</h3>
@@ -250,6 +307,9 @@
     <div style="display: grid; grid-template-columns: 1fr 1fr 1fr;">
       <div style="border : solid white 1px; text-align : center;">
         1:1 문의 답변<img src="./ALFS_IMAGE/counsel.png" />
+      </div>
+      <div style="border : solid white 1px; text-align : center;">
+        1:1 문의 답변<img src="./exec/Readme-asset/ALFS_gif/관리자-문의-답변.gif" />
       </div>
     </div>
   </div>
@@ -294,6 +354,10 @@
 ### 2. ERD
 
 ![alfs.png](exec/Readme-asset/alfs.png)
+
+### Git Flow
+
+![git-graph.gif](exec/Readme-asset/git-graph.gif)
 
 ### 프로젝트 구조
 
