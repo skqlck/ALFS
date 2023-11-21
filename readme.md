@@ -391,11 +391,11 @@ npm start
 
 ### 프로젝트 산출물
 
-### 1. Figma
+### Figma
 
 ![20231117_105748.png](exec/Readme-asset/20231117_105748.png)
 
-### 2. ERD
+### ERD
 
 ![alfs.png](exec/Readme-asset/ERD.png)
 
