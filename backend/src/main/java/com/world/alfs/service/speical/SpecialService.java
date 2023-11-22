@@ -376,30 +376,36 @@ public class SpecialService {
         }
         winingRepository.saveAll(list);
 
+        List<Basket> checkList = basketRepository.findByProductIdAndStatus(productId, 1);
 
-
-        Product product = productRepository.findById(special.getId())
-                .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
+        // 레디스에서 특가상품 총 수량 가져오기
         HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
-        String productIdKey = String.valueOf(product.getId());
-        Object saleValue = hashOperations.get("saleCache", productIdKey);
-        int sale = 0;
-        if (saleValue != null) {
-            try {
-                sale = Integer.parseInt(saleValue.toString());
-                product.setSale(sale); // Product 객체의 sale을 기존 가격에서 특가할인가격으로 변경
-            } catch (NumberFormatException e) {
-                log.error("Failed to parse sale value from Redis: {}", e.getMessage());
+        String productIdKey = String.valueOf(productId);
+        Object specialValue = hashOperations.get("specialCache", productIdKey);
+
+        if (checkList.size() == Integer.parseInt(specialValue.toString())) {
+            Product product = productRepository.findById(special.getId())
+                    .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
+
+            Object saleValue = hashOperations.get("saleCache", productIdKey);
+            int sale = 0;
+            if (saleValue != null) {
+                try {
+                    sale = Integer.parseInt(saleValue.toString());
+                    product.setSale(sale);
+                } catch (NumberFormatException e) {
+                    log.error("Failed to parse sale value from Redis: {}", e.getMessage());
+                }
+            } else {
+                log.warn("Sale value not found in Redis for productId: {}", product.getId());
             }
-        } else {
-            log.warn("Sale value not found in Redis for productId: {}", product.getId());
-        }
-        List<Basket> basketList = basketRepository.findByProductId(productId);
-        if (special.getCount() == 0) {
-            special.setStatus(2);
-            product.setSale(sale);
-            for (Basket basket : basketList) {
-                basket.setIsBigSale(false);
+            List<Basket> basketList = basketRepository.findByProductId(productId);
+            if (special.getCount() == 0) {
+                special.setStatus(2);
+                product.setSale(sale);
+                for (Basket basket : basketList) {
+                    basket.setIsBigSale(false);
+                }
             }
         }
 
