@@ -280,6 +280,9 @@ public class SpecialService {
             log.warn("No field found to delete for productId: {}", id);
         }
 
+        // 원래 가격으로 되돌리기
+        revert(id, special, hashOperations, productIdKey);
+
         return id;
     }
 
@@ -418,32 +421,37 @@ public class SpecialService {
         Object specialValue = hashOperations.get("specialCache", productIdKey);
 
         if (checkList.size() == Integer.parseInt(specialValue.toString())) {
-            Product product = productRepository.findById(special.getId())
-                    .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
-
-            Object saleValue = hashOperations.get("saleCache", productIdKey);
-            int sale = 0;
-            if (saleValue != null) {
-                try {
-                    sale = Integer.parseInt(saleValue.toString());
-                    product.setSale(sale);
-                } catch (NumberFormatException e) {
-                    log.error("Failed to parse sale value from Redis: {}", e.getMessage());
-                }
-            } else {
-                log.warn("Sale value not found in Redis for productId: {}", product.getId());
-            }
-            List<Basket> basketList = basketRepository.findByProductId(productId);
-            if (special.getCount() == 0) {
-                special.setStatus(2);
-                product.setSale(sale);
-                for (Basket basket : basketList) {
-                    basket.setIsBigSale(false);
-                }
-            }
+            // 원래 가격으로 되돌리기
+            revert(productId, special, hashOperations, productIdKey);
         }
 
         return true;
+    }
+
+    public void revert(Long productId, Special special, HashOperations<String, Object, Object> hashOperations, String productIdKey) {
+        Product product = productRepository.findById(special.getId())
+                .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
+
+        Object saleValue = hashOperations.get("saleCache", productIdKey);
+        int sale = 0;
+        if (saleValue != null) {
+            try {
+                sale = Integer.parseInt(saleValue.toString());
+                product.setSale(sale);
+            } catch (NumberFormatException e) {
+                log.error("Failed to parse sale value from Redis: {}", e.getMessage());
+            }
+        } else {
+            log.warn("Sale value not found in Redis for productId: {}", product.getId());
+        }
+        List<Basket> basketList = basketRepository.findByProductId(productId);
+        if (special.getCount() == 0) {
+            special.setStatus(2);
+            product.setSale(sale);
+            for (Basket basket : basketList) {
+                basket.setIsBigSale(false);
+            }
+        }
     }
 
 }
