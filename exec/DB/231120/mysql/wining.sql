@@ -1,0 +1,9 @@
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (128, 41, 24);
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (137, 72, 27);
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (138, 71, 27);
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (139, 26, 38);
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (140, 73, 38);
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (141, 2, 77);
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (142, 2, 38);
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (143, 41, 38);
+INSERT INTO alfs.wining (id, member_id, product_id) VALUES (144, 74, 39);

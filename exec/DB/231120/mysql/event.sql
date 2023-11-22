@@ -1,0 +1,5 @@
+INSERT INTO alfs.event (id, case1, case1_cnt, case2, case2_cnt, end, start, status, title, supervisor_id) VALUES (1, '피망', 45, '당근', 25, '2023-11-15 14:55:20.000000', '2023-11-15 14:55:00.000000', 0, '뭐가 더 맛있을까?', 1);
+INSERT INTO alfs.event (id, case1, case1_cnt, case2, case2_cnt, end, start, status, title, supervisor_id) VALUES (2, '오이', 143, '브로콜리', 145, '2023-11-15 16:09:50.000000', '2023-11-15 16:09:30.000000', 1, '더 싫어하는 것은?', 1);
+INSERT INTO alfs.event (id, case1, case1_cnt, case2, case2_cnt, end, start, status, title, supervisor_id) VALUES (3, 'Case 1', 10, 'Case 2', 20, '2023-11-14 18:00:00.000000', '2023-11-14 09:00:00.000000', 0, 'Event Title', 1);
+INSERT INTO alfs.event (id, case1, case1_cnt, case2, case2_cnt, end, start, status, title, supervisor_id) VALUES (4, 'Case 1', 10, 'Case 2', 20, '2023-11-14 18:00:00.000000', '2023-11-14 09:00:00.000000', 0, 'Event Title', 1);
+INSERT INTO alfs.event (id, case1, case1_cnt, case2, case2_cnt, end, start, status, title, supervisor_id) VALUES (5, 'Case 1', 10, 'Case 2', 20, '2023-11-14 18:00:00.000000', '2023-11-14 09:00:00.000000', 0, 'Event Title', 1);

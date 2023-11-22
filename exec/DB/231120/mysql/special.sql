@@ -1,0 +1,16 @@
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (86, '2023-11-14 16:01:00.000000', 10000, '2023-11-11 15:57:00.000000', 2, 2, 3);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (3, '2023-11-12 14:40:00.000000', 10000, '2023-11-11 15:55:00.000000', 2, 3, 3);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (10, '2023-11-14 23:43:00.000000', 1000, '2023-11-06 23:42:00.000000', 2, 11, 2);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (10, '2023-11-21 18:00:00.000000', 3000, '2023-11-20 18:00:00.000000', 0, 13, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (10, '2023-11-29 12:00:00.000000', 5000, '2023-11-22 12:00:00.000000', 0, 14, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (3, '2023-12-11 16:29:40.000000', 500, '2023-11-11 15:55:00.000000', 2, 16, 3);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (5, '2023-11-12 14:43:00.000000', 100, '2023-11-11 15:55:00.000000', 2, 17, 3);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (50, '2023-11-30 13:00:00.000000', 1000, '2023-11-20 13:00:00.000000', 1, 20, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (4, '2023-11-17 08:39:00.000000', 500, '2023-11-17 08:13:00.000000', 2, 24, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (98, '2023-11-18 09:25:00.000000', 1000, '2023-11-17 09:27:00.000000', 2, 27, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (5, '2023-11-16 00:43:00.000000', 10000, '2023-11-15 21:52:00.000000', 2, 33, 2);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (100, '2023-11-29 13:00:00.000000', 4000, '2023-11-17 13:00:00.000000', 1, 34, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (96, '2023-11-18 10:50:00.000000', 100, '2023-11-17 10:52:00.000000', 2, 38, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (0, '2023-11-21 13:47:00.000000', 5000, '2023-11-20 14:15:00.000000', 2, 39, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (99, '2023-11-18 10:27:00.000000', 1000, '2023-11-17 10:29:00.000000', 2, 77, 1);
+INSERT INTO alfs.special (count, end, sale_price, start, status, product_id, supervisor_id) VALUES (1, '2023-11-24 16:22:00.000000', 1, '2023-11-17 16:22:00.000000', 2, 78, 1);

@@ -84,6 +84,11 @@ public class SpecialService {
         // redis에 특가 상품 수량 추가
         addSpecialCnt(dto.getProductId(), String.valueOf(dto.getCount()));
 
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        Map<String, Object> map = new HashMap<>();
+        map.put(String.valueOf(product.getId()), String.valueOf(special.getCount()));
+        hashOperations.putAll("specialCache", map);
+
         return special.getId();
     }
 
@@ -228,6 +233,21 @@ public class SpecialService {
         }
 
         special.setSpecial(dto, product, supervisor);
+
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        String productIdKey = String.valueOf(id);
+        Object specialValue = hashOperations.get("specialCache", productIdKey);
+
+        if (specialValue != null) {
+            try {
+                hashOperations.put("specialCache", productIdKey, String.valueOf(dto.getCount()));
+            } catch (NumberFormatException e) {
+                log.error("Failed to parse and update sale value in Redis: {}", e.getMessage());
+            }
+        } else {
+            log.warn("Sale value not found in Redis for productId: {}", id);
+        }
+
         return special.getId();
     }
 
@@ -245,7 +265,24 @@ public class SpecialService {
             throw new CustomException(ErrorCode.SUPERVISOR_ID_MISMATCH);
         }
 
+        winingRepository.deleteBySpecial(special);
+
         specialRepository.deleteById(id);
+
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        String productIdKey = String.valueOf(id);
+
+        Long deletedFieldsCount = hashOperations.delete("specialCache", productIdKey);
+
+        if (deletedFieldsCount != null && deletedFieldsCount > 0) {
+            log.info("Successfully deleted the field for productId: {}", id);
+        } else {
+            log.warn("No field found to delete for productId: {}", id);
+        }
+
+        // 원래 가격으로 되돌리기
+        revert(id, special, hashOperations, productIdKey);
+
         return id;
     }
 
@@ -376,18 +413,31 @@ public class SpecialService {
         }
         winingRepository.saveAll(list);
 
+        List<Basket> checkList = basketRepository.findByProductIdAndStatus(productId, 1);
 
+        // 레디스에서 특가상품 총 수량 가져오기
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        String productIdKey = String.valueOf(productId);
+        Object specialValue = hashOperations.get("specialCache", productIdKey);
 
+        if (checkList.size() == Integer.parseInt(specialValue.toString())) {
+            // 원래 가격으로 되돌리기
+            revert(productId, special, hashOperations, productIdKey);
+        }
+
+        return true;
+    }
+
+    public void revert(Long productId, Special special, HashOperations<String, Object, Object> hashOperations, String productIdKey) {
         Product product = productRepository.findById(special.getId())
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
-        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
-        String productIdKey = String.valueOf(product.getId());
+
         Object saleValue = hashOperations.get("saleCache", productIdKey);
         int sale = 0;
         if (saleValue != null) {
             try {
                 sale = Integer.parseInt(saleValue.toString());
-                product.setSale(sale); // Product 객체의 sale을 기존 가격에서 특가할인가격으로 변경
+                product.setSale(sale);
             } catch (NumberFormatException e) {
                 log.error("Failed to parse sale value from Redis: {}", e.getMessage());
             }
@@ -402,8 +452,6 @@ public class SpecialService {
                 basket.setIsBigSale(false);
             }
         }
-
-        return true;
     }
 
 }
