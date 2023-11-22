@@ -281,7 +281,7 @@ public class SpecialService {
         }
 
         // 원래 가격으로 되돌리기
-        revert(id, special, hashOperations, productIdKey);
+        revert(id, hashOperations, productIdKey);
 
         return id;
     }
@@ -422,15 +422,18 @@ public class SpecialService {
 
         if (checkList.size() == Integer.parseInt(specialValue.toString())) {
             // 원래 가격으로 되돌리기
-            revert(productId, special, hashOperations, productIdKey);
+            revert(productId, hashOperations, productIdKey);
         }
 
         return true;
     }
 
-    public void revert(Long productId, Special special, HashOperations<String, Object, Object> hashOperations, String productIdKey) {
-        Product product = productRepository.findById(special.getId())
+    public void revert(Long productId, HashOperations<String, Object, Object> hashOperations, String productIdKey) {
+        Product product = productRepository.findById(productId)
                 .orElseThrow(() -> new CustomException(PRODUCT_NOT_FOUND));
+
+        Special special = specialRepository.findById(productId)
+                .orElseThrow(() -> new CustomException(SPECIAL_NOT_FOUND));
 
         Object saleValue = hashOperations.get("saleCache", productIdKey);
         int sale = 0;
