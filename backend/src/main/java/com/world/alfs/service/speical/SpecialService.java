@@ -84,6 +84,11 @@ public class SpecialService {
         // redis에 특가 상품 수량 추가
         addSpecialCnt(dto.getProductId(), String.valueOf(dto.getCount()));
 
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        Map<String, Object> map = new HashMap<>();
+        map.put(String.valueOf(product.getId()), String.valueOf(special.getCount()));
+        hashOperations.putAll("specialCache", map);
+
         return special.getId();
     }
 
@@ -228,6 +233,21 @@ public class SpecialService {
         }
 
         special.setSpecial(dto, product, supervisor);
+
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        String productIdKey = String.valueOf(id);
+        Object specialValue = hashOperations.get("specialCache", productIdKey);
+
+        if (specialValue != null) {
+            try {
+                hashOperations.put("specialCache", productIdKey, String.valueOf(dto.getCount()));
+            } catch (NumberFormatException e) {
+                log.error("Failed to parse and update sale value in Redis: {}", e.getMessage());
+            }
+        } else {
+            log.warn("Sale value not found in Redis for productId: {}", id);
+        }
+
         return special.getId();
     }
 
@@ -245,7 +265,21 @@ public class SpecialService {
             throw new CustomException(ErrorCode.SUPERVISOR_ID_MISMATCH);
         }
 
+        winingRepository.deleteBySpecial(special);
+
         specialRepository.deleteById(id);
+
+        HashOperations<String, Object, Object> hashOperations = redisTemplate.opsForHash();
+        String productIdKey = String.valueOf(id);
+
+        Long deletedFieldsCount = hashOperations.delete("specialCache", productIdKey);
+
+        if (deletedFieldsCount != null && deletedFieldsCount > 0) {
+            log.info("Successfully deleted the field for productId: {}", id);
+        } else {
+            log.warn("No field found to delete for productId: {}", id);
+        }
+
         return id;
     }
 
