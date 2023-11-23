@@ -1,4 +1,4 @@
-# ALFS (ALllergy Free Scouter)
+# ALFS (ALlergy Free Scouter)
 
 ![Untitled](exec/Readme-asset/Untitled.jpeg)
 
@@ -362,7 +362,7 @@ npm start
         특가상품 등록<img src="./ALFS_IMAGE/register_bigsale_product.png" />
       </div>
       <div style="border : solid white 1px; text-align : center;">
-        회원가입<img src="./exec/Readme-asset/ALFS_gif/특가상품-등록.gif" />
+        특가상품 등록<img src="./exec/Readme-asset/ALFS_gif/특가상품-등록.gif" />
       </div>
     </div>
     <h3 style="text-align : center">관리자 페이지 - 특가상품 관리</h3>

@@ -72,14 +72,35 @@ public class SpecialService {
     public Long addSpecial(AddSpecialDto dto) {
         Product product = productRepository.findById(dto.getProductId()).orElseThrow(() -> new CustomException(ErrorCode.PRODUCT_NOT_FOUND));
         Supervisor supervisor = supervisorRepository.findById(dto.getSupervisorId()).orElseThrow(() -> new CustomException(ErrorCode.SUPERVISOR_NOT_FOUND));
+        Special special = null;
 
         Optional<Special> existingSpecial = specialRepository.findById(dto.getProductId());
         if (existingSpecial.isPresent()) {
-            throw new CustomException(ErrorCode.DUPLICATE_SPECIAL_ID);
-        }
+            if (existingSpecial.get().getStatus() == 1) {
+                log.debug("이미 진행중인 특가상품");
+                throw new CustomException(ErrorCode.DUPLICATE_SPECIAL_ID);
+            } else if (existingSpecial.get().getStatus() == 0) {
+                log.debug("등록된 특가상품");
+                throw new CustomException(ErrorCode.DUPLICATE_SPECIAL_ID);
+            } else {
+                log.debug("종료된 특가상품");
+                SetSpecialDto setSpecialDto = SetSpecialDto.builder()
+                        .status(dto.getStatus())
+                        .start(dto.getStart())
+                        .end(dto.getEnd())
+                        .count(dto.getCount())
+                        .salePrice(dto.getSalePrice())
+                        .supervisorId(dto.getSupervisorId())
+                        .build();
 
-        Special special = dto.toEntity(product, supervisor);
-        specialRepository.save(special);
+                existingSpecial.get().setSpecial(setSpecialDto, product, supervisor);
+                special = existingSpecial.get();
+                specialRepository.save(special);
+            }
+        } else {
+            special = dto.toEntity(product, supervisor);
+            specialRepository.save(special);
+        }
 
         // redis에 특가 상품 수량 추가
         addSpecialCnt(dto.getProductId(), String.valueOf(dto.getCount()));
@@ -329,15 +350,22 @@ public class SpecialService {
             Long waitingOrder = redisTemplate.opsForZSet().rank(productKey, memberValue);
             log.debug("waitingOrder: {}", waitingOrder);
 
+            Special special = specialRepository.findByProductId(dto.getProductId());
+
             if (waitingOrder + 1 <= productCnt) {
                 log.debug("장바구니에 상품이 추가되었습니다.");
                 redisTemplate.opsForZSet().remove(cntKey, String.valueOf(productCnt));
                 redisTemplate.opsForZSet().add(cntKey, String.valueOf(productCnt - 1) , 0);
 
                 // 장바구니에 추가
-                boolean result =  addCart(dto.getProductId(), 0L, 0L);
+                boolean result = addCart(dto.getProductId(), 0L, 0L);
                 if (result) {
+                    special.changeCount(1);
                     return ApiResponse.ok("장바구니 담기 성공");
+                }
+
+                if (special.getCount() == 0) {
+                    special.setStatus(2);
                 }
             } else {
                 log.debug("재고 부족");
